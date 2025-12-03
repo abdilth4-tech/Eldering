@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CARERING Healthcare</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007BFF">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+  <div class="mobile-wrapper"> 
+
+    <div class="app-header">
+        <div class="logo" style="cursor: pointer;" onclick="window.location.href='index.html'">
+            <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+        </div>
+        
+        <div class="profile-icon" onclick="window.location.href='profil.html'">
+            <img id="nav-user-photo" src="" style="width: 32px; height: 32px; border-radius: 50%; display: none; object-fit: cover;">
+            
+            <span class="material-symbols-outlined" style="font-size: 32px;">person</span>
+        </div>
+    </div>
+
+    <main class="container">
+        
+        <div class="home-greeting" id="user-greeting">Memuat...</div>
+        <div class="home-subgreeting">Temukan data kesehatan Anda.</div>
+        
+        <div class="search-bar">
+            <span class="search-icon"><span class="material-symbols-outlined">search</span></span>
+            <input type="text" placeholder="Cari data, berita, atau forum...">
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Categories</h2>
+        </div>
+        <div class="categories-scroll">
+            <div class="category-item" onclick="window.location.href='perangkat.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">devices</span></span>
+                <span class="category-label">Device</span>
+            </div>
+            <div class="category-item" onclick="window.location.href='ai-chat.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">smart_toy</span></span>
+                <span class="category-label">AI Chat</span>
+            </div>
+            <div class="category-item" onclick="window.location.href='forum.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">forum</span></span>
+                <span class="category-label">Forum</span>
+            </div>
+            <div class="category-item" onclick="window.location.href='news.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">newspaper</span></span>
+                <span class="category-label">News</span>
+            </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 20px;">
+            <h2 class="section-title">Status Utama</h2>
+        </div>
+
+        <div class="temp-card card">
+            <div class="temp-label">Suhu Tubuh</div>
+            <div class="temp-value"><span id="suhu-tubuh-value">--</span>°C</div>
+            <span class="temp-status" id="suhu-tubuh-status">--</span>
+        </div>
+
+        <div class="section-header" style="margin-top: 20px;">
+            <h2 class="section-title">Semua Vitals</h2>
+            <span class="see-all">Data Terbaru</span>
+        </div>
+
+        <div class="metrics-grid">
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #28A745;">footprint</span></span>
+                    <span class="metric-status status-good" id="langkah-percent">--</span>
+                </div>
+                <div class="metric-value"><span id="langkah-value">--</span></div>
+                <div class="metric-label">Langkah Hari Ini</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #007BFF;">airwave</span></span>
+                    <span class="metric-status status-normal" id="spo2-percent">--</span>
+                </div>
+                <div class="metric-value"><span id="spo2-value">--</span><span style="font-size: 18px; color: #555;">%</span></div>
+                <div class="metric-label">Saturasi Oksigen</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #6F42C1;">bedtime</span></span>
+                    <span class="metric-status status-normal" id="tidur-status">Baik</span>
+                </div>
+                <div class="metric-value"><span id="tidur-value">--</span>h</div>
+                <div class="metric-label">Kualitas Tidur</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #F39C12;">home_iot_device</span></span>
+                    <span class="metric-status status-warning" id="ruangan-status">--</span>
+                </div>
+                <div class="metric-value"><span id="ruangan-value">--</span></div>
+                <div class="metric-label">Suhu Ruangan (°C)</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #3498DB;">compress</span></span>
+                    <span class="metric-status status-normal" id="tekanan-status">--</span>
+                </div>
+                <div class="metric-value"><span id="tekanan-value">--</span></div>
+                <div class="metric-label">Tekanan Udara</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #B38600;">filter_hdr</span></span>
+                    <span class="metric-status status-normal" id="ketinggian-status">--</span>
+                </div>
+                <div class="metric-value"><span id="ketinggian-value">--</span></div>
+                <div class="metric-label">Ketinggian (m)</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #007BFF;">water_drop</span></span>
+                    <span class="metric-status status-good" id="hidrasi-status">--</span>
+                </div>
+                <div class="metric-value"><span id="hidrasi-placeholder-value">--</span></div>
+                <div class="metric-label">Hidrasi (L)</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #E74C3C;">favorite</span></span>
+                    <span class="metric-status status-high" id="bpm-status">--</span>
+                </div>
+                <div class="metric-value"><span id="bpm-value">--</span></div>
+                <div class="metric-label">Detak Jantung</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #9B59B6;">sensors</span></span>
+                    <span class="metric-status status-high" id="ir-status">--</span>
+                </div>
+                <div class="metric-value"><span id="ir-value">--</span></div>
+                <div class="metric-label">Data Sensor (IR)</div>
+            </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 20px;">
+            <h2 class="section-title">Grafik Kesehatan</h2>
+            <span class="see-all" onclick="window.location.href='history.html'" style="cursor: pointer; color: #007BFF; font-weight: 600;">Lihat Riwayat ></span>
+        </div>
+
+        <section class="chart-card card">
+            <p class="chart-title">Riwayat Detak Jantung (10 data terakhir)</p>
+            <canvas id="bpmChart"></canvas>
+        </section>
+        
+        <section class="chart-card card">
+            <p class="chart-title">Riwayat Suhu Tubuh (10 data terakhir)</p>
+            <canvas id="tempChart"></canvas>
+        </section>
+        
+        <section class="chart-card card">
+            <p class="chart-title">Riwayat Suhu Ruangan (10 data terakhir)</p>
+            <canvas id="ambientChart"></canvas>
+        </section>
+
+        <section class="health-summary-card card">
+            <h2 class="chart-title" style="text-align: center;">Rangkuman Kesehatan</h2>
+            
+            <div id="summary-status-container" class="report-status-container">
+                <p>Status Keseluruhan:</p>
+                <h3 id="summary-status-text" class="status-bugar">Memuat...</h3>
+            </div>
+            
+            <div class="report-details">
+                <h4>Detail Laporan:</h4>
+                <ul id="summary-detail-list" class="report-details-list">
+                    <li>Memuat data sensor...</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <div id="report-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="modal-close-btn">&times;</span>
+        <h2>Rangkuman Kesehatan</h2>
+        <div class="report-status-container">
+          <p>Status Keseluruhan:</p>
+          <h3 id="report-status" class="status-bugar">BUGAR</h3>
+        </div>
+        <div class="report-details">
+          <h4>Detail Laporan:</h4>
+          <ul id="report-detail-list">
+          </ul>
+        </div>
+        <div class="report-recommendations">
+          <h4>Rekomendasi (Treatment):</h4>
+          <ul id="report-list">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div> 
+  
+  <div class="bottom-nav">
+      <div class="nav-item active" onclick="window.location.href='index.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">home</span></div>
+          <div class="nav-label">Home</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='news.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">newspaper</span></div>
+          <div class="nav-label">News</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='perangkat.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">devices</span></div>
+          <div class="nav-label">Perangkat</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='ai-chat.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">smart_toy</span></div>
+          <div class="nav-label">AI Chat</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='forum.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">forum</span></div>
+          <div class="nav-label">Forum</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='profil.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">person</span></div>
+          <div class="nav-label">Profil</div>
+      </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script src="script.js"></script>
+
+  <script src="auth-guard.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful: ', registration.scope);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+  
+</body>
+</html>

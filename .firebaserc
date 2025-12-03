@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "testing-5db96"
+  },
+  "targets": {
+    "testing-5db96": {
+      "hosting": {
+        "carering": [
+          "carering-77541"
+        ],
+        "default": [
+          "testing-5db96"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

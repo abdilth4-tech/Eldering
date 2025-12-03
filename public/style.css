@@ -1,0 +1,1256 @@
+/* GAYA FONT & BODY (Digabung) */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f7f8fa; /* Diambil dari contoh (lebih bersih) */
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+.mobile-wrapper {
+  width: 100%;
+  max-width: 450px; /* Anda menggunakan 450px, contoh 480px. Saya pertahankan 450px Anda. */
+  margin: 0 auto;
+  background: #F4F7FA;
+  min-height: 100vh;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  padding-bottom: 120px; /* Disesuaikan untuk nav baru */
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+/* === STYLE HEADER BARU (dari contoh) === */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-bottom: 10px;
+  /* Style ini diterapkan di dalam .container, jadi padding container akan menanganinya */
+}
+.app-header .logo {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 0;
+  cursor: pointer;
+  letter-spacing: 1px; /* Sedikit penyesuaian */
+}
+.app-header .profile-icon {
+  font-size: 28px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.3s;
+  display: flex; /* Untuk ikon material */
+  align-items: center; /* Untuk ikon material */
+  justify-content: center; /* Untuk ikon material */
+}
+.app-header .profile-icon:hover {
+  color: #2196F3;
+}
+
+/* === [PERBAIKAN LOGO] Warna & Bayangan Baru === */
+.logo-care {
+  color: #0056b3; /* Biru dibuat lebih gelap dan pekat */
+  /* Bayangan halus untuk efek "outline" lembut agar menonjol */
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.logo-ring {
+  color: #f5b000; /* Kuning/Gold tua (kontras jauh lebih baik) */
+  /* Bayangan halus untuk efek "outline" lembut agar menonjol */
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* === AKHIR STYLE HEADER BARU === */
+
+
+.container {
+  padding: 0 16px 16px 16px;
+}
+
+/* === CSS BARU UNTUK HOMEPAGE (dari contoh) === */
+.home-greeting {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+.home-subgreeting {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 24px;
+}
+.search-bar {
+  position: relative;
+  margin-bottom: 24px;
+}
+.search-bar input {
+  width: 100%;
+  padding: 18px 20px 18px 50px; /* Ruang untuk ikon */
+  border: none;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  font-size: 14px;
+  outline: none;
+  font-family: 'Poppins', sans-serif; /* Pastikan font konsisten */
+}
+.search-bar .search-icon {
+  position: absolute;
+  left: 15px; /* Disesuaikan untuk material icon */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+.see-all {
+  font-size: 14px;
+  color: #2196F3;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* === [PERBAIKAN KATEGORI 1] WADAH === */
+.categories-scroll {
+  display: flex;
+  gap: 10px; /* Jarak antar tombol dikecilkan */
+  justify-content: space-between; /* Membuat 4 tombol pas */
+  margin-bottom: 10px;
+  /* overflow-x: auto; DIHAPUS agar tidak bisa scroll */
+}
+.categories-scroll::-webkit-scrollbar {
+  display: none; /* Safari/Chrome */
+}
+
+/* === [PERBAIKAN KATEGORI 2] TOMBOL === */
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; /* Jarak icon & teks dikecilkan */
+  background: white;
+  border-radius: 20px;
+  padding: 12px; /* Padding (isian) dikecilkan */
+  width: 80px; /* Lebar tombol dikecilkan */
+  height: 80px; /* Tinggi tombol dikecilkan */
+  /* flex-shrink: 0; DIHAPUS agar tombol bisa menyesuaikan */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.category-item:hover {
+  transform: translateY(-3px);
+}
+
+/* === [PERBAIKAN KATEGORI 3] IKON === */
+.category-icon {
+  font-size: 28px; /* Ukuran icon dikecilkan */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === [PERBAIKAN KATEGORI 4] LABEL === */
+.category-label {
+  font-size: 12px; /* Ukuran teks dikecilkan */
+  font-weight: 500;
+  color: #555;
+}
+/* === AKHIR DARI CSS BARU HOMEPAGE === */
+
+
+/* === GLOBAL CARD STYLE (dari contoh) === */
+.card {
+  background: white;
+  border-radius: 24px; /* Sudut lebih bulat */
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); /* Bayangan lebih lembut */
+  margin-bottom: 20px;
+}
+
+/* === STYLE KARTU SUHU UTAMA (dari contoh) === */
+.temp-card {
+  background: linear-gradient(135deg, #fff 0%, #ffe6e6 100%);
+  /* padding, border-radius, box-shadow diambil dari .card */
+}
+.temp-label {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+.temp-value {
+  font-size: 36px;
+  font-weight: bold;
+  color: #f44336;
+  margin-bottom: 8px;
+}
+.temp-status {
+  display: inline-block;
+  background: #ffebee;
+  color: #f44336;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* === STYLE METRIK GRID (dari contoh) === */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dibuat 2 kolom agar seragam */
+  gap: 16px; 
+  margin-bottom: 20px;
+}
+.metric-card {
+  background: white;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.metric-icon {
+  font-size: 20px; /* Ukuran font ikon */
+  display: flex;
+  align-items: center;
+}
+.metric-icon .material-symbols-outlined {
+  font-size: 24px; /* Ukuran material icon */
+}
+.metric-status {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.status-good {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+.status-normal {
+  background: #e3f2fd;
+  color: #2196F3;
+}
+.status-warning {
+  background: #fff3e0;
+  color: #ff9800;
+}
+.status-high {
+  background: #ffebee;
+  color: #f44336;
+}
+.metric-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.metric-label {
+  font-size: 12px;
+  color: #999;
+}
+
+
+/* === STYLE GRAFIK (dari contoh) === */
+.chart-card {
+  margin-top: 20px;
+}
+.chart-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+
+/* === STYLE NAVIGASI BAWAH (dari contoh) === */
+.bottom-nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 40px; /* Bentuk pil */
+  padding: 10px 16px; /* Disesuaikan padding */
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
+  display: flex;
+  gap: 10px; /* Disesuaikan gap */
+  max-width: 450px; /* Sesuai .mobile-wrapper */
+  width: auto; /* Ukuran pas konten */
+  justify-content: center;
+  z-index: 1000;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px; /* Jarak icon dan label lebih dekat */
+  cursor: pointer;
+  color: #999;
+  padding: 4px;
+  border-radius: 12px;
+  transition: color 0.3s;
+  width: 48px; /* Lebar konsisten */
+}
+.nav-item:not(.active):hover {
+  color: #333;
+}
+.nav-icon {
+  font-size: 24px;
+  padding: 6px; /* Ruang untuk background */
+  border-radius: 50%; /* Bulatan untuk ikon */
+  transition: all 0.3s;
+  display: flex; /* Untuk material icon */
+  align-items: center; /* Untuk material icon */
+  justify-content: center; /* Untuk material icon */
+}
+.nav-label {
+  font-size: 11px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.nav-item.active .nav-icon {
+  background: #e3f2fd;
+  color: #007BFF; /* Disesuaikan dengan warna Anda */
+}
+.nav-item.active .nav-label {
+  color: #007BFF; /* Disesuaikan dengan warna Anda */
+}
+.nav-item.active .nav-icon .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
+
+
+/* ====================================================== */
+/* === STYLE LAMA ANDA UNTUK HALAMAN LAIN (DIPERTAHANKAN) === */
+/* ====================================================== */
+
+.status-tag {
+  font-size: 0.8em;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+.status-tag.panas {
+  background-color: #FFF0E6;
+  color: #FF6B18;
+}
+.status-tag.normal {
+  background-color: #E6FFEE;
+  color: #28A745;
+}
+.status-tag.theme-red {
+  background-color: #FFF0F0;
+  color: #E74C3C;
+}
+
+/* Style Halaman AI Chat (Dipertahankan) */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 16px - 120px - 70px); 
+}
+.chat-window {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background: #fdfdfd;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.message {
+  padding: 10px 15px;
+  border-radius: 20px;
+  max-width: 80%;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+.message p {
+  margin: 0;
+}
+.ai-message {
+  background-color: #E6F2FF;
+  color: #333;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.user-message {
+  background-color: #007BFF;
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.message.loading {
+  background-color: #f0f0f0;
+  color: #777;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  font-style: italic;
+}
+.suggested-questions {
+  padding: 10px 0;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+.suggest-btn {
+  padding: 8px 12px;
+  border: 1px solid #007BFF;
+  background: #fff;
+  color: #007BFF;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.8em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.chat-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+#chat-input {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px 15px;
+  font-size: 1em;
+  font-family: 'Poppins', sans-serif;
+}
+#send-btn {
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+#send-btn:disabled {
+  background-color: #ccc;
+}
+
+/* Style Halaman News (Dipertahankan) */
+h2.page-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding: 0 5px;
+}
+.news-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.news-list-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+}
+.news-list-item:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  transform: scale(1.01);
+}
+.news-list-image {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 15px 0 0 15px;
+}
+.news-list-content {
+  padding: 12px 16px 12px 0;
+  flex-grow: 1;
+}
+.news-list-content h3 {
+  font-size: 1.05em;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 8px 0;
+}
+.news-list-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.news-list-tag {
+  font-size: 0.75em;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+.news-list-tag.tag-community {
+  background-color: #FFF0E6;
+  color: #FF6B18;
+}
+.news-list-tag.tag-tech {
+  background-color: #E6FFEE;
+  color: #28A745;
+}
+.news-list-tag.tag-health {
+  background-color: #F0E6FF;
+  color: #6F42C1;
+}
+.news-list-date {
+  font-size: 0.75em;
+  color: #888;
+}
+.last-seen-text {
+  font-size: 0.8em;
+  color: #888;
+  font-style: italic;
+  margin-left: 5px;
+}
+
+/* Style Halaman Forum (Dipertahankan) */
+.page-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.page-header-container h2 {
+  margin-bottom: 0;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 0.9em;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn.btn-primary {
+  background-color: #007BFF;
+  color: white;
+}
+.btn.btn-primary:hover {
+  background-color: #0056b3;
+}
+.forum-list-container,
+.settings-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+.list-item-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+}
+.list-item-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: scale(1.01);
+}
+.list-item-icon {
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.list-item-icon .material-symbols-outlined {
+  font-size: 24px;
+}
+.list-item-content {
+  flex-grow: 1;
+}
+.list-item-content h3 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+.list-item-content p.list-item-meta {
+  font-size: 0.8em;
+  color: #888;
+  margin: 0;
+}
+.list-item-chevron {
+  color: #AAA;
+  flex-shrink: 0;
+}
+
+/* Style Halaman Profil (Dipertahankan) */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.profile-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #E6F2FF;
+  color: #007BFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.profile-avatar .material-symbols-outlined {
+  font-size: 40px;
+  font-variation-settings: 'FILL' 1;
+}
+.profile-info h2 {
+  font-size: 1.4em;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  word-break: break-all;
+}
+.profile-info p {
+  font-size: 0.9em;
+  color: #888;
+  margin: 0;
+  word-break: break-all;
+}
+.list-item-card.logout-button .list-item-content h3 {
+  color: #E74C3C;
+  font-weight: 600;
+}
+
+/* === MODAL & RANGKUMAN STATIS (Dipertahankan) === */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 2000; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.5); 
+  animation-name: fadeIn;
+  animation-duration: 0.3s;
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 30% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  position: relative;
+  animation-name: slideIn;
+  animation-duration: 0.4s;
+}
+@keyframes fadeIn {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+@keyframes slideIn {
+  from {top: -100px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal-content h2 {
+  margin-top: 0;
+  color: #007BFF;
+}
+.report-status-container {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+}
+.report-status-container p {
+  margin: 0 0 5px 0;
+  font-size: 0.9em;
+  color: #555;
+}
+.report-status-container h3 {
+  margin: 0;
+  font-size: 1.8em;
+}
+.status-bugar { color: #28A745; }
+.status-sehat { color: #007BFF; }
+.status-kurang-sehat { color: #F39C12; }
+.status-sakit { color: #E74C3C; }
+.report-details {
+  margin: 20px 0;
+}
+.report-details h4 {
+  margin-bottom: 10px;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+.report-details ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.report-details li {
+  font-size: 0.9em;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+}
+.report-details li:last-child {
+  border-bottom: none;
+}
+.report-details li strong {
+  color: #333;
+}
+.report-details li span,
+.report-details-list li .status-text {
+  font-weight: 600;
+}
+.report-recommendations h4 {
+  margin-bottom: 10px;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+.report-recommendations ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.report-recommendations li {
+  font-size: 0.9em;
+  color: #333;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.report-recommendations li::before {
+  content: 'check_circle';
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  color: #28A745; 
+  flex-shrink: 0;
+}
+.report-recommendations li.warning::before {
+  content: 'warning';
+  color: #E74C3C; 
+}
+.health-summary-card {
+  margin-top: 20px;
+}
+.report-details-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+.report-details-list li {
+  font-size: 0.9em;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+}
+.report-details-list li:last-child {
+  border-bottom: none;
+}
+.report-details-list li strong {
+  color: #333;
+}
+
+/* Tambahan CSS dari profil.html - JANGAN HAPUS JIKA ADA */
+.profile-page-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  color: #333;
+}
+
+.profile-card {
+  background-color: #fff;
+  border-radius: 20px; /* Lebih bulat */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Bayangan lebih halus */
+  padding: 30px 20px; /* Padding lebih besar */
+  margin: 20px auto; /* Tengah dan jarak */
+  text-align: center;
+  max-width: 350px; /* Lebar maksimum kartu */
+}
+
+.profile-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #E6F2FF; /* Background avatar */
+  color: #007BFF; /* Warna ikon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto; /* Tengah dan jarak bawah */
+  font-size: 40px; /* Ukuran ikon */
+}
+
+.profile-card h3 {
+  font-size: 1.5em; /* Ukuran nama */
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.profile-card p {
+  font-size: 0.9em;
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.profile-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #eee; /* Garis pemisah */
+  font-size: 0.95em;
+  color: #555;
+}
+
+.profile-detail-row:last-child {
+  border-bottom: 1px solid #eee; /* Garis pemisah bawah */
+  margin-bottom: 20px; /* Jarak dari bawah kartu */
+}
+
+.profile-detail-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.profile-detail-value {
+  font-weight: 400;
+  color: #777;
+}
+
+/* Tombol Logout */
+.logout-btn-card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 15px 20px;
+  margin: 20px auto;
+  max-width: 350px;
+  cursor: pointer;
+  text-decoration: none; /* Hilangkan garis bawah default */
+  color: inherit; /* Warisi warna teks */
+}
+
+.logout-btn-card .list-item-icon {
+  background-color: #FFF0F0;
+  color: #E74C3C;
+  margin-right: 15px;
+}
+
+.logout-btn-card h3 {
+  margin: 0;
+  font-size: 1.1em;
+  color: #E74C3C; /* Warna teks logout */
+  flex-grow: 1; /* Agar teks mengisi ruang */
+  text-align: left;
+}
+
+/* === STYLE UNTUK AUTENTIKASI === */
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* Penuh di tengah layar */
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.auth-logo {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.auth-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.auth-subtitle {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Jarak antar input */
+}
+
+.auth-input {
+  width: 100%;
+  padding: 18px 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: white;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box; /* Penting untuk padding */
+  outline-color: #007BFF;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 18px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #007BFF;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+  background: #0056b3;
+}
+
+.auth-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.auth-link a {
+  color: #007BFF;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* =========================================== */
+/* === TEMA BARU: PREMIUM "GLASS" V.1.0 === */
+/* =========================================== */
+
+/* 1. Latar Belakang Gradient Baru untuk seluruh aplikasi */
+body {
+  /* Gradient biru/teal yang lembut & profesional */
+  background: linear-gradient(120deg, #e0f7fa 0%, #f0f7ff 100%);
+  background-attachment: fixed; /* Agar gradient tidak ikut scroll */
+}
+
+/* 2. Wrapper Utama dibuat transparan */
+.mobile-wrapper {
+  background: transparent; /* Hapus background abu-abu */
+  box-shadow: none; /* Hapus bayangan wrapper, tidak perlu lagi */
+}
+
+/* 3. Gaya "Glassmorphism" untuk SEMUA Kartu */
+/* Ini akan otomatis menimpa .card, .metric-card, .list-item-card, dll. */
+.card,
+.metric-card,
+.list-item-card,
+.news-list-item,
+.profile-card,
+.logout-btn-card,
+.health-summary-card,
+.chart-card {
+  background: rgba(255, 255, 255, 0.65) !important; /* Kaca semi-transparan */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Untuk Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Bayangan lebih lembut */
+  border-radius: 20px; /* Lebih bulat, terlihat lebih modern */
+}
+
+/* 4. Perbaikan Tampilan Kartu (agar teks terbaca di atas kaca) */
+.metric-card,
+.list-item-card,
+.news-list-item,
+.profile-card,
+.logout-btn-card {
+  /* Buat kartu list sedikit lebih transparan dari kartu utama */
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 5. Perbaikan Search Bar & Tombol Kategori (Homepage) */
+.search-bar input {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none; /* Hapus bayangan lama */
+}
+
+.category-item {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* 6. Aksen Kuning (dari Logo "Ring") */
+/* Kita gunakan di navigasi bawah yang aktif */
+
+.nav-item.active .nav-icon {
+  background: #fff3cd; /* Kuning muda (latar) */
+  color: #f5b000; /* Kuning tua (ikon) */
+}
+.nav-item.active .nav-label {
+  color: #f5b000; /* Kuning tua (teks) */
+}
+/* Kita kembalikan warna 'active' halaman profil ke biru
+   karena kuning di avatar profil baru Anda akan bentrok */
+.nav-item.active[onclick*="profil.html"] .nav-icon {
+    background: #e3f2fd;
+    color: #007BFF;
+}
+.nav-item.active[onclick*="profil.html"] .nav-label {
+    color: #007BFF;
+}
+
+
+/* 7. Perombakan Kartu Status Utama (Homepage) */
+/* Kartu ini kita buat solid agar menjadi pusat perhatian */
+.temp-card {
+  /* Gradient biru tua yang solid agar menonjol */
+  background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%) !important;
+  color: #ffffff; /* Semua teks jadi putih */
+  box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3); /* Bayangan biru */
+}
+
+.temp-card .temp-label {
+  color: #e0e0ff; /* Putih kebiruan */
+}
+.temp-card .temp-value {
+  color: #ffffff;
+}
+.temp-card .temp-status {
+  background: rgba(255, 255, 255, 0.15); /* Latar status transparan */
+  color: #ffffff;
+}
+
+/* 8. Perbaikan Tampilan di Halaman Profil (Kartu Baru) */
+/* Pastikan teks di kartu profil baru terbaca */
+.profile-card h3 {
+  color: #333;
+}
+.profile-card p {
+  color: #777;
+}
+.profile-detail-label {
+  color: #333;
+}
+.profile-detail-value {
+  color: #777;
+}
+
+/* =========================================== */
+/* === PENAMBAHAN BORDER UNTUK KONTEN UTAMA === */
+/* =========================================== */
+
+/* Menambahkan border dan sedikit padding ke container utama */
+main.container {
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Border transparan */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* Bayangan lembut */
+  border-radius: 25px; /* Sedikit lebih bulat dari kartu */
+  margin: 15px auto; /* Memberi sedikit jarak dari sisi mobile-wrapper */
+  padding-bottom: 70px; /* Tambahan padding agar bottom-nav tidak menimpa konten */
+  overflow: hidden; /* Pastikan semua konten di dalamnya tidak keluar */
+  background: rgba(255, 255, 255, 0.6); /* Latar belakang kaca */
+  backdrop-filter: blur(15px); /* Efek blur kaca */
+  -webkit-backdrop-filter: blur(15px);
+  /* Penting: Pastikan ini berjalan di dalam mobile-wrapper */
+  position: relative;
+  z-index: 1; /* Pastikan di atas background */
+}
+
+/* Override padding-top bawaan agar tidak terlalu mepet header */
+.container {
+  padding-top: 20px; 
+}
+/* Banner */
+.news-banner {
+  width: 100%;
+  height: 160px;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.news-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-banner-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+}
+
+.news-banner-overlay h2 {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.news-banner-overlay p {
+  color: #f3f3f3;
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Filter Chips */
+.news-filter {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin-bottom: 15px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #e9eef5;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.chip.active {
+  background: #007BFF;
+  color: white;
+}
+
+/* Card Hover Effect */
+.news-list-item.cool {
+  position: relative;
+  transition: 0.25s ease;
+}
+
+.news-list-item.cool:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+/* Arrow */ 
+.arrow {
+  font-size: 26px;
+  font-weight: 500;
+  color: #b8b8b8;
+  margin-left: auto;
+  padding-right: 10px;
+}
+.google-btn {
+  margin-top: 15px;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.google-btn img {
+  width: 22px;
+}
+
+.google-btn:hover {
+  background: #f2f2f2;
+}

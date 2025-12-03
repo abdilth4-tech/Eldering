@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - CARERING</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="page-login">
+  <div class="mobile-wrapper">
+    <main class="container auth-container">
+      
+      <div class="logo auth-logo">
+        <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+      </div>
+      
+      <h2 class="auth-title">Selamat Datang Kembali</h2>
+      <p class="auth-subtitle">Silakan masuk untuk melanjutkan</p>
+
+      <form id="login-form" class="auth-form">
+        <input type="email" id="login-email" class="auth-input" placeholder="Email" required>
+        <input type="password" id="login-password" class="auth-input" placeholder="Password" required>
+        <button type="submit" class="auth-button">Masuk</button>
+      </form>
+
+      <button id="google-login-btn" class="google-btn">
+        <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google Icon">
+        Masuk dengan Google
+      </button>
+      
+      <p class="auth-link">
+        Belum punya akun? <a href="register.html">Daftar di sini</a>
+      </p>
+
+    </main>
+  </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script src="script.js"></script>
+  
+  </body>
+</html>

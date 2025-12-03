@@ -1,0 +1,22 @@
+{
+  "name": "CARERING Healthcare",
+  "short_name": "CARERING",
+  "description": "Aplikasi Monitoring Kesehatan CARERING",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#F4F7FA",
+  "theme_color": "#007BFF",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

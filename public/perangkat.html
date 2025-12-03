@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perangkat - CARERING</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007BFF">
+
+  <style>
+    /* ==== EXTRA STYLE UNTUK PERANGKAT ==== */
+
+    /* Style Foto Profil Bulat */
+    .profile-icon img {
+        width: 32px; height: 32px; 
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .device-hero {
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .device-hero img {
+      width: 140px;
+      filter: drop-shadow(0 12px 20px rgba(0,0,0,0.15));
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+
+    .device-section-title {
+      font-size: 1.6em;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    /* ===== CARD DEVICE BARU ===== */
+    .device-card {
+      background: #fff;
+      padding: 22px;
+      border-radius: 22px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+      animation: fadeInUp .4s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .device-name {
+      font-size: 1.4em;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 0.85em;
+      border-radius: 10px;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+
+    .status-online { background: #d1ffe7; color: #067a3e; }
+    .status-offline { background: #ffe1e1; color: #b50000; }
+
+    .battery-bar {
+      height: 8px;
+      background: #e7e7e7;
+      border-radius: 10px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .battery-fill {
+      height: 8px;
+      width: 0%; /* Default 0 biar animasi jalan */
+      background: linear-gradient(90deg, #00c853, #4aff7a);
+      border-radius: 10px;
+      transition: width .5s ease;
+    }
+
+    /* Buttons */
+    .device-actions {
+      margin-top: 20px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .action-btn {
+      background: #f5f8ff;
+      padding: 14px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      transition: 0.2s;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      background: #eef4ff;
+    }
+
+    .action-btn span {
+      font-size: 26px;
+      color: #007BFF;
+    }
+
+    /* Jika tidak ada perangkat */
+    .no-devices {
+      text-align: center;
+      padding: 28px;
+      background: white;
+      border-radius: 20px;
+      margin-top: 20px;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.08);
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="mobile-wrapper">
+
+    <header class="app-header">
+      <div class="logo" style="cursor: pointer;" onclick="window.location.href='index.html'">
+        <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+      </div>
+      
+      <div class="profile-icon" id="profile-btn" onclick="window.location.href='profil.html'">
+        <span class="material-symbols-outlined" style="font-size: 32px;">person</span>
+      </div>
+    </header>
+
+
+    <main class="container">
+      
+      <div class="device-hero">
+        <img src="https://cdn-icons-png.flaticon.com/512/1048/1048949.png" alt="Device Illustration">
+      </div>
+
+      <h2 class="device-section-title">Perangkat Saya</h2>
+
+      <div class="device-card" id="perangkat-card">
+        
+        <div class="device-name" id="device-name">Mencari perangkat...</div>
+
+        <p>
+          Status  
+          <span id="device-status" class="status-badge status-offline">...</span>
+          <span id="device-last-seen" class="last-seen-text" style="margin-left:6px; font-size: 0.8em; color: #777;"></span>
+        </p>
+
+        <p style="margin-top: 8px;">
+          ID Perangkat: <br>
+          <span id="device-id" style="font-size: 0.92em; color: #555;">-</span>
+        </p>
+
+        <p style="margin-top: 14px;">Baterai:</p>
+        <div class="battery-bar">
+          <div class="battery-fill" id="battery-fill"></div>
+        </div>
+        <span id="batt-status" style="font-size: 0.9em;">--%</span>
+
+        <div class="device-actions">
+          <div class="action-btn" onclick="alert('Fitur Detail Perangkat Coming Soon!')">
+            <span class="material-symbols-outlined">info</span> Detail Perangkat
+          </div>
+
+          <div class="action-btn" onclick="alert('Fitur Lokasi Terakhir Coming Soon!')">
+            <span class="material-symbols-outlined">location_on</span> Lokasi Terakhir
+          </div>
+
+          <div class="action-btn" onclick="window.location.href='scan.html'">
+            <span class="material-symbols-outlined">qr_code_scanner</span> Scan Perangkat Baru
+          </div>
+        </div>
+
+      </div>
+
+      <div id="no-perangkat" class="no-devices" style="display: none;">
+        <h3>Tidak Ada Perangkat</h3>
+        <p>Anda belum menambahkan perangkat apapun.</p>
+
+        <div class="action-btn" onclick="window.location.href='scan.html'" style="margin-top:18px; justify-content:center;">
+          <span class="material-symbols-outlined">add_circle</span> Tambah Perangkat Baru
+        </div>
+      </div>
+
+    </main>
+
+
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="window.location.href='index.html'">
+        <div class="nav-icon"><span class="material-symbols-outlined">home</span></div>
+        <div class="nav-label">Home</div>
+      </div>
+
+      <div class="nav-item" onclick="window.location.href='news.html'">
+        <div class="nav-icon"><span class="material-symbols-outlined">newspaper</span></div>
+        <div class="nav-label">News</div>
+      </div>
+
+      <div class="nav-item active" onclick="window.location.href='perangkat.html'">
+        <div class="nav-icon"><span class="material-symbols-outlined">devices</span></div>
+        <div class="nav-label">Perangkat</div>
+      </div>
+
+      <div class="nav-item" onclick="window.location.href='ai-chat.html'">
+        <div class="nav-icon"><span class="material-symbols-outlined">smart_toy</span></div>
+        <div class="nav-label">AI Chat</div>
+      </div>
+
+      <div class="nav-item" onclick="window.location.href='forum.html'">
+        <div class="nav-icon"><span class="material-symbols-outlined">forum</span></div>
+        <div class="nav-label">Forum</div>
+      </div>
+
+      <div class="nav-item" onclick="window.location.href='profil.html'">
+        <div class="nav-icon"><span class="material-symbols-outlined">person</span></div>
+        <div class="nav-label">Profil</div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script src="script.js"></script>
+  <script src="auth-guard.js"></script>
+
+  <script>
+    // --- UPDATE: Ganti Foto Profil ---
+    document.addEventListener("DOMContentLoaded", function() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user && user.photoURL) {
+                const profileBtn = document.getElementById('profile-btn');
+                if(profileBtn) {
+                    profileBtn.innerHTML = `
+                        <img src="${user.photoURL}" alt="Profil">
+                    `;
+                }
+            }
+        });
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => console.log("SW registered:", registration.scope))
+          .catch(error => console.log("SW failed:", error));
+      });
+    }
+
+    // Battery update (Animasi sederhana setelah data masuk)
+    // Pastikan di script.js sudah ada logika mengisi id "batt-status"
+    setTimeout(() => {
+      const battText = document.getElementById("batt-status").innerText;
+      if(battText && battText !== "--%") {
+          let val = battText.replace("%","");
+          document.getElementById("battery-fill").style.width = val + "%";
+      }
+    }, 1000); // Delay sedikit agar data Firebase sempat masuk
+  </script>
+
+</body>
+</html>

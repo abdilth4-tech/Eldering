@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Riwayat Kesehatan - CARERING</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- SCRIPT CHART.JS SUDAH DIHAPUS AGAR LEBIH RINGAN -->
+
+  <style>
+    /* CSS Khusus Tabel */
+    .filter-container {
+      display: flex; background: #fff; padding: 5px; border-radius: 12px;
+      margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); justify-content: space-between;
+    }
+    .filter-btn {
+      flex: 1; border: none; background: transparent; padding: 10px; border-radius: 8px;
+      font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 500; color: #777;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .filter-btn.active { background: #007BFF; color: white; font-weight: 600; box-shadow: 0 2px 5px rgba(0,123,255,0.3); }
+    
+    .table-card {
+        background: white; border-radius: 15px; padding: 20px; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+        margin-bottom: 20px; /* Dikurangi karena menu bawah dihapus */
+        min-height: 400px; 
+    }
+    .table-container {
+        overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { text-align: left; color: #888; font-weight: 600; padding: 15px 10px; border-bottom: 2px solid #eee; background: #fafafa; white-space: nowrap; }
+    td { padding: 15px 10px; border-bottom: 1px solid #f0f0f0; color: #333; white-space: nowrap; }
+    
+    /* Warna Angka */
+    .val-bpm { color: #E74C3C; font-weight: 700; }
+    .val-temp { color: #F39C12; font-weight: 700; }
+  </style>
+</head>
+
+<body id="page-history">
+
+  <div class="mobile-wrapper">
+    <!-- Header -->
+    <div class="app-header">
+       <div style="display:flex; align-items:center; cursor:pointer;" onclick="window.location.href='index.html'">
+          <span class="material-symbols-outlined">arrow_back_ios</span>
+          <span style="font-weight:600; margin-left:5px;">Kembali</span>
+       </div>
+       <div style="font-weight: 700; font-size: 18px;">Log Data</div>
+       <div style="width: 24px;"></div>
+    </div>
+
+    <main class="container">
+      
+      <!-- Filter Waktu -->
+      <div class="filter-container">
+        <button class="filter-btn active" onclick="switchFilter('day')">Hari Ini</button>
+        <button class="filter-btn" onclick="switchFilter('week')">Minggu</button>
+        <button class="filter-btn" onclick="switchFilter('month')">Bulan</button>
+      </div>
+
+      <!-- Ringkasan Rata-rata -->
+      <div class="metrics-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 20px;">
+         <div class="metric-card" style="padding: 15px;">
+            <div class="metric-label">Rata-rata BPM</div>
+            <div class="metric-value" id="avg-bpm">--</div>
+         </div>
+         <div class="metric-card" style="padding: 15px;">
+            <div class="metric-label">Rata-rata Suhu</div>
+            <div class="metric-value" id="avg-temp">--</div>
+         </div>
+      </div>
+
+      <!-- Judul Bagian -->
+      <div class="section-header">
+          <h2 class="section-title" id="table-title">Data Masuk (Hari Ini)</h2>
+      </div>
+
+      <!-- HANYA TABEL (Tanpa Grafik agar Ringan) -->
+      <div class="table-card">
+          <div class="table-container">
+              <table>
+                  <thead>
+                      <tr>
+                        <th>Waktu</th>
+                        <th>BPM</th>
+                        <th>Suhu</th>
+                        <th>Ruang</th>
+                      </tr>
+                  </thead>
+                  <tbody id="table-body">
+                      <tr><td colspan="4" style="text-align:center; padding:20px;">Memuat data...</td></tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </main>
+    
+    <!-- Menu Navigasi Bawah (Bottom Nav) Telah Dihapus -->
+
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
