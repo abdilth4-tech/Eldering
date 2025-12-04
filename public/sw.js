@@ -2,9 +2,9 @@
    File sw.js (Versi Perbaikan - Network First)
    ====================================================== */
 
-// [PENTING] Ganti v21 menjadi v22, v23, dst. setiap kali Anda deploy update!
-const STATIC_CACHE_NAME = 'carering-static-v21'; 
-const DYNAMIC_CACHE_NAME = 'carering-dynamic-v21';
+// [PENTING] Ganti v24 menjadi v25, v26, dst. setiap kali Anda deploy update!
+const STATIC_CACHE_NAME = 'carering-static-v24';
+const DYNAMIC_CACHE_NAME = 'carering-dynamic-v24';
 
 // File "App Shell" yang jarang berubah (font, icon, manifest)
 const urlsToCache = [
@@ -29,7 +29,8 @@ const dynamicFiles = [
   'style.css',
   'script.js',
   'auth.js',
-  'auth-guard.js'
+  'auth-guard.js',
+  'ble-handler.js'  // ← ADDED! File BLE handler yang baru
 ];
 
 // --- 1. Event Install ---

@@ -73,90 +73,53 @@
 
         <div class="section-header" style="margin-top: 20px;">
             <h2 class="section-title">Semua Vitals</h2>
-            <span class="see-all">Data Terbaru</span>
+            <span class="see-all" id="vitals-last-update">Data Terbaru</span>
         </div>
 
-        <div class="metrics-grid">
-            
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #28A745;">footprint</span></span>
-                    <span class="metric-status status-good" id="langkah-percent">--</span>
-                </div>
-                <div class="metric-value"><span id="langkah-value">--</span></div>
-                <div class="metric-label">Langkah Hari Ini</div>
+        <!-- Real-time Sensor Data Cards -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+            <!-- Heart Rate Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #FFE5E5, #FFF); border-left: 4px solid #E74C3C;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">❤️ Heart Rate</div>
+                <div style="font-size: 2em; font-weight: 700; color: #E74C3C;" id="home-heartrate">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">BPM</div>
             </div>
 
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #007BFF;">airwave</span></span>
-                    <span class="metric-status status-normal" id="spo2-percent">--</span>
-                </div>
-                <div class="metric-value"><span id="spo2-value">--</span><span style="font-size: 18px; color: #555;">%</span></div>
-                <div class="metric-label">Saturasi Oksigen</div>
-            </div>
-            
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #6F42C1;">bedtime</span></span>
-                    <span class="metric-status status-normal" id="tidur-status">Baik</span>
-                </div>
-                <div class="metric-value"><span id="tidur-value">--</span>h</div>
-                <div class="metric-label">Kualitas Tidur</div>
-            </div>
-            
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #F39C12;">home_iot_device</span></span>
-                    <span class="metric-status status-warning" id="ruangan-status">--</span>
-                </div>
-                <div class="metric-value"><span id="ruangan-value">--</span></div>
-                <div class="metric-label">Suhu Ruangan (°C)</div>
+            <!-- SpO2 Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #E5F5FF, #FFF); border-left: 4px solid #3498DB;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">💧 SpO2</div>
+                <div style="font-size: 2em; font-weight: 700; color: #3498DB;" id="home-spo2">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">%</div>
             </div>
 
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #3498DB;">compress</span></span>
-                    <span class="metric-status status-normal" id="tekanan-status">--</span>
-                </div>
-                <div class="metric-value"><span id="tekanan-value">--</span></div>
-                <div class="metric-label">Tekanan Udara</div>
-            </div>
-            
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #B38600;">filter_hdr</span></span>
-                    <span class="metric-status status-normal" id="ketinggian-status">--</span>
-                </div>
-                <div class="metric-value"><span id="ketinggian-value">--</span></div>
-                <div class="metric-label">Ketinggian (m)</div>
+            <!-- Body Temperature Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #FFF5E5, #FFF); border-left: 4px solid #F39C12;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">🌡️ Suhu Tubuh</div>
+                <div style="font-size: 2em; font-weight: 700; color: #F39C12;" id="home-temperature">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">°C</div>
             </div>
 
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #007BFF;">water_drop</span></span>
-                    <span class="metric-status status-good" id="hidrasi-status">--</span>
-                </div>
-                <div class="metric-value"><span id="hidrasi-placeholder-value">--</span></div>
-                <div class="metric-label">Hidrasi (L)</div>
+            <!-- Ambient Temperature Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #E5FFE5, #FFF); border-left: 4px solid #27AE60;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">🏠 Suhu Ruangan</div>
+                <div style="font-size: 2em; font-weight: 700; color: #27AE60;" id="home-ambient">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">°C</div>
             </div>
+        </div>
 
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #E74C3C;">favorite</span></span>
-                    <span class="metric-status status-high" id="bpm-status">--</span>
+        <!-- Device Status Card -->
+        <div class="card" style="padding: 16px; margin-bottom: 20px; background: linear-gradient(135deg, #F0F8FF, #FFF); border-left: 4px solid #007BFF;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 6px;">📡 Device Status</div>
+                    <div style="font-size: 1.1em; font-weight: 600; color: #333;" id="home-device-name">Mencari perangkat...</div>
                 </div>
-                <div class="metric-value"><span id="bpm-value">--</span></div>
-                <div class="metric-label">Detak Jantung</div>
+                <div>
+                    <span id="home-device-status" class="status-badge status-offline" style="font-size: 0.85em;">Offline</span>
+                </div>
             </div>
-
-            <div class="metric-card">
-                <div class="metric-header">
-                    <span class="metric-icon"><span class="material-symbols-outlined" style="color: #9B59B6;">sensors</span></span>
-                    <span class="metric-status status-high" id="ir-status">--</span>
-                </div>
-                <div class="metric-value"><span id="ir-value">--</span></div>
-                <div class="metric-label">Data Sensor (IR)</div>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; font-size: 0.8em; color: #999;">
+                <span>Device ID: </span><span id="home-device-id">-</span>
             </div>
         </div>
 

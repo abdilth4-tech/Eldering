@@ -125,6 +125,30 @@
       color: #007BFF;
     }
 
+    .action-btn-disconnect {
+      background: #fff5f5 !important;
+    }
+
+    .action-btn-disconnect:hover {
+      background: #ffe1e1 !important;
+    }
+
+    .action-btn-disconnect span {
+      color: #E74C3C !important;
+    }
+
+    .action-btn-disconnect.disabled {
+      opacity: 0.5 !important;
+      cursor: not-allowed !important;
+      pointer-events: none;
+    }
+
+    .action-btn-disconnect.enabled {
+      opacity: 1 !important;
+      cursor: pointer !important;
+      pointer-events: auto;
+    }
+
     /* Jika tidak ada perangkat */
     .no-devices {
       text-align: center;
@@ -133,6 +157,203 @@
       border-radius: 20px;
       margin-top: 20px;
       box-shadow: 0 8px 26px rgba(0,0,0,0.08);
+    }
+
+    /* Tombol Tambah Perangkat */
+    .add-device-btn {
+      transition: all 0.2s ease;
+    }
+
+    .add-device-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,123,255,0.4) !important;
+    }
+
+    .add-device-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Modal BLE Scanner */
+    .ble-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .ble-modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .ble-modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 28px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+      animation: slideUp 0.3s ease;
+      position: relative;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .ble-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .ble-modal-title {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .ble-close-btn {
+      background: none;
+      border: none;
+      font-size: 32px;
+      cursor: pointer;
+      color: #999;
+      padding: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    .ble-close-btn:hover {
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    .ble-input-group {
+      margin-bottom: 20px;
+    }
+
+    .ble-input-label {
+      display: block;
+      font-size: 0.9em;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .ble-input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 1em;
+      transition: 0.2s;
+      box-sizing: border-box;
+    }
+
+    .ble-input:focus {
+      outline: none;
+      border-color: #007BFF;
+    }
+
+    .ble-progress {
+      display: none;
+      width: 100%;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .ble-progress.show {
+      display: block;
+    }
+
+    .ble-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #007BFF, #00a6ff);
+      width: 0%;
+      animation: progress 1.5s ease-in-out infinite;
+    }
+
+    @keyframes progress {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 100%; }
+    }
+
+    .ble-connect-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #007BFF, #0056b3);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.2s;
+      box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+    }
+
+    .ble-connect-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+    }
+
+    .ble-connect-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .ble-message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 0.9em;
+      display: none;
+    }
+
+    .ble-message.show {
+      display: block;
+    }
+
+    .ble-message.success {
+      background: #d1ffe7;
+      color: #067a3e;
+    }
+
+    .ble-message.error {
+      background: #ffe1e1;
+      color: #b50000;
+    }
+
+    .ble-message.info {
+      background: #e3f2fd;
+      color: #1565c0;
     }
 
   </style>
@@ -158,14 +379,36 @@
         <img src="https://cdn-icons-png.flaticon.com/512/1048/1048949.png" alt="Device Illustration">
       </div>
 
+      <!-- Tombol Tambah Perangkat -->
+      <div style="text-align: center; margin-bottom: 25px;">
+        <button class="add-device-btn" onclick="openBLEScanner()" style="
+          background: linear-gradient(135deg, #007BFF, #0056b3);
+          color: white;
+          border: none;
+          padding: 16px 32px;
+          border-radius: 16px;
+          font-size: 1.1em;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          transition: all 0.2s ease;
+        ">
+          <span class="material-symbols-outlined" style="font-size: 28px;">bluetooth_searching</span>
+          <span>Tambah Perangkat Baru</span>
+        </button>
+      </div>
+
       <h2 class="device-section-title">Perangkat Saya</h2>
 
       <div class="device-card" id="perangkat-card">
-        
+
         <div class="device-name" id="device-name">Mencari perangkat...</div>
 
         <p>
-          Status  
+          Status
           <span id="device-status" class="status-badge status-offline">...</span>
           <span id="device-last-seen" class="last-seen-text" style="margin-left:6px; font-size: 0.8em; color: #777;"></span>
         </p>
@@ -174,6 +417,32 @@
           ID Perangkat: <br>
           <span id="device-id" style="font-size: 0.92em; color: #555;">-</span>
         </p>
+
+        <!-- BLE Real-time Data Section -->
+        <div id="ble-data-section" style="display: none; margin-top: 20px; padding: 16px; background: #f0f8ff; border-radius: 16px; border-left: 4px solid #007BFF;">
+          <h4 style="margin: 0 0 12px 0; color: #007BFF; font-size: 1em;">📡 Data BLE Real-time</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9em;">
+            <div>
+              <strong>❤️ Heart Rate:</strong><br>
+              <span id="ble-heartrate" style="color: #E74C3C; font-size: 1.3em; font-weight: 700;">--</span> BPM
+            </div>
+            <div>
+              <strong>💧 SpO2:</strong><br>
+              <span id="ble-spo2" style="color: #3498DB; font-size: 1.3em; font-weight: 700;">--</span>%
+            </div>
+            <div>
+              <strong>🌡️ Suhu Tubuh:</strong><br>
+              <span id="ble-temperature" style="color: #E67E22; font-size: 1.3em; font-weight: 700;">--</span>°C
+            </div>
+            <div>
+              <strong>🏠 Suhu Ruangan:</strong><br>
+              <span id="ble-ambient" style="color: #27AE60; font-size: 1.3em; font-weight: 700;">--</span>°C
+            </div>
+          </div>
+          <div style="margin-top: 10px; font-size: 0.8em; color: #666;">
+            <span id="ble-last-update">Terakhir update: --</span>
+          </div>
+        </div>
 
         <p style="margin-top: 14px;">Baterai:</p>
         <div class="battery-bar">
@@ -190,8 +459,12 @@
             <span class="material-symbols-outlined">location_on</span> Lokasi Terakhir
           </div>
 
-          <div class="action-btn" onclick="window.location.href='scan.html'">
-            <span class="material-symbols-outlined">qr_code_scanner</span> Scan Perangkat Baru
+          <div class="action-btn" onclick="openBLEScanner()">
+            <span class="material-symbols-outlined">bluetooth_searching</span> Cari Perangkat BLE
+          </div>
+
+          <div class="action-btn action-btn-disconnect" id="disconnect-btn" onclick="disconnectBLE()" style="opacity: 0.5; cursor: not-allowed;" title="Tidak ada perangkat yang terhubung">
+            <span class="material-symbols-outlined">bluetooth_disabled</span> Putuskan Perangkat
           </div>
         </div>
 
@@ -200,14 +473,96 @@
       <div id="no-perangkat" class="no-devices" style="display: none;">
         <h3>Tidak Ada Perangkat</h3>
         <p>Anda belum menambahkan perangkat apapun.</p>
-
-        <div class="action-btn" onclick="window.location.href='scan.html'" style="margin-top:18px; justify-content:center;">
-          <span class="material-symbols-outlined">add_circle</span> Tambah Perangkat Baru
-        </div>
+        <p style="font-size: 0.9em; color: #777; margin-top: 8px;">Klik tombol di atas untuk menambahkan perangkat baru menggunakan BLE Scanner</p>
       </div>
 
     </main>
 
+    <!-- Modal BLE Scanner -->
+    <div id="ble-modal" class="ble-modal">
+      <div class="ble-modal-content">
+        <div class="ble-modal-header">
+          <h3 class="ble-modal-title">Cari Perangkat Bluetooth</h3>
+          <button class="ble-close-btn" onclick="closeBLEScanner()">&times;</button>
+        </div>
+        
+        <div class="ble-input-group">
+          <label class="ble-input-label" for="ble-device-id">Device ID / MAC Address (Opsional)</label>
+          <input 
+            type="text" 
+            id="ble-device-id" 
+            class="ble-input" 
+            placeholder="7C:2C:67:FF:FE:7C atau 7C-2C-67-FF-FE-7C"
+            value=""
+          >
+          <small style="color: #777; font-size: 0.85em; margin-top: 4px; display: block;">
+            💡 Masukkan ID/MAC address perangkat untuk menghubungkan ke perangkat spesifik
+          </small>
+        </div>
+
+        <div class="ble-input-group">
+          <label class="ble-input-label" for="ble-services">Bluetooth Services UUID (Opsional)</label>
+          <input 
+            type="text" 
+            id="ble-services" 
+            class="ble-input" 
+            placeholder="Kosongkan untuk scan semua perangkat"
+            value=""
+          >
+          <small style="color: #777; font-size: 0.85em; margin-top: 4px; display: block;">
+            💡 <strong>Tips:</strong> Kosongkan field ini untuk menemukan semua perangkat Bluetooth. Isi hanya jika Anda tahu UUID services spesifik perangkat Anda.
+          </small>
+        </div>
+
+        <div id="ble-progress" class="ble-progress">
+          <div class="ble-progress-bar"></div>
+        </div>
+
+        <div id="ble-message" class="ble-message"></div>
+
+        <button id="ble-connect-btn" class="ble-connect-btn" onclick="connectBLE()">
+          <span class="material-symbols-outlined">bluetooth</span>
+          <span>Scan & Hubungkan Perangkat</span>
+        </button>
+        
+        <div style="margin-top: 12px; padding: 12px; background: #e3f2fd; border-left: 4px solid #2196f3; border-radius: 12px; font-size: 0.85em; color: #0d47a1;">
+          <strong>🔧 REQUIREMENT - ESP32 Harus Punya BLE Services:</strong>
+          <p style="margin: 8px 0;"><strong>PENTING:</strong> ESP32 Anda harus meng-advertise minimal <strong>1 GATT Service</strong> agar Web Bluetooth bisa terhubung dengan sempurna.</p>
+          <p style="margin: 8px 0;"><strong>Jika Muncul Error "No Services found":</strong></p>
+          <ol style="margin: 8px 0 0 0; padding-left: 20px;">
+            <li>Tambahkan BLE Service di kode ESP32C6 Anda</li>
+            <li>Gunakan UUID standar (Battery Service: 0x180F) atau custom UUID</li>
+            <li>Pastikan <code>pService->start()</code> dipanggil di firmware</li>
+            <li>Upload ulang firmware ke ESP32C6</li>
+          </ol>
+          <p style="margin: 8px 0 0 0; font-size: 0.9em;"><strong>💡 Tips:</strong> Lihat dokumentasi ESP32 BLE Arduino untuk contoh lengkap.</p>
+        </div>
+
+        <div style="margin-top: 12px; padding: 12px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 12px; font-size: 0.85em; color: #856404;">
+          <strong>⚠️ PENTING - Perangkat Sudah Terhubung di Bluetooth Settings:</strong>
+          <p style="margin: 8px 0;"><strong>Masalah:</strong> Jika perangkat sudah terhubung di Windows Settings, Web Bluetooth <strong>TIDAK BISA</strong> menemukannya karena perangkat tidak lagi dalam mode "discoverable".</p>
+          <p style="margin: 8px 0;"><strong>Solusi:</strong></p>
+          <ol style="margin: 8px 0 0 0; padding-left: 20px;">
+            <li>Buka <strong>Settings > Bluetooth & devices</strong> di Windows</li>
+            <li>Cari perangkat Anda di daftar "Paired devices"</li>
+            <li>Klik <strong>tiga titik (...)</strong> di sebelah perangkat</li>
+            <li>Pilih <strong>"Remove device"</strong> atau <strong>"Disconnect"</strong></li>
+            <li>Setelah itu, scan ulang di aplikasi ini</li>
+          </ol>
+          <p style="margin: 8px 0 0 0; font-size: 0.9em;"><strong>💡 Catatan:</strong> Ini adalah keterbatasan Web Bluetooth API, bukan bug aplikasi. Web Bluetooth hanya bisa menemukan perangkat yang sedang dalam mode "discoverable".</p>
+        </div>
+        
+        <div style="margin-top: 12px; padding: 12px; background: #f8f9fa; border-radius: 12px; font-size: 0.85em; color: #555;">
+          <strong>📋 Instruksi Umum:</strong>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+            <li>Masukkan Device ID (contoh: 7C:2C:67:FF:FE:7C) untuk menghubungkan ke perangkat spesifik</li>
+            <li>Pastikan Bluetooth aktif di komputer</li>
+            <li>Kosongkan Services UUID untuk scan semua perangkat</li>
+            <li>Pilih perangkat dari daftar yang muncul</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
     <div class="bottom-nav">
       <div class="nav-item" onclick="window.location.href='index.html'">
@@ -250,6 +605,7 @@
 
   <script src="script.js"></script>
   <script src="auth-guard.js"></script>
+  <script src="ble-handler.js"></script>
 
   <script>
     // --- UPDATE: Ganti Foto Profil ---
@@ -283,6 +639,685 @@
           document.getElementById("battery-fill").style.width = val + "%";
       }
     }, 1000); // Delay sedikit agar data Firebase sempat masuk
+
+    // ===== BLE SCANNER FUNCTIONS =====
+    let theServer = null;
+    let connectedDevice = null;
+
+    function openBLEScanner() {
+      // Check if browser supports Web Bluetooth API
+      if (!navigator.bluetooth) {
+        showBLEMessage('Browser Anda tidak mendukung Web Bluetooth API. Gunakan Chrome atau Edge versi terbaru.', 'error');
+        return;
+      }
+      
+      const modal = document.getElementById('ble-modal');
+      modal.classList.add('show');
+      
+      // Auto-fill device ID jika ada di URL parameter atau localStorage
+      const urlParams = new URLSearchParams(window.location.search);
+      const deviceIdFromUrl = urlParams.get('deviceId');
+      if (deviceIdFromUrl) {
+        document.getElementById('ble-device-id').value = deviceIdFromUrl;
+      }
+      
+      // Cek localStorage untuk device ID terakhir
+      const lastDeviceId = localStorage.getItem('lastConnectedDeviceId');
+      if (lastDeviceId && !deviceIdFromUrl) {
+        document.getElementById('ble-device-id').value = lastDeviceId;
+      }
+    }
+
+    function closeBLEScanner() {
+      const modal = document.getElementById('ble-modal');
+      modal.classList.remove('show');
+      
+      // Reset UI
+      document.getElementById('ble-progress').classList.remove('show');
+      document.getElementById('ble-connect-btn').disabled = false;
+      hideBLEMessage();
+      
+      // Note: Jangan disconnect perangkat saat modal ditutup
+      // User harus menggunakan tombol "Putuskan Perangkat" untuk disconnect
+    }
+
+    function showBLEMessage(text, type = 'info') {
+      const messageEl = document.getElementById('ble-message');
+      messageEl.textContent = text;
+      messageEl.className = `ble-message show ${type}`;
+    }
+
+    function hideBLEMessage() {
+      const messageEl = document.getElementById('ble-message');
+      messageEl.classList.remove('show');
+    }
+
+    function onBLEConnected() {
+      document.getElementById('ble-progress').classList.remove('show');
+      document.getElementById('ble-connect-btn').disabled = false;
+      showBLEMessage('Berhasil terhubung ke perangkat!', 'success');
+      
+      // Aktifkan tombol disconnect
+      const disconnectBtn = document.getElementById('disconnect-btn');
+      if (disconnectBtn) {
+        disconnectBtn.classList.remove('disabled');
+        disconnectBtn.classList.add('enabled');
+        disconnectBtn.style.opacity = '1';
+        disconnectBtn.style.cursor = 'pointer';
+        disconnectBtn.title = 'Klik untuk memutuskan koneksi perangkat';
+      }
+      
+      // Update status perangkat
+      updateDeviceConnectionStatus(true);
+      
+      // Close modal after 2 seconds
+      setTimeout(() => {
+        closeBLEScanner();
+        // You can add logic here to save device info or update UI
+        console.log('Perangkat berhasil terhubung! ID: ' + connectedDevice.id);
+      }, 2000);
+    }
+
+    function onBLEDisconnected() {
+      console.log('BLE disconnected');
+      showBLEMessage('Perangkat terputus', 'info');
+      
+      // Nonaktifkan tombol disconnect
+      const disconnectBtn = document.getElementById('disconnect-btn');
+      if (disconnectBtn) {
+        disconnectBtn.classList.remove('enabled');
+        disconnectBtn.classList.add('disabled');
+        disconnectBtn.style.opacity = '0.5';
+        disconnectBtn.style.cursor = 'not-allowed';
+        disconnectBtn.title = 'Tidak ada perangkat yang terhubung';
+      }
+      
+      // Update status perangkat
+      updateDeviceConnectionStatus(false);
+      
+      // Reset variables
+      connectedDevice = null;
+      theServer = null;
+    }
+
+    function disconnectBLE() {
+      // Check if using new BLE Handler
+      if (window.BLEHandler && window.BLEHandler.isConnected()) {
+        if (confirm('Apakah Anda yakin ingin memutuskan koneksi dengan perangkat BLE?')) {
+          window.BLEHandler.disconnect();
+          alert('Perangkat BLE berhasil diputuskan.');
+        }
+        return;
+      }
+
+      // Fallback to old method
+      const disconnectBtn = document.getElementById('disconnect-btn');
+      if (disconnectBtn && disconnectBtn.classList.contains('disabled')) {
+        alert('Tidak ada perangkat yang terhubung.');
+        return;
+      }
+
+      if (!connectedDevice) {
+        alert('Tidak ada perangkat yang terhubung.');
+        return;
+      }
+
+      if (confirm('Apakah Anda yakin ingin memutuskan koneksi dengan perangkat ini?')) {
+        try {
+          if (connectedDevice.gatt && connectedDevice.gatt.connected) {
+            connectedDevice.gatt.disconnect();
+            alert('Perangkat berhasil diputuskan.');
+            onBLEDisconnected();
+          } else {
+            alert('Perangkat sudah terputus.');
+            onBLEDisconnected();
+          }
+        } catch (error) {
+          console.error('Error disconnecting:', error);
+          alert('Terjadi kesalahan saat memutuskan koneksi.');
+          // Force update UI even if disconnect fails
+          onBLEDisconnected();
+        }
+      }
+    }
+
+    function updateDeviceConnectionStatus(isConnected) {
+      const statusBadge = document.getElementById('device-status');
+      if (statusBadge) {
+        if (isConnected) {
+          statusBadge.textContent = 'Terhubung';
+          statusBadge.className = 'status-badge status-online';
+        } else {
+          statusBadge.textContent = 'Terputus';
+          statusBadge.className = 'status-badge status-offline';
+        }
+      }
+    }
+
+    async function connectBLE() {
+      const connectBtn = document.getElementById('ble-connect-btn');
+      const progressEl = document.getElementById('ble-progress');
+
+      connectBtn.disabled = true;
+      progressEl.classList.add('show');
+      hideBLEMessage();
+
+      showBLEMessage('Mencari perangkat CareRing...', 'info');
+
+      try {
+        // Use new BLE Handler
+        const success = await window.BLEHandler.connect();
+
+        if (success) {
+          // Connection successful - UI will be updated via event listeners
+          progressEl.classList.remove('show');
+          connectBtn.disabled = false;
+          showBLEMessage('Berhasil terhubung! Data sedang diterima...', 'success');
+
+          // Close modal after 2 seconds
+          setTimeout(() => {
+            closeBLEScanner();
+          }, 2000);
+        }
+      } catch (error) {
+        // Connection failed
+        progressEl.classList.remove('show');
+        connectBtn.disabled = false;
+
+        let errorMsg = 'Gagal menghubungkan ke perangkat. ';
+
+        if (error.message.includes('not available')) {
+          errorMsg = 'Browser tidak mendukung Web Bluetooth API.';
+          showBLEMessage(errorMsg + '\n\nGunakan Chrome atau Edge versi terbaru.', 'error');
+        } else if (error.name === 'NotFoundError') {
+          errorMsg = 'Perangkat CareRing tidak ditemukan.';
+          showBLEMessage(errorMsg + '\n\nPastikan:\n- ESP32 sudah menyala\n- ESP32 dalam mode advertising\n- Bluetooth komputer aktif\n- Tidak ada aplikasi lain yang menggunakan device', 'error');
+        } else {
+          errorMsg += error.message || 'Silakan coba lagi.';
+          showBLEMessage(errorMsg, 'error');
+        }
+
+        console.error('Connection error:', error);
+      }
+    }
+
+    // OLD FUNCTION - Kept for reference/fallback
+    function connectBLE_OLD() {
+      const connectBtn = document.getElementById('ble-connect-btn');
+      const progressEl = document.getElementById('ble-progress');
+
+      connectBtn.disabled = true;
+      progressEl.classList.add('show');
+      hideBLEMessage();
+
+      // Get device ID/MAC address from input
+      const deviceIdInput = document.getElementById('ble-device-id').value.trim();
+      const targetDeviceId = deviceIdInput ? deviceIdInput.toUpperCase().replace(/[-:]/g, ':') : null;
+
+      // Get services UUID from input
+      let optionalServices = document.getElementById('ble-services').value
+        .split(/, ?/)
+        .map(s => s.trim())
+        .filter(s => s && s.length > 0);
+
+      // Validate UUIDs if provided
+      if (optionalServices.length > 0 && typeof BluetoothUUID !== 'undefined') {
+        optionalServices = optionalServices.map(s =>
+          s.startsWith('0x') ? parseInt(s) : s
+        ).filter(s => {
+          try {
+            if (typeof BluetoothUUID.getService === 'function') {
+              BluetoothUUID.getService(s);
+            }
+            return true;
+          } catch (e) {
+            console.warn('Invalid UUID:', s, e);
+            return false;
+          }
+        });
+      }
+
+      // SELALU gunakan acceptAllDevices: true untuk menemukan semua perangkat
+      // optionalServices hanya sebagai filter tambahan, bukan requirement
+      const requestOptions = {
+        acceptAllDevices: true,
+        optionalServices: optionalServices.length > 0 ? optionalServices : undefined
+      };
+
+      console.log('Request options:', requestOptions);
+      if (targetDeviceId) {
+        console.log('Mencari device dengan ID:', targetDeviceId);
+        showBLEMessage('Mencari device dengan ID: ' + targetDeviceId + '...', 'info');
+      }
+
+      navigator.bluetooth.requestDevice(requestOptions)
+        .then(device => {
+          console.log('> Found device: ' + (device.name || device.id));
+          console.log('  Device ID:', device.id);
+          console.log('  Device Name:', device.name);
+          
+          // Jika user memasukkan device ID, cek apakah cocok
+          if (targetDeviceId) {
+            // Normalize device ID untuk perbandingan
+            const deviceIdNormalized = device.id.toUpperCase().replace(/[-:]/g, '');
+            const targetIdNormalized = targetDeviceId.replace(/[-:]/g, '');
+            
+            // Cek apakah device ID cocok (bisa full match atau partial)
+            const isMatch = deviceIdNormalized.includes(targetIdNormalized) || 
+                           targetIdNormalized.includes(deviceIdNormalized) ||
+                           device.id.toUpperCase().includes(targetDeviceId) ||
+                           (device.name && device.name.toUpperCase().includes(targetDeviceId));
+            
+            if (!isMatch) {
+              // Device tidak cocok, minta user pilih lagi atau cancel
+              const userChoice = confirm(
+                'Device yang dipilih tidak cocok dengan ID yang dimasukkan.\n\n' +
+                'Device yang dipilih: ' + (device.name || device.id) + '\n' +
+                'ID yang dicari: ' + targetDeviceId + '\n\n' +
+                'Klik OK untuk tetap menggunakan device ini, atau Cancel untuk mencari lagi.'
+              );
+              
+              if (!userChoice) {
+                progressEl.classList.remove('show');
+                connectBtn.disabled = false;
+                showBLEMessage('Silakan pilih device yang sesuai dengan ID: ' + targetDeviceId, 'info');
+                return Promise.reject(new Error('Device ID tidak cocok'));
+              }
+            } else {
+              console.log('✅ Device ID cocok!');
+              showBLEMessage('Device ditemukan! ID: ' + device.id, 'success');
+            }
+          }
+          
+          connectedDevice = device;
+          
+          // Simpan device ID ke localStorage untuk penggunaan selanjutnya
+          if (device.id) {
+            localStorage.setItem('lastConnectedDeviceId', device.id);
+            console.log('Device ID disimpan:', device.id);
+          }
+          
+          device.addEventListener('gattserverdisconnected', onBLEDisconnected);
+          
+          showBLEMessage('Menghubungkan ke perangkat...', 'info');
+          return device.gatt.connect();
+        })
+        .then(server => {
+          theServer = server;
+          console.log('GATT connected');
+          
+          showBLEMessage('Mengambil informasi services...', 'info');
+          return server.getPrimaryServices();
+        })
+        .then(services => {
+          console.log('Getting Services... Found:', services.length);
+
+          // PERBAIKAN: Cek apakah ada services
+          if (services.length === 0) {
+            console.warn('⚠️ No services found! ESP32 might not be advertising services.');
+            // Tetap anggap berhasil connect, karena device sudah terhubung
+            // User bisa menggunakan device untuk keperluan lain
+            return Promise.resolve();
+          }
+
+          console.log('Getting Characteristics...');
+          let queue = Promise.resolve();
+
+          services.forEach(service => {
+            queue = queue.then(_ =>
+              service.getCharacteristics().then(characteristics => {
+                console.log('> Service: ' + service.uuid);
+                characteristics.forEach(characteristic => {
+                  console.log('>> Characteristic: ' + characteristic.uuid + ' ' +
+                    getSupportedProperties(characteristic));
+                });
+              })
+            );
+          });
+
+          return queue;
+        })
+        .then(() => {
+          onBLEConnected();
+        })
+        .catch(error => {
+          console.error('BLE Error: ', error);
+          
+          // Jika NotFoundError dan ada device ID, coba strategi alternatif
+          if (error.name === 'NotFoundError' && targetDeviceId) {
+            console.log('Mencoba strategi alternatif untuk device ID:', targetDeviceId);
+            showBLEMessage('Perangkat tidak ditemukan dengan scan normal. Mencoba strategi alternatif...', 'info');
+            
+            // Strategi alternatif: Coba tanpa optionalServices
+            const altRequestOptions = { 
+              acceptAllDevices: true
+            };
+            
+            return navigator.bluetooth.requestDevice(altRequestOptions)
+              .then(device => {
+                console.log('> Found device (alternatif): ' + (device.name || device.id));
+                // Lanjutkan dengan proses connect yang sama
+                return handleDeviceConnection(device, targetDeviceId);
+              })
+              .catch(altError => {
+                console.error('Alternatif juga gagal:', altError);
+                throw error; // Throw error original
+              });
+          }
+          
+          // Handle error normal
+          progressEl.classList.remove('show');
+          connectBtn.disabled = false;
+          
+          let errorMsg = 'Gagal menghubungkan ke perangkat. ';
+          let errorDetails = '';
+
+          if (error.name === 'NotFoundError') {
+            // Cek apakah error karena tidak ada services atau device tidak ditemukan
+            if (error.message && error.message.includes('No Services')) {
+              errorMsg = 'Perangkat terhubung, tetapi tidak ada BLE Services.';
+              errorDetails = '🔧 PERBAIKAN DIPERLUKAN PADA ESP32:\n\n' +
+                '✅ Perangkat "CareRing" BERHASIL ditemukan dan terhubung!\n' +
+                '❌ Namun, perangkat tidak meng-advertise GATT Services apapun.\n\n' +
+                '📋 SOLUSI - Tambahkan BLE Services di firmware ESP32C6:\n\n' +
+                '1. Tambahkan GATT Service definition di kode ESP32:\n' +
+                '   - Buat BLE Service dengan UUID (contoh: 0x180F untuk Battery Service)\n' +
+                '   - Tambahkan Characteristic untuk data sensor\n' +
+                '   - Pastikan services di-advertise dengan benar\n\n' +
+                '2. Contoh kode Arduino untuk ESP32:\n' +
+                '   ```cpp\n' +
+                '   BLEService *pService = pServer->createService("4fafc201-1fb5-459e-8fcc-c5c9c331914b");\n' +
+                '   BLECharacteristic *pChar = pService->createCharacteristic(\n' +
+                '     "beb5483e-36e1-4688-b7f5-ea07361b26a8",\n' +
+                '     BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY\n' +
+                '   );\n' +
+                '   pService->start();\n' +
+                '   ```\n\n' +
+                '3. Upload ulang firmware ke ESP32C6\n\n' +
+                '💡 CATATAN:\n' +
+                'Web Bluetooth API membutuhkan minimal 1 GATT Service untuk beroperasi.\n' +
+                'Tanpa services, web app tidak bisa membaca/menulis data ke perangkat.';
+            } else {
+              errorMsg += 'Perangkat tidak ditemukan.';
+              errorDetails = '🔍 TROUBLESHOOTING - Perangkat Sudah Terhubung di Bluetooth Settings:\n\n' +
+                '⚠️ MASALAH UTAMA:\n' +
+                'Perangkat yang sudah terhubung di Windows Settings TIDAK MUNCUL di Web Bluetooth API.\n' +
+                'Ini karena perangkat tidak lagi dalam mode "discoverable" setelah terhubung.\n\n' +
+                '✅ SOLUSI (Lakukan Langkah 1-3 DULU):\n\n' +
+                '📋 LANGKAH 1: Putuskan dari Windows Settings\n' +
+                '   1. Buka Settings > Bluetooth & devices\n' +
+                '   2. Cari perangkat Anda di "Paired devices"\n' +
+                '   3. Klik tiga titik (...) > "Remove device" atau "Disconnect"\n\n' +
+                '📋 LANGKAH 2: Restart Bluetooth\n' +
+                '   1. Matikan Bluetooth di Windows Settings\n' +
+                '   2. Tunggu 5 detik\n' +
+                '   3. Nyalakan kembali Bluetooth\n\n' +
+                '📋 LANGKAH 3: Pastikan Perangkat dalam Mode Discoverable\n' +
+                '   - Perangkat harus dalam mode "pairing" atau "discoverable"\n' +
+                '   - Jika ESP32/Arduino, pastikan dalam mode advertising\n' +
+                '   - Matikan lalu nyalakan perangkat hardware jika perlu\n\n' +
+                '📋 LANGKAH 4: Scan Ulang\n' +
+                '   - Klik "Scan & Hubungkan Perangkat" lagi\n' +
+                '   - Kosongkan field Services UUID\n' +
+                '   - Pilih perangkat dari daftar\n\n' +
+                '💡 INFORMASI:\n' +
+                'Ini adalah keterbatasan Web Bluetooth API, bukan bug aplikasi.\n' +
+                'Web Bluetooth hanya bisa menemukan perangkat yang sedang dalam mode "discoverable".\n' +
+                'Perangkat yang sudah terhubung ke sistem operasi tidak muncul di daftar.';
+            }
+          } else if (error.name === 'SecurityError') {
+            errorMsg += 'Akses ditolak.';
+            errorDetails = 'Pastikan:\n- Bluetooth aktif di komputer\n- Izin Bluetooth sudah diberikan ke browser\n- Coba refresh halaman dan berikan izin lagi';
+          } else if (error.name === 'NetworkError') {
+            errorMsg += 'Koneksi gagal.';
+            errorDetails = 'Perangkat mungkin:\n- Di luar jangkauan\n- Sedang terhubung ke perangkat lain\n- Tidak support Web Bluetooth API';
+          } else if (error.name === 'InvalidStateError') {
+            errorMsg += 'Perangkat sudah terhubung atau sedang digunakan.';
+            errorDetails = 'Coba putuskan koneksi terlebih dahulu atau refresh halaman.';
+          } else {
+            errorMsg += error.message || 'Silakan coba lagi.';
+            errorDetails = `Error: ${error.name}\n${error.message || 'Tidak ada detail error'}`;
+          }
+          
+          console.error('Error details:', errorDetails);
+          showBLEMessage(errorMsg + (errorDetails ? '\n\n' + errorDetails : ''), 'error');
+          
+          // Tampilkan alert dengan detail lebih lengkap
+          setTimeout(() => {
+            if (errorDetails) {
+              alert(errorMsg + '\n\n' + errorDetails);
+            }
+          }, 500);
+        });
+      
+      // Helper function untuk handle device connection
+      function handleDeviceConnection(device, targetDeviceId) {
+        console.log('> Found device: ' + (device.name || device.id));
+        console.log('  Device ID:', device.id);
+        console.log('  Device Name:', device.name);
+        
+        // Jika user memasukkan device ID, cek apakah cocok
+        if (targetDeviceId) {
+          // Normalize device ID untuk perbandingan
+          const deviceIdNormalized = device.id.toUpperCase().replace(/[-:]/g, '');
+          const targetIdNormalized = targetDeviceId.replace(/[-:]/g, '');
+          
+          // Cek apakah device ID cocok (bisa full match atau partial)
+          const isMatch = deviceIdNormalized.includes(targetIdNormalized) || 
+                         targetIdNormalized.includes(deviceIdNormalized) ||
+                         device.id.toUpperCase().includes(targetDeviceId) ||
+                         (device.name && device.name.toUpperCase().includes(targetDeviceId));
+          
+          if (!isMatch) {
+            // Device tidak cocok, minta user pilih lagi atau cancel
+            const userChoice = confirm(
+              'Device yang dipilih tidak cocok dengan ID yang dimasukkan.\n\n' +
+              'Device yang dipilih: ' + (device.name || device.id) + '\n' +
+              'ID yang dicari: ' + targetDeviceId + '\n\n' +
+              'Klik OK untuk tetap menggunakan device ini, atau Cancel untuk mencari lagi.'
+            );
+            
+            if (!userChoice) {
+              progressEl.classList.remove('show');
+              connectBtn.disabled = false;
+              showBLEMessage('Silakan pilih device yang sesuai dengan ID: ' + targetDeviceId, 'info');
+              return Promise.reject(new Error('Device ID tidak cocok'));
+            }
+          } else {
+            console.log('✅ Device ID cocok!');
+            showBLEMessage('Device ditemukan! ID: ' + device.id, 'success');
+          }
+        }
+        
+        connectedDevice = device;
+        
+        // Simpan device ID ke localStorage untuk penggunaan selanjutnya
+        if (device.id) {
+          localStorage.setItem('lastConnectedDeviceId', device.id);
+          console.log('Device ID disimpan:', device.id);
+        }
+        
+        device.addEventListener('gattserverdisconnected', onBLEDisconnected);
+        
+        showBLEMessage('Menghubungkan ke perangkat...', 'info');
+        return device.gatt.connect();
+      }
+    }
+
+    function getSupportedProperties(characteristic) {
+      let supportedProperties = [];
+      for (const p in characteristic.properties) {
+        if (characteristic.properties[p] === true) {
+          supportedProperties.push(p.toUpperCase());
+        }
+      }
+      return '[' + supportedProperties.join(', ') + ']';
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('ble-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeBLEScanner();
+      }
+    });
+
+    // Check connection status on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if there's a connected device
+      const disconnectBtn = document.getElementById('disconnect-btn');
+      if (connectedDevice && connectedDevice.gatt && connectedDevice.gatt.connected) {
+        if (disconnectBtn) {
+          disconnectBtn.classList.remove('disabled');
+          disconnectBtn.classList.add('enabled');
+          disconnectBtn.style.opacity = '1';
+          disconnectBtn.style.cursor = 'pointer';
+          disconnectBtn.title = 'Klik untuk memutuskan koneksi perangkat';
+        }
+        updateDeviceConnectionStatus(true);
+      } else {
+        if (disconnectBtn) {
+          disconnectBtn.classList.remove('enabled');
+          disconnectBtn.classList.add('disabled');
+          disconnectBtn.style.opacity = '0.5';
+          disconnectBtn.style.cursor = 'not-allowed';
+          disconnectBtn.title = 'Tidak ada perangkat yang terhubung';
+        }
+        updateDeviceConnectionStatus(false);
+      }
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    //              BLE EVENT LISTENERS (NEW)
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Handle BLE Connected Event
+     * Triggered when successfully connected to ESP32
+     */
+    window.addEventListener('bleConnected', function(event) {
+      console.log('🎉 BLE Connected Event received:', event.detail);
+
+      const { deviceName, deviceId } = event.detail;
+
+      // Update device name
+      const deviceNameEl = document.getElementById('device-name');
+      if (deviceNameEl) {
+        deviceNameEl.innerText = deviceName;
+      }
+
+      // Update device ID
+      const deviceIdEl = document.getElementById('device-id');
+      if (deviceIdEl) {
+        deviceIdEl.innerText = deviceId;
+      }
+
+      // Update status badge
+      updateDeviceConnectionStatus(true);
+
+      // Enable disconnect button
+      const disconnectBtn = document.getElementById('disconnect-btn');
+      if (disconnectBtn) {
+        disconnectBtn.classList.remove('disabled');
+        disconnectBtn.classList.add('enabled');
+        disconnectBtn.style.opacity = '1';
+        disconnectBtn.style.cursor = 'pointer';
+        disconnectBtn.title = 'Klik untuk memutuskan koneksi perangkat';
+      }
+
+      // Show BLE data section
+      const bleDataSection = document.getElementById('ble-data-section');
+      if (bleDataSection) {
+        bleDataSection.style.display = 'block';
+      }
+    });
+
+    /**
+     * Handle BLE Disconnected Event
+     * Triggered when device disconnects
+     */
+    window.addEventListener('bleDisconnected', function(event) {
+      console.log('⚠️ BLE Disconnected Event received');
+
+      // Update status badge
+      updateDeviceConnectionStatus(false);
+
+      // Disable disconnect button
+      const disconnectBtn = document.getElementById('disconnect-btn');
+      if (disconnectBtn) {
+        disconnectBtn.classList.remove('enabled');
+        disconnectBtn.classList.add('disabled');
+        disconnectBtn.style.opacity = '0.5';
+        disconnectBtn.style.cursor = 'not-allowed';
+        disconnectBtn.title = 'Tidak ada perangkat yang terhubung';
+      }
+
+      // Hide BLE data section
+      const bleDataSection = document.getElementById('ble-data-section');
+      if (bleDataSection) {
+        bleDataSection.style.display = 'none';
+      }
+
+      // Reset data display
+      document.getElementById('ble-heartrate').innerText = '--';
+      document.getElementById('ble-spo2').innerText = '--';
+      document.getElementById('ble-temperature').innerText = '--';
+      document.getElementById('ble-ambient').innerText = '--';
+      document.getElementById('ble-last-update').innerText = 'Terakhir update: --';
+    });
+
+    /**
+     * Handle BLE Data Received Event
+     * Triggered when sensor data is received from ESP32 (every 500ms)
+     * Updates UI with real-time data
+     */
+    window.addEventListener('bleDataReceived', function(event) {
+      const data = event.detail;
+
+      // Update real-time data display
+      const hrEl = document.getElementById('ble-heartrate');
+      const spo2El = document.getElementById('ble-spo2');
+      const tempEl = document.getElementById('ble-temperature');
+      const ambEl = document.getElementById('ble-ambient');
+      const updateEl = document.getElementById('ble-last-update');
+
+      if (hrEl) hrEl.innerText = data.heartRate;
+      if (spo2El) spo2El.innerText = data.spo2;
+      if (tempEl) tempEl.innerText = data.temperature.toFixed(1);
+      if (ambEl) ambEl.innerText = data.ambient.toFixed(1);
+
+      // Update timestamp
+      if (updateEl) {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('id-ID');
+        updateEl.innerText = `Terakhir update: ${timeStr}`;
+      }
+
+      // Add pulse animation to heart rate
+      if (hrEl && data.heartRate > 0) {
+        hrEl.style.animation = 'none';
+        setTimeout(() => {
+          hrEl.style.animation = 'pulse 0.5s ease-in-out';
+        }, 10);
+      }
+
+      console.log('📊 UI Updated with BLE data:', {
+        hr: data.heartRate,
+        spo2: data.spo2,
+        temp: data.temperature,
+        amb: data.ambient
+      });
+    });
+
+    // Add pulse animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); color: #ff4444; }
+        100% { transform: scale(1); }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 
 </body>

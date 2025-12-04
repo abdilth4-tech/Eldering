@@ -236,10 +236,121 @@ if (document.getElementById('google-login-btn')) {
     const element = document.getElementById(id);
     if (element) {
       element.innerText = text;
-      element.className = 'status-tag'; 
+      element.className = 'status-tag';
       element.classList.add(className);
     }
   }
+
+  // === Update Homepage Vitals Cards (BLE Bridge Data) ===
+  function updateHomeVitalsCards(data) {
+    // Update Heart Rate
+    const heartRate = data.heartRate || 0;
+    updateText('home-heartrate', heartRate);
+
+    // Add pulse animation
+    const hrEl = document.getElementById('home-heartrate');
+    if (hrEl && heartRate > 0) {
+      hrEl.style.animation = 'none';
+      setTimeout(() => {
+        hrEl.style.animation = 'pulse 1s ease-in-out infinite';
+      }, 10);
+    }
+
+    // Update SpO2
+    const spo2 = data.spo2 || 0;
+    updateText('home-spo2', spo2);
+
+    // Update Body Temperature
+    const temperature = data.temperature || 0;
+    updateText('home-temperature', temperature, 1);
+
+    // Update Ambient Temperature
+    const ambient = data.ambient || 0;
+    updateText('home-ambient', ambient, 1);
+
+    // Update Device Info
+    const deviceName = data.deviceName || 'Unknown Device';
+    const deviceID = data.deviceID || '-';
+    updateText('home-device-name', deviceName);
+    updateText('home-device-id', deviceID);
+
+    // Update Device Status
+    const statusEl = document.getElementById('home-device-status');
+    if (statusEl) {
+      const now = Date.now();
+      const lastUpdate = data.timestamp || 0;
+      const timeDiff = (now - lastUpdate) / 1000; // seconds
+
+      if (timeDiff < 5) {
+        statusEl.innerText = 'Terhubung';
+        statusEl.className = 'status-badge status-online';
+      } else if (timeDiff < 60) {
+        statusEl.innerText = 'Idle';
+        statusEl.className = 'status-badge status-idle';
+      } else {
+        statusEl.innerText = 'Offline';
+        statusEl.className = 'status-badge status-offline';
+      }
+    }
+
+    // Update Last Update Time
+    const vitalsLastUpdate = document.getElementById('vitals-last-update');
+    if (vitalsLastUpdate && data.lastUpdate) {
+      const updateTime = new Date(data.lastUpdate);
+      const timeStr = updateTime.toLocaleTimeString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      vitalsLastUpdate.innerText = `Update: ${timeStr}`;
+    }
+
+    // Also update old "Suhu Tubuh" card for compatibility
+    updateText('suhu-tubuh-value', temperature, 1);
+    if (temperature > 37.5) {
+      updateStatus('suhu-tubuh-status', 'Demam', 'theme-red');
+    } else if (temperature < 36.0 && temperature > 10) {
+      updateStatus('suhu-tubuh-status', 'Hipotermia', 'theme-red');
+    } else if (temperature > 10) {
+      updateStatus('suhu-tubuh-status', 'Normal', 'theme-red');
+    }
+  }
+
+  // === Listen to All BLE Bridge Devices ===
+  function setupBLEDataListener() {
+    const bleDevicesRef = database.ref("/realtimeSensorData");
+
+    bleDevicesRef.on("value", (snapshot) => {
+      const devices = snapshot.val();
+
+      if (devices && Object.keys(devices).length > 0) {
+        // Find most recently updated device
+        let latestDevice = null;
+        let latestTimestamp = 0;
+
+        Object.keys(devices).forEach(deviceKey => {
+          const device = devices[deviceKey];
+          if (device && device.timestamp) {
+            if (device.timestamp > latestTimestamp) {
+              latestTimestamp = device.timestamp;
+              latestDevice = device;
+            }
+          }
+        });
+
+        // Update homepage vitals with latest device data
+        if (latestDevice) {
+          console.log('📊 Updating homepage vitals with BLE data:', latestDevice.deviceName);
+          updateHomeVitalsCards(latestDevice);
+        }
+      } else {
+        console.log('No BLE devices found in Firebase');
+      }
+    });
+  }
+
+  // Setup BLE data listener for homepage
+  setupBLEDataListener();
 
   // === Ambil Data Realtime ===
   dataRef.on("value", (snapshot) => {
@@ -484,13 +595,158 @@ if (document.getElementById('google-login-btn')) {
   
   console.log("Menjalankan script Perangkat (perangkat.html)...");
   
-  const elDeviceName = document.getElementById('device-name'); const elDeviceStatus = document.getElementById('device-status'); const elDeviceID = document.getElementById('device-id'); const elBattStatus = document.getElementById('batt-status'); const elPerangkatCard = document.getElementById('perangkat-card'); const elNoPerangkat = document.getElementById('no-perangkat'); const elLastSeen = document.getElementById('device-last-seen');
-  function formatTimeAgo(seconds) { if (seconds < 60) { return "kurang dari semenit lalu"; } else if (seconds < 3600) { const minutes = Math.floor(seconds / 60); return `${minutes} menit lalu`; } else if (seconds < 86400) { const hours = Math.floor(seconds / 3600); return `${hours} jam lalu`; } else { const days = Math.floor(seconds / 86400); return `${days} hari lalu`; } }
+  const elDeviceName = document.getElementById('device-name'); 
+  const elDeviceStatus = document.getElementById('device-status'); 
+  const elDeviceID = document.getElementById('device-id'); 
+  const elBattStatus = document.getElementById('batt-status'); 
+  const elPerangkatCard = document.getElementById('perangkat-card'); 
+  const elNoPerangkat = document.getElementById('no-perangkat'); 
+  const elLastSeen = document.getElementById('device-last-seen');
   
-  dataRef.on("value", (snapshot) => { const data = snapshot.val(); if (data) { elPerangkatCard.style.display = 'block'; elNoPerangkat.style.display = 'none'; elDeviceName.innerText = data.deviceName || "Nama Tidak Ditemukan"; elDeviceID.innerText = data.deviceID || "ID Tidak Ditemukan"; elBattStatus.innerText = (data.battery !== undefined) ? data.battery + "%" : "--%"; } else { elPerangkatCard.style.display = 'none'; elNoPerangkat.style.display = 'block'; } });
+  function formatTimeAgo(seconds) { 
+    if (seconds < 60) { 
+      return "kurang dari semenit lalu"; 
+    } else if (seconds < 3600) { 
+      const minutes = Math.floor(seconds / 60); 
+      return `${minutes} menit lalu`; 
+    } else if (seconds < 86400) { 
+      const hours = Math.floor(seconds / 3600); 
+      return `${hours} jam lalu`; 
+    } else { 
+      const days = Math.floor(seconds / 86400); 
+      return `${days} hari lalu`; 
+    } 
+  }
   
-  const heartbeatRef = database.ref("/deviceHeartbeat/ESP32C3-F0E1837D7850/lastSeen");
-  heartbeatRef.on("value", (snapshot) => { const lastSeen = snapshot.val(); if (lastSeen) { const now = Date.now(); const diffInSeconds = (now - lastSeen) / 1000; if (diffInSeconds < 30) { elDeviceStatus.innerText = "Online"; elDeviceStatus.style.color = "green"; elLastSeen.innerText = ""; } else { elDeviceStatus.innerText = "Offline"; elDeviceStatus.style.color = "red"; elLastSeen.innerText = `— ${formatTimeAgo(diffInSeconds)}`; } } else { elDeviceStatus.innerText = "Offline"; elDeviceStatus.style.color = "red"; elLastSeen.innerText = "— tidak diketahui"; } });
+  // Variabel untuk menyimpan device ID yang ditemukan
+  let foundDeviceId = null;
+  let deviceSearchAttempts = 0;
+  const maxSearchAttempts = 3;
+  
+  // Fungsi untuk mencari semua perangkat di Firebase
+  function searchAllDevices() {
+    deviceSearchAttempts++;
+    console.log(`Mencari perangkat di Firebase... (Percobaan ${deviceSearchAttempts}/${maxSearchAttempts})`);
+    
+    // Update status
+    elDeviceName.innerText = "Mencari perangkat...";
+    elDeviceID.innerText = "Memindai...";
+    
+    // Cari di path /realtimeSensorData/
+    const devicesRef = database.ref("/realtimeSensorData");
+    
+    devicesRef.once("value", (snapshot) => {
+      const devices = snapshot.val();
+      
+      if (devices && Object.keys(devices).length > 0) {
+        // Ambil device pertama yang ditemukan (atau yang paling aktif)
+        const deviceKeys = Object.keys(devices);
+        
+        // Cari device yang paling baru update (jika ada timestamp)
+        let selectedDevice = deviceKeys[0];
+        let latestTimestamp = 0;
+        
+        deviceKeys.forEach(key => {
+          const device = devices[key];
+          if (device && device.timestamp) {
+            if (device.timestamp > latestTimestamp) {
+              latestTimestamp = device.timestamp;
+              selectedDevice = key;
+            }
+          }
+        });
+        
+        foundDeviceId = selectedDevice;
+        
+        console.log("✅ Perangkat ditemukan! ID:", foundDeviceId);
+        console.log(`   Total perangkat ditemukan: ${deviceKeys.length}`);
+        
+        // Load data perangkat yang ditemukan
+        loadDeviceData(foundDeviceId);
+      } else {
+        console.log("❌ Tidak ada perangkat ditemukan di Firebase");
+        elPerangkatCard.style.display = 'none';
+        elNoPerangkat.style.display = 'block';
+        elDeviceName.innerText = "Tidak ada perangkat";
+        elDeviceID.innerText = "-";
+      }
+    }).catch((error) => {
+      console.error("❌ Error mencari perangkat:", error);
+      elPerangkatCard.style.display = 'none';
+      elNoPerangkat.style.display = 'block';
+      
+      // Retry jika belum mencapai max attempts
+      if (deviceSearchAttempts < maxSearchAttempts) {
+        console.log(`Mencoba lagi dalam 3 detik...`);
+        setTimeout(() => {
+          searchAllDevices();
+        }, 3000);
+      } else {
+        console.error("Gagal menemukan perangkat setelah beberapa percobaan");
+        elDeviceName.innerText = "Gagal memuat perangkat";
+        elDeviceID.innerText = "Error: " + error.message;
+      }
+    });
+  }
+  
+  // Fungsi untuk memuat data perangkat berdasarkan ID
+  function loadDeviceData(deviceId) {
+    if (!deviceId) {
+      console.error("Device ID tidak valid");
+      return;
+    }
+    
+    console.log("Memuat data untuk device:", deviceId);
+    
+    // Load data sensor
+    const deviceDataRef = database.ref("/realtimeSensorData/" + deviceId);
+    deviceDataRef.on("value", (snapshot) => { 
+      const data = snapshot.val(); 
+      if (data) { 
+        elPerangkatCard.style.display = 'block'; 
+        elNoPerangkat.style.display = 'none'; 
+        elDeviceName.innerText = data.deviceName || "Nama Tidak Ditemukan"; 
+        elDeviceID.innerText = data.deviceID || deviceId; 
+        elBattStatus.innerText = (data.battery !== undefined) ? data.battery + "%" : "--%"; 
+      } else { 
+        elPerangkatCard.style.display = 'none'; 
+        elNoPerangkat.style.display = 'block'; 
+      } 
+    });
+    
+    // Load heartbeat status
+    const heartbeatRef = database.ref("/deviceHeartbeat/" + deviceId + "/lastSeen");
+    heartbeatRef.on("value", (snapshot) => { 
+      const lastSeen = snapshot.val(); 
+      if (lastSeen) { 
+        const now = Date.now(); 
+        const diffInSeconds = (now - lastSeen) / 1000; 
+        if (diffInSeconds < 30) { 
+          elDeviceStatus.innerText = "Online"; 
+          elDeviceStatus.className = "status-badge status-online";
+          elLastSeen.innerText = ""; 
+        } else { 
+          elDeviceStatus.innerText = "Offline"; 
+          elDeviceStatus.className = "status-badge status-offline";
+          elLastSeen.innerText = `— ${formatTimeAgo(diffInSeconds)}`; 
+        } 
+      } else { 
+        elDeviceStatus.innerText = "Offline"; 
+        elDeviceStatus.className = "status-badge status-offline";
+        elLastSeen.innerText = "— tidak diketahui"; 
+      } 
+    });
+  }
+  
+  // Mulai pencarian perangkat
+  searchAllDevices();
+  
+  // Refresh pencarian setiap 10 detik (opsional)
+  setInterval(() => {
+    if (!foundDeviceId) {
+      searchAllDevices();
+    }
+  }, 10000);
 
 // === E. HALAMAN PROFIL (profil.html) ===
 } else if (document.getElementById('profile-container')) {
