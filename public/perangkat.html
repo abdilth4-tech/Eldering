@@ -605,7 +605,7 @@
 
   <script src="script.js"></script>
   <script src="auth-guard.js"></script>
-  <script src="ble-handler.js"></script>
+  <script src="ble-handler.js" defer></script>
 
   <script>
     // --- UPDATE: Ganti Foto Profil ---
@@ -643,6 +643,77 @@
     // ===== BLE SCANNER FUNCTIONS =====
     let theServer = null;
     let connectedDevice = null;
+    let isReconnecting = false;
+    
+    // Simpan informasi koneksi BLE
+    function saveBLEConnection(device) {
+      if (device && device.id) {
+        const connectionInfo = {
+          deviceId: device.id,
+          deviceName: device.name || '',
+          connectedAt: Date.now()
+        };
+        localStorage.setItem('bleConnectionInfo', JSON.stringify(connectionInfo));
+        localStorage.setItem('lastConnectedDeviceId', device.id);
+        console.log('BLE connection info disimpan:', connectionInfo);
+      }
+    }
+    
+    // Hapus informasi koneksi BLE
+    function clearBLEConnection() {
+      localStorage.removeItem('bleConnectionInfo');
+      console.log('BLE connection info dihapus');
+    }
+    
+    // Coba reconnect otomatis ketika kembali ke halaman
+    function tryAutoReconnect() {
+      if (isReconnecting || connectedDevice) {
+        return; // Sudah terhubung atau sedang reconnect
+      }
+      
+      const connectionInfo = localStorage.getItem('bleConnectionInfo');
+      if (!connectionInfo) {
+        return; // Tidak ada info koneksi tersimpan
+      }
+      
+      try {
+        const info = JSON.parse(connectionInfo);
+        const timeSinceConnection = Date.now() - info.connectedAt;
+        
+        // Hanya reconnect jika koneksi kurang dari 5 menit yang lalu
+        if (timeSinceConnection > 5 * 60 * 1000) {
+          console.log('Koneksi terlalu lama, skip auto-reconnect');
+          clearBLEConnection();
+          return;
+        }
+        
+        console.log('Mencoba auto-reconnect ke device:', info.deviceId);
+        isReconnecting = true;
+        
+        // Coba reconnect menggunakan device ID yang tersimpan
+        const deviceIdInput = document.getElementById('ble-device-id');
+        if (deviceIdInput) {
+          deviceIdInput.value = info.deviceId;
+        }
+        
+        // Note: Web Bluetooth tidak bisa reconnect otomatis tanpa user interaction
+        // Kita hanya bisa menampilkan notifikasi untuk reconnect manual
+        const disconnectBtn = document.getElementById('disconnect-btn');
+        if (disconnectBtn) {
+          disconnectBtn.style.opacity = '0.5';
+          disconnectBtn.title = 'Koneksi terputus. Klik untuk reconnect.';
+        }
+        
+        // Tampilkan notifikasi untuk reconnect
+        console.log('Koneksi sebelumnya terdeteksi. Silakan reconnect manual.');
+        isReconnecting = false;
+        
+      } catch (error) {
+        console.error('Error parsing connection info:', error);
+        clearBLEConnection();
+        isReconnecting = false;
+      }
+    }
 
     function openBLEScanner() {
       // Check if browser supports Web Bluetooth API
@@ -729,11 +800,14 @@
         disconnectBtn.classList.add('disabled');
         disconnectBtn.style.opacity = '0.5';
         disconnectBtn.style.cursor = 'not-allowed';
-        disconnectBtn.title = 'Tidak ada perangkat yang terhubung';
+        disconnectBtn.title = 'Koneksi terputus. Klik "Tambah Perangkat" untuk reconnect.';
       }
       
       // Update status perangkat
       updateDeviceConnectionStatus(false);
+      
+      // Hapus info koneksi (tapi simpan device ID untuk reconnect)
+      // clearBLEConnection(); // Jangan hapus, biarkan untuk reconnect
       
       // Reset variables
       connectedDevice = null;
@@ -794,50 +868,43 @@
       }
     }
 
-    async function connectBLE() {
+    function connectBLE() {
       const connectBtn = document.getElementById('ble-connect-btn');
       const progressEl = document.getElementById('ble-progress');
-
+      
       connectBtn.disabled = true;
       progressEl.classList.add('show');
       hideBLEMessage();
 
-      showBLEMessage('Mencari perangkat CareRing...', 'info');
-
-      try {
-        // Use new BLE Handler
-        const success = await window.BLEHandler.connect();
-
-        if (success) {
-          // Connection successful - UI will be updated via event listeners
-          progressEl.classList.remove('show');
-          connectBtn.disabled = false;
-          showBLEMessage('Berhasil terhubung! Data sedang diterima...', 'success');
-
-          // Close modal after 2 seconds
-          setTimeout(() => {
-            closeBLEScanner();
-          }, 2000);
-        }
-      } catch (error) {
-        // Connection failed
-        progressEl.classList.remove('show');
-        connectBtn.disabled = false;
-
-        let errorMsg = 'Gagal menghubungkan ke perangkat. ';
-
-        if (error.message.includes('not available')) {
-          errorMsg = 'Browser tidak mendukung Web Bluetooth API.';
-          showBLEMessage(errorMsg + '\n\nGunakan Chrome atau Edge versi terbaru.', 'error');
-        } else if (error.name === 'NotFoundError') {
-          errorMsg = 'Perangkat CareRing tidak ditemukan.';
-          showBLEMessage(errorMsg + '\n\nPastikan:\n- ESP32 sudah menyala\n- ESP32 dalam mode advertising\n- Bluetooth komputer aktif\n- Tidak ada aplikasi lain yang menggunakan device', 'error');
-        } else {
-          errorMsg += error.message || 'Silakan coba lagi.';
-          showBLEMessage(errorMsg, 'error');
-        }
-
-        console.error('Connection error:', error);
+      // Check if BLEHandler exists and is available
+      // Try to use BLEHandler, but fallback to old method if not available
+      if (window.BLEHandler && typeof window.BLEHandler.connect === 'function') {
+        console.log('✅ Using BLEHandler for connection');
+        // Use new BLE Handler if available
+        window.BLEHandler.connect()
+          .then(success => {
+            if (success) {
+              progressEl.classList.remove('show');
+              connectBtn.disabled = false;
+              showBLEMessage('Berhasil terhubung! Data sedang diterima...', 'success');
+              setTimeout(() => {
+                closeBLEScanner();
+              }, 2000);
+            } else {
+              progressEl.classList.remove('show');
+              connectBtn.disabled = false;
+              showBLEMessage('Gagal terhubung. Silakan coba lagi.', 'error');
+            }
+          })
+          .catch(error => {
+            // Fallback to old method if new handler fails
+            console.warn('⚠️ BLEHandler failed, using fallback method:', error);
+            connectBLE_OLD();
+          });
+      } else {
+        console.log('⚠️ BLEHandler not available, using old method (connectBLE_OLD)');
+        // Use old method if BLEHandler not available
+        connectBLE_OLD();
       }
     }
 
@@ -931,11 +998,8 @@
           
           connectedDevice = device;
           
-          // Simpan device ID ke localStorage untuk penggunaan selanjutnya
-          if (device.id) {
-            localStorage.setItem('lastConnectedDeviceId', device.id);
-            console.log('Device ID disimpan:', device.id);
-          }
+          // Simpan informasi koneksi lengkap
+          saveBLEConnection(device);
           
           device.addEventListener('gattserverdisconnected', onBLEDisconnected);
           
@@ -1183,6 +1247,39 @@
           disconnectBtn.title = 'Tidak ada perangkat yang terhubung';
         }
         updateDeviceConnectionStatus(false);
+        
+        // Coba auto-reconnect jika ada info koneksi sebelumnya
+        setTimeout(() => {
+          tryAutoReconnect();
+        }, 1000);
+      }
+    });
+    
+    // Handle page visibility - cek koneksi ketika kembali ke tab
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        // Halaman kembali visible
+        if (connectedDevice) {
+          // Cek apakah masih terhubung
+          if (connectedDevice.gatt && !connectedDevice.gatt.connected) {
+            console.log('Koneksi terputus saat pindah halaman, coba reconnect...');
+            onBLEDisconnected();
+            setTimeout(() => {
+              tryAutoReconnect();
+            }, 500);
+          }
+        } else {
+          // Coba reconnect jika ada info koneksi
+          tryAutoReconnect();
+        }
+      }
+    });
+    
+    // Handle beforeunload - simpan status sebelum pindah halaman
+    window.addEventListener('beforeunload', function() {
+      if (connectedDevice && connectedDevice.gatt && connectedDevice.gatt.connected) {
+        // Koneksi masih aktif, simpan info untuk reconnect
+        saveBLEConnection(connectedDevice);
       }
     });
 

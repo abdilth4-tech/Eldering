@@ -204,14 +204,18 @@ class MyServerCallbacks: public BLEServerCallbacks {
     Serial.println("║  ❌ WEB APP DISCONNECTED!                           ║");
     Serial.println("╚══════════════════════════════════════════════════════╝");
     Serial.println("⚠️  Connection lost with web app");
-    Serial.println("🔄 Restarting BLE advertising...");
+    Serial.println("🔄 Auto-restarting BLE advertising...");
 
-    // Restart advertising
-    delay(500);
+    // Auto-restart advertising dengan retry mechanism
+    delay(500); // Delay singkat untuk stabilisasi
+    
+    // Restart advertising (akan otomatis retry di main loop jika gagal)
     BLEDevice::startAdvertising();
-
+    
     Serial.println("✅ Advertising restarted - Device discoverable again");
     Serial.println("⏳ Waiting for web app to reconnect...");
+    Serial.println("💡 BLE will remain active and auto-restart advertising");
+    Serial.println("   No need to press button - just reconnect from web app");
     Serial.println("════════════════════════════════════════════════════════");
     Serial.println();
   }
@@ -1652,6 +1656,28 @@ void loop() {
         oldDeviceConnected = false;
         Serial.println("⚠️ Client disconnected");
         updateConnectionUI(1);
+        
+        // Auto-restart advertising jika terputus
+        if (bleActive) {
+          static unsigned long lastAdvertisingRestart = 0;
+          if (millis() - lastAdvertisingRestart >= 2000) { // Throttle: max 1x per 2 detik
+            lastAdvertisingRestart = millis();
+            Serial.println("🔄 Auto-restarting BLE advertising...");
+            BLEDevice::startAdvertising();
+            Serial.println("✅ Advertising restarted - waiting for reconnection...");
+          }
+        }
+      }
+      
+      // Pastikan BLE tetap aktif dan advertising
+      if (bleActive && !BLEDevice::getAdvertising()->isAdvertising()) {
+        static unsigned long lastCheck = 0;
+        if (millis() - lastCheck >= 5000) { // Check setiap 5 detik
+          lastCheck = millis();
+          Serial.println("⚠️  Advertising stopped, restarting...");
+          BLEDevice::startAdvertising();
+          Serial.println("✅ Advertising restarted");
+        }
       }
       break;
       
@@ -1685,18 +1711,24 @@ void loop() {
       
       if (!deviceConnected && oldDeviceConnected) {
         oldDeviceConnected = false;
-        Serial.println("📡 Client disconnected. Returning to MAIN screen...");
-        loadScreen(SCREEN_ID_MAIN);
-        delay(100);
+        Serial.println("📡 Client disconnected. Auto-restarting BLE advertising...");
         
-        updateConnectionUI(0);
-        delay(50);
-        createClockLabels();
-        showClockLabels();
-        delay(50);
-        forceClockToForeground();
+        // Auto-restart advertising
+        if (bleActive) {
+          delay(500);
+          BLEDevice::startAdvertising();
+          Serial.println("✅ BLE advertising restarted - Device discoverable again");
+          Serial.println("⏳ Waiting for reconnection...");
+        } else {
+          Serial.println("⚠️  BLE inactive, will restart in BLE_ACTIVE state");
+        }
         
-        currentState = STATE_IDLE;
+        // Kembali ke BLE_ACTIVE state (bukan IDLE) agar BLE tetap aktif
+        currentState = STATE_BLE_ACTIVE;
+        updateConnectionUI(1); // Show "Connecting..." UI
+        
+        Serial.println("💡 BLE will remain active and auto-restart advertising");
+        Serial.println("   No need to press button - just reconnect from web app");
       }
       
       if (deviceConnected && !oldDeviceConnected) {

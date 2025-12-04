@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test BLE - CareRing</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #007BFF;
+      margin-top: 0;
+    }
+    button {
+      background: linear-gradient(135deg, #007BFF, #0056b3);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin: 10px 0;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    #status {
+      padding: 15px;
+      border-radius: 12px;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    .info { background: #e3f2fd; color: #1565c0; }
+    .success { background: #d1ffe7; color: #067a3e; }
+    .error { background: #ffe1e1; color: #b50000; }
+    .data-display {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+      padding: 20px;
+      background: #f0f8ff;
+      border-radius: 12px;
+    }
+    .data-item {
+      text-align: center;
+    }
+    .data-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #007BFF;
+    }
+    .data-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔬 Test BLE Connection</h1>
+    <p>File test untuk debugging koneksi BLE ke ESP32 CareRing</p>
+
+    <button id="connectBtn" onclick="testConnect()">🔍 Scan & Connect</button>
+    <button id="disconnectBtn" onclick="testDisconnect()" disabled>❌ Disconnect</button>
+
+    <div id="status" class="info">
+      ℹ️ Klik "Scan & Connect" untuk memulai
+    </div>
+
+    <div id="dataDisplay" class="data-display" style="display: none;">
+      <div class="data-item">
+        <div class="data-value" id="hr">--</div>
+        <div class="data-label">❤️ Heart Rate (BPM)</div>
+      </div>
+      <div class="data-item">
+        <div class="data-value" id="spo2">--</div>
+        <div class="data-label">💧 SpO2 (%)</div>
+      </div>
+      <div class="data-item">
+        <div class="data-value" id="temp">--</div>
+        <div class="data-label">🌡️ Suhu Tubuh (°C)</div>
+      </div>
+      <div class="data-item">
+        <div class="data-value" id="ambient">--</div>
+        <div class="data-label">🏠 Suhu Ruangan (°C)</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 12px; font-size: 13px;">
+      <strong>📋 Checklist:</strong><br>
+      ✅ Browser mendukung Web Bluetooth (Chrome/Edge)<br>
+      ✅ Bluetooth komputer aktif<br>
+      ✅ ESP32 menyala dan advertising<br>
+      ✅ Tidak ada Service Worker yang interfere<br>
+    </div>
+  </div>
+
+  <script>
+    // BLE Configuration
+    const BLE_CONFIG = {
+      SERVICE_UUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
+      CHARACTERISTIC_UUID_TX: '6e400003-b5a3-f393-e0a9-e50e24dcca9e',
+      DEVICE_NAME_PREFIX: 'CareRing'
+    };
+
+    let bleDevice = null;
+    let bleServer = null;
+    let bleCharacteristic = null;
+
+    function setStatus(message, type = 'info') {
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = message;
+      statusEl.className = type;
+    }
+
+    function updateUI(data) {
+      document.getElementById('hr').textContent = data.heartRate;
+      document.getElementById('spo2').textContent = data.spo2;
+      document.getElementById('temp').textContent = data.temperature.toFixed(1);
+      document.getElementById('ambient').textContent = data.ambient.toFixed(1);
+      document.getElementById('dataDisplay').style.display = 'grid';
+    }
+
+    function handleBLEData(event) {
+      try {
+        const decoder = new TextDecoder('utf-8');
+        const dataString = decoder.decode(event.target.value);
+        console.log('📨 Received:', dataString);
+
+        const data = JSON.parse(dataString);
+        console.log('✅ Parsed:', data);
+
+        updateUI(data);
+        setStatus('✅ Data diterima: ' + new Date().toLocaleTimeString(), 'success');
+      } catch (error) {
+        console.error('❌ Parse error:', error);
+        setStatus('❌ Error parsing data: ' + error.message, 'error');
+      }
+    }
+
+    async function testConnect() {
+      try {
+        if (!navigator.bluetooth) {
+          throw new Error('Browser tidak mendukung Web Bluetooth API');
+        }
+
+        setStatus('🔍 Scanning for CareRing devices...', 'info');
+        document.getElementById('connectBtn').disabled = true;
+
+        // Request device
+        bleDevice = await navigator.bluetooth.requestDevice({
+          filters: [{ namePrefix: BLE_CONFIG.DEVICE_NAME_PREFIX }],
+          optionalServices: [BLE_CONFIG.SERVICE_UUID]
+        });
+
+        console.log('✅ Device found:', bleDevice.name, bleDevice.id);
+        setStatus('🔌 Connecting to ' + bleDevice.name + '...', 'info');
+
+        // Add disconnect listener
+        bleDevice.addEventListener('gattserverdisconnected', () => {
+          setStatus('⚠️ Device disconnected', 'error');
+          document.getElementById('connectBtn').disabled = false;
+          document.getElementById('disconnectBtn').disabled = true;
+          document.getElementById('dataDisplay').style.display = 'none';
+        });
+
+        // Connect to GATT
+        bleServer = await bleDevice.gatt.connect();
+        console.log('✅ GATT connected');
+
+        // Get service
+        const service = await bleServer.getPrimaryService(BLE_CONFIG.SERVICE_UUID);
+        console.log('✅ Service found');
+
+        // Get characteristic
+        bleCharacteristic = await service.getCharacteristic(BLE_CONFIG.CHARACTERISTIC_UUID_TX);
+        console.log('✅ Characteristic found');
+
+        // Start notifications
+        await bleCharacteristic.startNotifications();
+        bleCharacteristic.addEventListener('characteristicvaluechanged', handleBLEData);
+        console.log('✅ Notifications started');
+
+        setStatus('✅ Connected to ' + bleDevice.name + ' - Receiving data...', 'success');
+        document.getElementById('connectBtn').disabled = true;
+        document.getElementById('disconnectBtn').disabled = false;
+
+      } catch (error) {
+        console.error('❌ Connection failed:', error);
+        setStatus('❌ Connection failed: ' + error.message, 'error');
+        document.getElementById('connectBtn').disabled = false;
+      }
+    }
+
+    function testDisconnect() {
+      try {
+        if (bleCharacteristic) {
+          bleCharacteristic.removeEventListener('characteristicvaluechanged', handleBLEData);
+          bleCharacteristic.stopNotifications();
+        }
+
+        if (bleServer && bleServer.connected) {
+          bleServer.disconnect();
+        }
+
+        bleDevice = null;
+        bleServer = null;
+        bleCharacteristic = null;
+
+        setStatus('✅ Disconnected', 'info');
+        document.getElementById('connectBtn').disabled = false;
+        document.getElementById('disconnectBtn').disabled = true;
+        document.getElementById('dataDisplay').style.display = 'none';
+
+      } catch (error) {
+        console.error('❌ Disconnect error:', error);
+      }
+    }
+  </script>
+</body>
+</html>
