@@ -112,7 +112,7 @@ auth.onAuthStateChanged((user) => {
     
     // --- LOGIKA 4: Penjaga Halaman Login/Register ---
     if (currentPage === 'login.html' || currentPage === 'register.html') {
-      window.location.href = 'index.html';
+      window.location.href = 'app.html';
     }
 
   } else {

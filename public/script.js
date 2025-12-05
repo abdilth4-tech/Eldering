@@ -42,7 +42,7 @@ auth.onAuthStateChanged((user) => {
     }
 
     if (isLoginPage) {
-        window.location.href = "index.html";
+        window.location.href = "app.html";
     }
 
   } else {

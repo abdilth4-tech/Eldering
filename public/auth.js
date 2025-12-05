@@ -56,8 +56,8 @@ if (bodyId === 'page-register') {
         // Login berhasil.
         console.log('Login berhasil!', userCredential.user.uid);
         // auth-guard.js akan mengambil alih dan mengarahkan
-        // kita ke index.html, tapi kita bisa paksa
-        window.location.href = 'index.html';
+        // kita ke app.html, tapi kita bisa paksa
+        window.location.href = 'app.html';
       })
       .catch((error) => {
         console.error('Gagal login:', error.message);

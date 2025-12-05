@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+      margin: 0;
+    }
+    .redirect-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+  </style>
+  <script>
+    // Redirect Script
+    (function() {
+      // Get current page name from URL
+      const currentPath = window.location.pathname;
+      const pageName = currentPath.split('/').pop().replace('.html', '');
+
+      // Map old pages to new hash routes
+      const pageMap = {
+        'perangkat': 'perangkat',
+        'forum': 'forum',
+        'ai-chat': 'ai-chat',
+        'news': 'news',
+        'profil': 'profil',
+        'index': 'home'
+      };
+
+      // Get target hash
+      const targetHash = pageMap[pageName] || 'home';
+
+      // Redirect to SPA version
+      const newUrl = `/index.html#${targetHash}`;
+
+      console.log('🔄 Redirecting to SPA version...');
+      console.log('   From:', currentPath);
+      console.log('   To:', newUrl);
+
+      // Redirect after short delay (for better UX)
+      setTimeout(() => {
+        window.location.replace(newUrl);
+      }, 500);
+    })();
+  </script>
+</head>
+<body>
+  <div class="redirect-container">
+    <div class="spinner"></div>
+    <h2>🔄 Redirecting...</h2>
+    <p>Upgrading to SPA version for better performance</p>
+  </div>
+</body>
+</html>

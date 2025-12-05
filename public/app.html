@@ -1087,19 +1087,22 @@
     })();
   </script>
 
-  <!-- Service Worker -->
+  <!-- Service Worker - DISABLED untuk debugging -->
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            console.log('ServiceWorker registration successful: ', registration.scope);
-          })
-          .catch(error => {
-            console.log('ServiceWorker registration failed: ', error);
-          });
-      });
-    }
+    // Service Worker temporarily disabled to fix loading issues
+    console.log('ℹ️ Service Worker disabled for debugging');
+
+    // if ('serviceWorker' in navigator) {
+    //   window.addEventListener('load', () => {
+    //     navigator.serviceWorker.register('/sw.js')
+    //       .then(registration => {
+    //         console.log('ServiceWorker registration successful: ', registration.scope);
+    //       })
+    //       .catch(error => {
+    //         console.log('ServiceWorker registration failed: ', error);
+    //       });
+    //   });
+    // }
   </script>
 
 </body>

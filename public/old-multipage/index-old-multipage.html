@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CARERING Healthcare</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007BFF">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+  <div class="mobile-wrapper"> 
+
+    <div class="app-header">
+        <div class="logo" style="cursor: pointer;" onclick="window.location.href='index.html'">
+            <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+        </div>
+        
+        <div class="profile-icon" onclick="window.location.href='profil.html'">
+            <img id="nav-user-photo" src="" style="width: 32px; height: 32px; border-radius: 50%; display: none; object-fit: cover;">
+            
+            <span class="material-symbols-outlined" style="font-size: 32px;">person</span>
+        </div>
+    </div>
+
+    <main class="container">
+        
+        <div class="home-greeting" id="user-greeting">Memuat...</div>
+        <div class="home-subgreeting">Temukan data kesehatan Anda.</div>
+        
+        <div class="search-bar">
+            <span class="search-icon"><span class="material-symbols-outlined">search</span></span>
+            <input type="text" placeholder="Cari data, berita, atau forum...">
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Categories</h2>
+        </div>
+        <div class="categories-scroll">
+            <div class="category-item" onclick="window.location.href='perangkat.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">devices</span></span>
+                <span class="category-label">Device</span>
+            </div>
+            <div class="category-item" onclick="window.location.href='ai-chat.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">smart_toy</span></span>
+                <span class="category-label">AI Chat</span>
+            </div>
+            <div class="category-item" onclick="window.location.href='forum.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">forum</span></span>
+                <span class="category-label">Forum</span>
+            </div>
+            <div class="category-item" onclick="window.location.href='news.html'">
+                <span class="category-icon"><span class="material-symbols-outlined">newspaper</span></span>
+                <span class="category-label">News</span>
+            </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 20px;">
+            <h2 class="section-title">Status Utama</h2>
+        </div>
+
+        <div class="temp-card card">
+            <div class="temp-label">Suhu Tubuh</div>
+            <div class="temp-value"><span id="suhu-tubuh-value">--</span>°C</div>
+            <span class="temp-status" id="suhu-tubuh-status">--</span>
+        </div>
+
+        <div class="section-header" style="margin-top: 20px;">
+            <h2 class="section-title">Semua Vitals</h2>
+            <span class="see-all" id="vitals-last-update">Data Terbaru</span>
+        </div>
+
+        <!-- Real-time Sensor Data Cards -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+            <!-- Heart Rate Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #FFE5E5, #FFF); border-left: 4px solid #E74C3C;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">❤️ Heart Rate</div>
+                <div style="font-size: 2em; font-weight: 700; color: #E74C3C;" id="home-heartrate">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">BPM</div>
+            </div>
+
+            <!-- SpO2 Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #E5F5FF, #FFF); border-left: 4px solid #3498DB;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">💧 SpO2</div>
+                <div style="font-size: 2em; font-weight: 700; color: #3498DB;" id="home-spo2">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">%</div>
+            </div>
+
+            <!-- Body Temperature Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #FFF5E5, #FFF); border-left: 4px solid #F39C12;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">🌡️ Suhu Tubuh</div>
+                <div style="font-size: 2em; font-weight: 700; color: #F39C12;" id="home-temperature">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">°C</div>
+            </div>
+
+            <!-- Ambient Temperature Card -->
+            <div class="card" style="padding: 16px; text-align: center; background: linear-gradient(135deg, #E5FFE5, #FFF); border-left: 4px solid #27AE60;">
+                <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">🏠 Suhu Ruangan</div>
+                <div style="font-size: 2em; font-weight: 700; color: #27AE60;" id="home-ambient">--</div>
+                <div style="font-size: 0.75em; color: #999; margin-top: 4px;">°C</div>
+            </div>
+        </div>
+
+        <!-- Device Status Card -->
+        <div class="card" style="padding: 16px; margin-bottom: 20px; background: linear-gradient(135deg, #F0F8FF, #FFF); border-left: 4px solid #007BFF;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 6px;">📡 Device Status</div>
+                    <div style="font-size: 1.1em; font-weight: 600; color: #333;" id="home-device-name">Mencari perangkat...</div>
+                </div>
+                <div>
+                    <span id="home-device-status" class="status-badge status-offline" style="font-size: 0.85em;">Offline</span>
+                </div>
+            </div>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; font-size: 0.8em; color: #999;">
+                <span>Device ID: </span><span id="home-device-id">-</span>
+            </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 20px;">
+            <h2 class="section-title">Grafik Kesehatan</h2>
+            <span class="see-all" onclick="window.location.href='history.html'" style="cursor: pointer; color: #007BFF; font-weight: 600;">Lihat Riwayat ></span>
+        </div>
+
+        <section class="chart-card card">
+            <p class="chart-title">Riwayat Detak Jantung (10 data terakhir)</p>
+            <canvas id="bpmChart"></canvas>
+        </section>
+        
+        <section class="chart-card card">
+            <p class="chart-title">Riwayat Suhu Tubuh (10 data terakhir)</p>
+            <canvas id="tempChart"></canvas>
+        </section>
+        
+        <section class="chart-card card">
+            <p class="chart-title">Riwayat Suhu Ruangan (10 data terakhir)</p>
+            <canvas id="ambientChart"></canvas>
+        </section>
+
+        <section class="health-summary-card card">
+            <h2 class="chart-title" style="text-align: center;">Rangkuman Kesehatan</h2>
+            
+            <div id="summary-status-container" class="report-status-container">
+                <p>Status Keseluruhan:</p>
+                <h3 id="summary-status-text" class="status-bugar">Memuat...</h3>
+            </div>
+            
+            <div class="report-details">
+                <h4>Detail Laporan:</h4>
+                <ul id="summary-detail-list" class="report-details-list">
+                    <li>Memuat data sensor...</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <div id="report-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="modal-close-btn">&times;</span>
+        <h2>Rangkuman Kesehatan</h2>
+        <div class="report-status-container">
+          <p>Status Keseluruhan:</p>
+          <h3 id="report-status" class="status-bugar">BUGAR</h3>
+        </div>
+        <div class="report-details">
+          <h4>Detail Laporan:</h4>
+          <ul id="report-detail-list">
+          </ul>
+        </div>
+        <div class="report-recommendations">
+          <h4>Rekomendasi (Treatment):</h4>
+          <ul id="report-list">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div> 
+  
+  <div class="bottom-nav">
+      <div class="nav-item active" onclick="window.location.href='index.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">home</span></div>
+          <div class="nav-label">Home</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='news.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">newspaper</span></div>
+          <div class="nav-label">News</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='perangkat.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">devices</span></div>
+          <div class="nav-label">Perangkat</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='ai-chat.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">smart_toy</span></div>
+          <div class="nav-label">AI Chat</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='forum.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">forum</span></div>
+          <div class="nav-label">Forum</div>
+      </div>
+      <div class="nav-item" onclick="window.location.href='profil.html'">
+          <div class="nav-icon"><span class="material-symbols-outlined">person</span></div>
+          <div class="nav-label">Profil</div>
+      </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script src="/script.js"></script>
+  <script src="/auth-guard.js"></script>
+  <script src="/ble-handler.js"></script>
+  <script src="/ble-indicator.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful: ', registration.scope);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+  
+</body>
+</html>

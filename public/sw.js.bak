@@ -2,14 +2,15 @@
    File sw.js (Versi Perbaikan - Network First)
    ====================================================== */
 
-// [PENTING] Ganti v28 menjadi v29, v30, dst. setiap kali Anda deploy update!
-const STATIC_CACHE_NAME = 'carering-static-v29';
-const DYNAMIC_CACHE_NAME = 'carering-dynamic-v29';
+// [PENTING] Ganti v30 menjadi v31, v32, dst. setiap kali Anda deploy update!
+const STATIC_CACHE_NAME = 'carering-static-v31';
+const DYNAMIC_CACHE_NAME = 'carering-dynamic-v31';
 
 // File "App Shell" yang jarang berubah (font, icon, manifest)
 const urlsToCache = [
   '/',
   '/index.html',
+  '/app.html',            // SPA VERSION - Single Page Application!
   '/news.html',
   '/perangkat.html',
   '/ai-chat.html',
