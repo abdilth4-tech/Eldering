@@ -341,8 +341,8 @@
         </div>
 
         <div class="profile-icon" data-navigate="profil">
-            <img id="nav-user-photo" src="" style="width: 32px; height: 32px; border-radius: 50%; display: none; object-fit: cover;">
-            <span class="material-symbols-outlined" style="font-size: 32px;">person</span>
+            <img id="nav-user-photo" src="" alt="Profile" style="display: none;">
+            <span class="material-symbols-outlined">person</span>
         </div>
     </div>
 
@@ -644,29 +644,29 @@
            PAGE: AI CHAT
            ═══════════════════════════════════════════════════════════════ -->
       <div id="page-ai-chat" class="page container">
-        <div class="ai-hero" style="margin: 10px auto 20px; text-align: center;">
-          <div class="ai-avatar" style="width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, #6aa9ff, #2d79ff); display: flex; justify-content: center; align-items: center; color: white; font-size: 42px; margin: 0 auto;">
+        <div class="ai-hero">
+          <div class="ai-avatar">
             🤖
           </div>
-          <h2 style="margin-top: 12px; font-size: 1.4em; font-weight: 700;">CareRing AI Assistant</h2>
+          <h2>CareRing AI Assistant</h2>
         </div>
 
         <div class="chat-container">
-          <div id="chat-window" class="chat-window" style="background: #fff; border-radius: 20px; padding: 20px; height: 60vh; overflow-y: auto; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
-            <div class="message ai-message" style="max-width: 85%; padding: 12px 15px; border-radius: 16px; margin-bottom: 12px; background: #e9f2ff; color: #084c9e;">
+          <div id="chat-window" class="chat-window">
+            <div class="message ai-message">
               <p>Halo! Saya adalah Bot CARERING. Tanyakan saya tentang data kesehatan Anda.</p>
             </div>
           </div>
 
-          <div id="suggested-questions" class="suggested-questions" style="display: flex; gap: 10px; overflow-x: auto; margin: 15px 0;">
-            <button class="suggest-btn" style="background: #f1f5ff; border: none; padding: 10px 16px; border-radius: 16px; white-space: nowrap; font-size: 0.87em; color: #2d79ff; cursor: pointer;">Bagaimana suhu tubuh saya?</button>
-            <button class="suggest-btn" style="background: #f1f5ff; border: none; padding: 10px 16px; border-radius: 16px; white-space: nowrap; font-size: 0.87em; color: #2d79ff; cursor: pointer;">Detak jantung saya normal?</button>
-            <button class="suggest-btn" style="background: #f1f5ff; border: none; padding: 10px 16px; border-radius: 16px; white-space: nowrap; font-size: 0.87em; color: #2d79ff; cursor: pointer;">Apa itu hipotermia?</button>
+          <div id="suggested-questions" class="suggested-questions">
+            <button class="suggest-btn">Bagaimana suhu tubuh saya?</button>
+            <button class="suggest-btn">Detak jantung saya normal?</button>
+            <button class="suggest-btn">Apa itu hipotermia?</button>
           </div>
 
-          <form id="chat-form" class="chat-form" style="display: flex; align-items: center; background: rgba(255,255,255,0.8); border-radius: 18px; padding: 10px 15px; margin-top: 5px; box-shadow: 0 8px 25px rgba(0,0,0,0.08);">
-            <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." required style="flex: 1; border: none; font-size: 1em; outline: none; background: transparent;">
-            <button type="submit" id="send-btn" style="width: 42px; height: 42px; border-radius: 50%; border: none; background: #007bff; color: white; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+          <form id="chat-form" class="chat-form">
+            <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." required>
+            <button type="submit" id="send-btn">
               <span class="material-symbols-outlined">send</span>
             </button>
           </form>
