@@ -15,7 +15,10 @@ const firebaseConfig = {
 };
 
 // === 2. Inisialisasi Global ===
-firebase.initializeApp(firebaseConfig);
+// Check if Firebase is not already initialized (to avoid duplicate initialization)
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 const database = firebase.database();
 const auth = firebase.auth(); 
 const dataRef = database.ref("/realtimeSensorData/ESP32C3-F0E1837D7850");
@@ -57,22 +60,10 @@ auth.onAuthStateChanged((user) => {
 // ============================================================
 
 // === A. HALAMAN LOGIN (login.html) ===
+// Login handler sekarang dikelola langsung di login.html
+// Tidak perlu handler di sini untuk menghindari konflik
 if (document.getElementById('google-login-btn')) {
-    
-    console.log("Menjalankan script Halaman Login...");
-    const loginBtn = document.getElementById('google-login-btn');
-
-    loginBtn.addEventListener('click', () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                console.log("Login Berhasil!");
-            })
-            .catch((error) => {
-                console.error("Error login:", error);
-                alert("Gagal Login: " + error.message);
-            });
-    });
+    console.log("Halaman Login terdeteksi. Login handler di login.html.");
 
 // === B. HALAMAN DASHBOARD (index.html) ===
 } else if (document.getElementById('bpmChart')) {
@@ -467,17 +458,55 @@ if (document.getElementById('google-login-btn')) {
   
   historyRef.limitToLast(10).on("value", (snapshot) => { const data = snapshot.val(); const newLabels = [], newBpmData = [], newTempData = [], newAmbientData = []; if (data) { for (const key in data) { const entry = data[key]; let label = 'data'; if (entry.timestamp) { const d = new Date(entry.timestamp); let minutes = d.getMinutes().toString().padStart(2, '0'); let seconds = d.getSeconds().toString().padStart(2, '0'); label = `${d.getHours()}:${minutes}:${seconds}`; } if (entry.bpm > 0) { newLabels.push(label); newBpmData.push(entry.bpm); newTempData.push(entry.objTemp); newAmbientData.push(entry.ambTemp); } } bpmChart.data.labels = newLabels; bpmChart.data.datasets[0].data = newBpmData; bpmChart.update(); tempChart.data.labels = newLabels; tempChart.data.datasets[0].data = newTempData; tempChart.update(); ambientChart.data.labels = newLabels; ambientChart.data.datasets[0].data = newAmbientData; ambientChart.update(); } });
 
-// === C. HALAMAN BOT CHAT (ai-chat.html) ===
+// === C. HALAMAN BOT CHAT (ai-chat.html) - MODERN REDESIGN ===
 } else if (document.getElementById('chat-form')) {
-  
-  console.log("Menjalankan script Bot Chat (ai-chat.html)...");
+
+  console.log("Menjalankan script Bot Chat Modern (ai-chat.html)...");
 
   const chatForm = document.getElementById('chat-form');
   const chatInput = document.getElementById('chat-input');
   const chatWindow = document.getElementById('chat-window');
-  const suggestedButtons = document.querySelectorAll('.suggest-btn');
+  const suggestedButtons = document.querySelectorAll('.suggest-btn-modern');
   const sendButton = document.getElementById('send-btn');
-  
+  const clearChatBtn = document.getElementById('clear-chat-btn');
+
+  // Initialize welcome message time
+  setTimeout(() => {
+    const welcomeTime = document.getElementById('welcome-time');
+    if (welcomeTime) {
+      welcomeTime.innerText = new Date().toLocaleTimeString('id-ID', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  }, 100);
+
+  // Helper: Get current user data
+  function getCurrentUserData() {
+    const user = auth.currentUser;
+    if (user) {
+      return {
+        name: user.displayName || 'User',
+        photo: user.photoURL || null,
+        initials: user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'
+      };
+    }
+    return {
+      name: 'User',
+      photo: null,
+      initials: 'U'
+    };
+  }
+
+  // Helper: Format timestamp
+  function formatTime() {
+    return new Date().toLocaleTimeString('id-ID', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  // Save and load chat history
   function saveChatHistory() {
     if (chatWindow) sessionStorage.setItem('careringChatHistory', chatWindow.innerHTML);
   }
@@ -492,6 +521,17 @@ if (document.getElementById('google-login-btn')) {
 
   loadChatHistory();
 
+  // Clear chat history
+  if (clearChatBtn) {
+    clearChatBtn.addEventListener('click', () => {
+      if (confirm('Hapus semua riwayat chat?')) {
+        sessionStorage.removeItem('careringChatHistory');
+        location.reload();
+      }
+    });
+  }
+
+  // Handle form submission
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const message = chatInput.value.trim();
@@ -501,26 +541,75 @@ if (document.getElementById('google-login-btn')) {
     }
   });
 
+  // Handle suggested questions
   suggestedButtons.forEach(button => {
     button.addEventListener('click', () => {
-      sendMessageToBot(button.innerText);
+      const questionText = button.querySelector('span:last-child').innerText;
+      sendMessageToBot(questionText);
     });
   });
 
+  // Add modern message with avatar and timestamp
   function addMessageToWindow(message, sender, isLoading = false) {
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
-    if (isLoading) {
-      messageElement.classList.add('loading');
-      messageElement.innerHTML = `<p>${message}</p>`;
+    const messageWrapper = document.createElement('div');
+    messageWrapper.classList.add('message');
+
+    if (sender === 'user') {
+      messageWrapper.classList.add('user-message-modern');
+      const userData = getCurrentUserData();
+
+      messageWrapper.innerHTML = `
+        <div class="message-avatar">
+          ${userData.photo
+            ? `<img src="${userData.photo}" alt="User" />`
+            : `<span>${userData.initials}</span>`
+          }
+        </div>
+        <div class="message-content">
+          <div class="message-bubble user-bubble">
+            <p>${message.replace(/\n/g, '<br>')}</p>
+          </div>
+          <div class="message-meta">
+            <span class="message-time">${formatTime()}</span>
+          </div>
+        </div>
+      `;
     } else {
-      messageElement.innerHTML = `<p>${message.replace(/\n/g, '<br>')}</p>`;
+      messageWrapper.classList.add('ai-message-modern');
+
+      if (isLoading) {
+        messageWrapper.innerHTML = `
+          <div class="message-avatar">
+            <img src="https://i.ibb.co/KG3y4Lp/ai-avatar.png" alt="AI" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNiIgZmlsbD0iI0ZGODQwMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfpJY8L3RleHQ+PC9zdmc+'" />
+          </div>
+          <div class="typing-bubble">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        `;
+      } else {
+        messageWrapper.innerHTML = `
+          <div class="message-avatar">
+            <img src="https://i.ibb.co/KG3y4Lp/ai-avatar.png" alt="AI" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNiIgZmlsbD0iI0ZGODQwMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfpJY8L3RleHQ+PC9zdmc+'" />
+          </div>
+          <div class="message-content">
+            <div class="message-bubble ai-bubble">
+              <p>${message.replace(/\n/g, '<br>')}</p>
+            </div>
+            <div class="message-meta">
+              <span class="message-time">${formatTime()}</span>
+            </div>
+          </div>
+        `;
+      }
     }
-    chatWindow.appendChild(messageElement);
+
+    chatWindow.appendChild(messageWrapper);
     chatWindow.scrollTop = chatWindow.scrollHeight;
-    return messageElement;
+    return messageWrapper;
   }
-  
+
   function setChatLoading(isLoading) {
     chatInput.disabled = isLoading;
     sendButton.disabled = isLoading;
@@ -528,18 +617,18 @@ if (document.getElementById('google-login-btn')) {
 
   async function sendMessageToBot(userMessage) {
     addMessageToWindow(userMessage, 'user');
-    saveChatHistory(); 
-    setChatLoading(true); 
+    saveChatHistory();
+    setChatLoading(true);
 
-    const loadingMessage = addMessageToWindow("Bot sedang mengetik...", 'ai', true);
+    const loadingMessage = addMessageToWindow("", 'ai', true);
     const botResponse = await getBotResponse(userMessage);
 
-    setTimeout(() => { 
+    setTimeout(() => {
       loadingMessage.remove();
       addMessageToWindow(botResponse, 'ai');
-      saveChatHistory(); 
-      setChatLoading(false); 
-    }, 1000); 
+      saveChatHistory();
+      setChatLoading(false);
+    }, 1000);
   }
 
   // === OTAK BOT ===

@@ -4,38 +4,850 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daftar - CARERING</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body id="page-register">
-  <div class="mobile-wrapper">
-    <main class="container auth-container">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #FF8400 0%, #007BFF 100%);
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 40px 0;
+    }
+
+    /* Animated Background */
+    .bg-animation {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .bg-animation span {
+      position: absolute;
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 25s infinite;
+      border-radius: 50%;
+    }
+
+    .bg-animation span:nth-child(1) {
+      left: 10%;
+      animation-delay: 0s;
+      animation-duration: 20s;
+    }
+
+    .bg-animation span:nth-child(2) {
+      left: 20%;
+      animation-delay: 2s;
+      animation-duration: 18s;
+      width: 40px;
+      height: 40px;
+    }
+
+    .bg-animation span:nth-child(3) {
+      left: 30%;
+      animation-delay: 4s;
+      animation-duration: 22s;
+    }
+
+    .bg-animation span:nth-child(4) {
+      left: 40%;
+      animation-delay: 0s;
+      animation-duration: 25s;
+      width: 60px;
+      height: 60px;
+    }
+
+    .bg-animation span:nth-child(5) {
+      left: 50%;
+      animation-delay: 3s;
+      animation-duration: 19s;
+    }
+
+    .bg-animation span:nth-child(6) {
+      left: 60%;
+      animation-delay: 5s;
+      animation-duration: 21s;
+      width: 50px;
+      height: 50px;
+    }
+
+    .bg-animation span:nth-child(7) {
+      left: 70%;
+      animation-delay: 1s;
+      animation-duration: 23s;
+    }
+
+    .bg-animation span:nth-child(8) {
+      left: 80%;
+      animation-delay: 6s;
+      animation-duration: 20s;
+      width: 35px;
+      height: 35px;
+    }
+
+    .bg-animation span:nth-child(9) {
+      left: 90%;
+      animation-delay: 2s;
+      animation-duration: 24s;
+    }
+
+    .bg-animation span:nth-child(10) {
+      left: 15%;
+      animation-delay: 4s;
+      animation-duration: 26s;
+      width: 45px;
+      height: 45px;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Main Container */
+    .auth-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 450px;
+      padding: 20px;
+      margin: 0 auto;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      padding: 50px 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Logo */
+    .auth-logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeIn 1s ease-out 0.3s both;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .auth-logo-image {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 15px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .logo-care {
+      color: #FF8400;
+    }
+
+    .logo-ring {
+      color: #007BFF;
+    }
+
+    /* Title */
+    .auth-title {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 10px;
+      animation: fadeIn 1s ease-out 0.5s both;
+    }
+
+    .auth-subtitle {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 35px;
+      font-size: 15px;
+      animation: fadeIn 1s ease-out 0.7s both;
+    }
+
+    /* Form */
+    .auth-form {
+      animation: fadeIn 1s ease-out 0.9s both;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #a0aec0;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 16px 20px 16px 55px;
+      border: 2px solid #e2e8f0;
+      border-radius: 15px;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background: #f7fafc;
+    }
+
+    .auth-input:focus {
+      outline: none;
+      border-color: #FF8400;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255, 132, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .auth-input:focus + .input-icon {
+      color: #FF8400;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #a0aec0;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      padding: 5px;
+      z-index: 2;
+    }
+
+    .password-toggle:hover {
+      color: #FF8400;
+    }
+
+    /* Password Strength Indicator */
+    .password-strength {
+      margin-top: 8px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .password-strength.show {
+      display: block;
+    }
+
+    .strength-bars {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 5px;
+    }
+
+    .strength-bar {
+      height: 4px;
+      flex: 1;
+      background: #e2e8f0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .strength-bar.active {
+      background: #48bb78;
+    }
+
+    .strength-bar.active.weak {
+      background: #f56565;
+    }
+
+    .strength-bar.active.medium {
+      background: #FF8400;
+    }
+
+    .strength-bar.active.strong {
+      background: #48bb78;
+    }
+
+    .strength-text {
+      font-size: 12px;
+      color: #718096;
+      margin-top: 2px;
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #FF8400;
+    }
+
+    .checkbox-group label {
+      font-size: 13px;
+      color: #4a5568;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .checkbox-group label a {
+      color: #FF8400;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .checkbox-group label a:hover {
+      color: #007BFF;
+      text-decoration: underline;
+    }
+
+    .auth-button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #FF8400 0%, #007BFF 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .auth-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .auth-button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .auth-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 132, 0, 0.4);
+    }
+
+    .auth-button:active {
+      transform: translateY(-1px);
+    }
+
+    .auth-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .auth-button.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .auth-button .button-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-button .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+
+    .auth-button.loading .button-text {
+      display: none;
+    }
+
+    .auth-button.loading .spinner {
+      display: block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Auth Link */
+    .auth-link {
+      text-align: center;
+      margin-top: 25px;
+      color: #718096;
+      font-size: 14px;
+      animation: fadeIn 1s ease-out 1.1s both;
+    }
+
+    .auth-link a {
+      color: #FF8400;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .auth-link a:hover {
+      color: #007BFF;
+      text-decoration: underline;
+    }
+
+    /* Alert Messages */
+    .alert {
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: none;
+      animation: slideDown 0.3s ease-out;
+      font-size: 14px;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-error {
+      background: #fee;
+      color: #c33;
+      border: 1px solid #fcc;
+    }
+
+    .alert-success {
+      background: #efe;
+      color: #3c3;
+      border: 1px solid #cfc;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 0;
+      }
+
+      .auth-wrapper {
+        max-width: 100%;
+        padding: 15px;
+      }
+
+      .auth-container {
+        padding: 40px 30px;
+        border-radius: 20px;
+      }
+
+      .auth-title {
+        font-size: 24px;
+      }
+
+      .logo {
+        font-size: 28px;
+      }
+    }
+
+    /* Accessibility */
+    .auth-input:focus-visible,
+    .auth-button:focus-visible {
+      outline: 3px solid #FF8400;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- Main Container -->
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <!-- Logo -->
       <div class="auth-logo-container">
         <img src="images/ai-chat.png" alt="CareRing Logo" class="auth-logo-image">
-        <div class="logo auth-logo">
+        <div class="logo">
           <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
         </div>
       </div>
 
+      <!-- Title -->
       <h2 class="auth-title">Buat Akun Baru</h2>
-      <p class="auth-subtitle">Daftarkan diri Anda</p>
+      <p class="auth-subtitle">Bergabunglah dengan CareRing hari ini</p>
 
+      <!-- Alert -->
+      <div id="alert" class="alert"></div>
+
+      <!-- Register Form -->
       <form id="register-form" class="auth-form">
-        <input type="text" id="register-name" class="auth-input" placeholder="Nama Lengkap (Contoh: Joko)" required> 
-        
-        <input type="email" id="register-email" class="auth-input" placeholder="Email" required>
-        <input type="password" id="register-password" class="auth-input" placeholder="Password (min. 6 karakter)" required>
-        <button type="submit" class="auth-button">Daftar</button>
+        <div class="input-group">
+          <input type="text" id="register-name" class="auth-input" placeholder="Nama Lengkap" required>
+          <i class="fas fa-user input-icon"></i>
+        </div>
+
+        <div class="input-group">
+          <input type="email" id="register-email" class="auth-input" placeholder="Email" required>
+          <i class="fas fa-envelope input-icon"></i>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="register-password" class="auth-input" placeholder="Password (min. 6 karakter)" required minlength="6">
+          <i class="fas fa-lock input-icon"></i>
+          <button type="button" class="password-toggle" id="togglePassword">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+
+        <!-- Password Strength Indicator -->
+        <div class="password-strength" id="passwordStrength">
+          <div class="strength-bars">
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+          </div>
+          <div class="strength-text" id="strengthText">Password terlalu lemah</div>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="register-confirm-password" class="auth-input" placeholder="Konfirmasi Password" required minlength="6">
+          <i class="fas fa-lock input-icon"></i>
+          <button type="button" class="password-toggle" id="toggleConfirmPassword">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">
+            Saya setuju dengan <a href="#" onclick="return false;">Syarat & Ketentuan</a> dan <a href="#" onclick="return false;">Kebijakan Privasi</a>
+          </label>
+        </div>
+
+        <button type="submit" class="auth-button">
+          <span class="button-text">Daftar Sekarang</span>
+          <div class="spinner"></div>
+        </button>
       </form>
-      
+
+      <!-- Login Link -->
       <p class="auth-link">
         Sudah punya akun? <a href="login.html">Masuk di sini</a>
       </p>
-
-    </main>
+    </div>
   </div>
-  
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script> <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> <script src="script.js"></script> <script src="auth.js"></script>  </body>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <!-- Main Scripts -->
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+
+  <script>
+    // Password Toggle
+    function setupPasswordToggle(toggleId, inputId) {
+      const toggle = document.getElementById(toggleId);
+      const input = document.getElementById(inputId);
+      const icon = toggle.querySelector('i');
+
+      toggle.addEventListener('click', function() {
+        const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+        input.setAttribute('type', type);
+
+        if (type === 'password') {
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        } else {
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        }
+      });
+    }
+
+    setupPasswordToggle('togglePassword', 'register-password');
+    setupPasswordToggle('toggleConfirmPassword', 'register-confirm-password');
+
+    // Password Strength Checker
+    const passwordInput = document.getElementById('register-password');
+    const strengthIndicator = document.getElementById('passwordStrength');
+    const strengthText = document.getElementById('strengthText');
+    const strengthBars = document.querySelectorAll('.strength-bar');
+
+    function checkPasswordStrength(password) {
+      let strength = 0;
+
+      if (password.length >= 6) strength++;
+      if (password.length >= 10) strength++;
+      if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+      return Math.min(strength, 4);
+    }
+
+    passwordInput.addEventListener('input', function() {
+      const password = this.value;
+
+      if (password.length === 0) {
+        strengthIndicator.classList.remove('show');
+        return;
+      }
+
+      strengthIndicator.classList.add('show');
+      const strength = checkPasswordStrength(password);
+
+      strengthBars.forEach((bar, index) => {
+        bar.classList.remove('active', 'weak', 'medium', 'strong');
+
+        if (index < strength) {
+          bar.classList.add('active');
+
+          if (strength <= 1) {
+            bar.classList.add('weak');
+          } else if (strength <= 2) {
+            bar.classList.add('medium');
+          } else {
+            bar.classList.add('strong');
+          }
+        }
+      });
+
+      const strengthTexts = [
+        'Password terlalu lemah',
+        'Password lemah',
+        'Password cukup',
+        'Password kuat',
+        'Password sangat kuat'
+      ];
+
+      strengthText.textContent = strengthTexts[strength];
+      strengthText.style.color = strength <= 1 ? '#f56565' : strength <= 2 ? '#FF8400' : '#48bb78';
+    });
+
+    // Form Validation and Submission
+    const registerForm = document.getElementById('register-form');
+    const submitBtn = registerForm.querySelector('.auth-button');
+    const alertBox = document.getElementById('alert');
+
+    function showAlert(message, type) {
+      alertBox.textContent = message;
+      alertBox.className = `alert alert-${type} show`;
+
+      setTimeout(() => {
+        alertBox.classList.remove('show');
+      }, 5000);
+    }
+
+    registerForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Get form values
+      const name = document.getElementById('register-name').value.trim();
+      const email = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm-password').value;
+      const termsAccepted = document.getElementById('terms').checked;
+
+      // Validation
+      if (!name) {
+        showAlert('Nama lengkap harus diisi.', 'error');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showAlert('Password dan konfirmasi password tidak cocok.', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        showAlert('Password minimal 6 karakter.', 'error');
+        return;
+      }
+
+      if (!termsAccepted) {
+        showAlert('Anda harus menyetujui Syarat & Ketentuan.', 'error');
+        return;
+      }
+
+      // Show loading state
+      submitBtn.classList.add('loading');
+      alertBox.classList.remove('show');
+
+      try {
+        // Create user with Firebase
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // Update profile with display name
+        await user.updateProfile({
+          displayName: name
+        });
+
+        // Save additional user data to database
+        await firebase.database().ref('users/' + user.uid).set({
+          name: name,
+          email: email,
+          createdAt: new Date().toISOString()
+        });
+
+        showAlert('Pendaftaran berhasil! Mengalihkan...', 'success');
+
+        setTimeout(() => {
+          window.location.href = 'app.html';
+        }, 1500);
+
+      } catch (error) {
+        console.error('Registration error:', error);
+
+        let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = 'Email sudah terdaftar. Silakan login.';
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = 'Format email tidak valid.';
+        } else if (error.code === 'auth/weak-password') {
+          errorMessage = 'Password terlalu lemah.';
+        } else if (error.code === 'auth/network-request-failed') {
+          errorMessage = 'Koneksi internet bermasalah.';
+        }
+
+        showAlert(errorMessage, 'error');
+      } finally {
+        submitBtn.classList.remove('loading');
+      }
+    });
+
+    // Input Animation
+    document.querySelectorAll('.auth-input').forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'scale(1.02)';
+      });
+
+      input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+    });
+
+    // Real-time password match validation
+    const confirmPasswordInput = document.getElementById('register-confirm-password');
+
+    confirmPasswordInput.addEventListener('input', function() {
+      const password = passwordInput.value;
+      const confirmPassword = this.value;
+
+      if (confirmPassword && password !== confirmPassword) {
+        this.style.borderColor = '#f56565';
+      } else if (confirmPassword && password === confirmPassword) {
+        this.style.borderColor = '#48bb78';
+      } else {
+        this.style.borderColor = '#e2e8f0';
+      }
+    });
+  </script>
+</body>
 </html>

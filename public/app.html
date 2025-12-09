@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="profile-modern.css">
 
   <!-- PWA & Icons -->
   <link rel="manifest" href="manifest.json">
@@ -557,6 +558,482 @@
 
     .ble-modal-content::-webkit-scrollbar-thumb:hover {
       background: rgba(74, 144, 226, 0.5);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       NEWS PAGE - MODERN PROFESSIONAL DESIGN
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* News Header */
+    .news-header {
+      text-align: center;
+      margin-bottom: 35px;
+      animation: fadeInDown 0.6s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .news-main-title {
+      font-size: 2.2em;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FF8400 0%, #007BFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .news-subtitle {
+      color: #666;
+      font-size: 1em;
+      font-weight: 400;
+    }
+
+    /* Featured Article */
+    .news-featured {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 35px;
+      height: 420px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      animation: fadeInUp 0.6s ease-out 0.2s both;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .news-featured:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .featured-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .news-featured:hover .featured-image {
+      transform: scale(1.05);
+    }
+
+    .featured-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 35px 28px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+      color: white;
+    }
+
+    .featured-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #FF8400, #007BFF);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .featured-title {
+      font-size: 1.8em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .featured-excerpt {
+      font-size: 1em;
+      opacity: 0.9;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .featured-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .featured-author-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .featured-author-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .featured-author-name {
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .featured-author-date {
+      font-size: 0.85em;
+      opacity: 0.8;
+    }
+
+    /* Category Filter */
+    .news-categories {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      animation: fadeIn 0.6s ease-out 0.4s both;
+      scrollbar-width: none;
+    }
+
+    .news-categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .news-category-btn {
+      flex-shrink: 0;
+      padding: 10px 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 25px;
+      background: white;
+      color: #666;
+      font-weight: 600;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .news-category-btn:hover {
+      border-color: #FF8400;
+      color: #FF8400;
+      transform: translateY(-2px);
+    }
+
+    .news-category-btn.active {
+      background: linear-gradient(135deg, #FF8400, #007BFF);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(255, 132, 0, 0.3);
+    }
+
+    /* News Grid */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    /* News Card */
+    .news-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      animation: fadeInUp 0.6s ease-out both;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .news-card:nth-child(1) { animation-delay: 0.5s; }
+    .news-card:nth-child(2) { animation-delay: 0.6s; }
+    .news-card:nth-child(3) { animation-delay: 0.7s; }
+    .news-card:nth-child(4) { animation-delay: 0.8s; }
+    .news-card:nth-child(5) { animation-delay: 0.9s; }
+    .news-card:nth-child(6) { animation-delay: 1s; }
+
+    .news-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .news-card-image {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .news-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .news-card:hover .news-card-image img {
+      transform: scale(1.1);
+    }
+
+    .news-card-category {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .news-card-category.health {
+      background: rgba(39, 174, 96, 0.95);
+      color: white;
+    }
+
+    .news-card-category.technology {
+      background: rgba(0, 123, 255, 0.95);
+      color: white;
+    }
+
+    .news-card-category.research {
+      background: rgba(155, 89, 182, 0.95);
+      color: white;
+    }
+
+    .news-card-category.tips {
+      background: rgba(243, 156, 18, 0.95);
+      color: white;
+    }
+
+    .news-card-content {
+      padding: 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .news-card-title {
+      font-size: 1.25em;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 12px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.3s ease;
+    }
+
+    .news-card:hover .news-card-title {
+      color: #FF8400;
+    }
+
+    .news-card-excerpt {
+      font-size: 0.95em;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .news-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .news-card-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .news-card-author img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #f0f0f0;
+    }
+
+    .news-card-author-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .author-name {
+      font-size: 0.9em;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .publish-date {
+      font-size: 0.8em;
+      color: #94a3b8;
+    }
+
+    .news-card-bookmark {
+      background: transparent;
+      border: none;
+      color: #cbd5e0;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .news-card-bookmark:hover {
+      background: #f7fafc;
+      color: #FF8400;
+      transform: scale(1.1);
+    }
+
+    .news-card-bookmark.active {
+      color: #FF8400;
+    }
+
+    .news-card-bookmark .material-symbols-outlined {
+      font-size: 22px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .news-main-title {
+        font-size: 1.8em;
+      }
+
+      .news-featured {
+        height: 350px;
+      }
+
+      .featured-overlay {
+        padding: 25px 20px;
+      }
+
+      .featured-title {
+        font-size: 1.4em;
+      }
+
+      .featured-excerpt {
+        font-size: 0.9em;
+        margin-bottom: 14px;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .news-categories {
+        gap: 8px;
+      }
+
+      .news-category-btn {
+        padding: 8px 16px;
+        font-size: 0.85em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .news-featured {
+        height: 300px;
+      }
+
+      .featured-title {
+        font-size: 1.2em;
+      }
+
+      .news-card-title {
+        font-size: 1.1em;
+      }
+    }
+
+    /* Load More Button */
+    .news-load-more {
+      text-align: center;
+      margin-top: 40px;
+      animation: fadeIn 0.6s ease-out 1.2s both;
+    }
+
+    .load-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #FF8400, #007BFF);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1em;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(255, 132, 0, 0.3);
+    }
+
+    .load-more-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(255, 132, 0, 0.4);
+    }
+
+    .load-more-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .load-more-btn .material-symbols-outlined {
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    .load-more-btn:hover .material-symbols-outlined {
+      transform: translateY(3px);
     }
   </style>
 </head>
@@ -1149,35 +1626,123 @@
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════
-           PAGE: AI CHAT
+           PAGE: AI CHAT - MODERN PROFESSIONAL REDESIGN
            ═══════════════════════════════════════════════════════════════ -->
       <div id="page-ai-chat" class="page container">
-        <div class="ai-hero">
-          <div class="ai-avatar">
-            <img src="https://i.ibb.co/KG3y4Lp/ai-avatar.png" alt="AI Assistant" onerror="this.parentElement.innerHTML='🤖'" />
+        <!-- AI Chat Header -->
+        <div class="ai-chat-header">
+          <div class="ai-chat-header-left">
+            <div class="ai-chat-avatar-container">
+              <div class="ai-chat-avatar">
+                <img src="https://i.ibb.co/KG3y4Lp/ai-avatar.png" alt="AI Assistant" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iI0ZGODQwMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfpJY8L3RleHQ+PC9zdmc+'" />
+              </div>
+              <div class="ai-status-indicator online"></div>
+            </div>
+            <div class="ai-chat-info">
+              <h3 class="ai-chat-name">CareRing AI Assistant</h3>
+              <p class="ai-chat-status">
+                <span class="status-dot"></span>
+                <span id="ai-status-text">Online - Siap membantu</span>
+              </p>
+            </div>
           </div>
-          <h2>CareRing AI Assistant</h2>
+          <div class="ai-chat-header-right">
+            <button class="ai-header-btn" id="clear-chat-btn" title="Clear Chat History">
+              <span class="material-symbols-outlined">delete_sweep</span>
+            </button>
+            <button class="ai-header-btn" title="Chat Settings">
+              <span class="material-symbols-outlined">more_vert</span>
+            </button>
+          </div>
         </div>
 
-        <div class="chat-container">
-          <div id="chat-window" class="chat-window">
-            <div class="message ai-message">
-              <p>Halo! Saya adalah Bot CARERING. Tanyakan saya tentang data kesehatan Anda.</p>
+        <!-- AI Chat Container -->
+        <div class="ai-chat-container">
+          <!-- Chat Messages Area -->
+          <div id="chat-window" class="ai-chat-window">
+            <!-- Welcome Message -->
+            <div class="chat-date-divider">
+              <span id="chat-date-today">Hari Ini</span>
+            </div>
+            <div class="message ai-message-modern">
+              <div class="message-avatar">
+                <img src="https://i.ibb.co/KG3y4Lp/ai-avatar.png" alt="AI" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNiIgZmlsbD0iI0ZGODQwMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjE4IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfpJY8L3RleHQ+PC9zdmc+'" />
+              </div>
+              <div class="message-content">
+                <div class="message-bubble ai-bubble">
+                  <p>Halo! 👋 Saya adalah <strong>CareRing AI Assistant</strong>, asisten virtual Anda untuk memantau dan menganalisis data kesehatan.</p>
+                  <p>Saya dapat membantu Anda dengan:</p>
+                  <ul class="ai-capabilities-list">
+                    <li>📊 Analisis data vital signs real-time</li>
+                    <li>❤️ Monitoring detak jantung dan suhu tubuh</li>
+                    <li>💡 Rekomendasi kesehatan berbasis data</li>
+                    <li>🔍 Informasi medis dasar</li>
+                  </ul>
+                  <p>Tanyakan apa saja tentang kondisi kesehatan Anda!</p>
+                </div>
+                <div class="message-meta">
+                  <span class="message-time" id="welcome-time">--:--</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div id="suggested-questions" class="suggested-questions">
-            <button class="suggest-btn">Bagaimana suhu tubuh saya?</button>
-            <button class="suggest-btn">Detak jantung saya normal?</button>
-            <button class="suggest-btn">Apa itu hipotermia?</button>
+          <!-- Suggested Questions -->
+          <div id="suggested-questions" class="ai-suggested-questions">
+            <div class="suggested-title">
+              <span class="material-symbols-outlined">lightbulb</span>
+              Pertanyaan Cepat
+            </div>
+            <div class="suggested-grid">
+              <button class="suggest-btn-modern" data-question="suhu">
+                <span class="material-symbols-outlined">thermostat</span>
+                <span>Bagaimana suhu tubuh saya?</span>
+              </button>
+              <button class="suggest-btn-modern" data-question="jantung">
+                <span class="material-symbols-outlined">favorite</span>
+                <span>Detak jantung saya normal?</span>
+              </button>
+              <button class="suggest-btn-modern" data-question="hipotermia">
+                <span class="material-symbols-outlined">ac_unit</span>
+                <span>Apa itu hipotermia?</span>
+              </button>
+              <button class="suggest-btn-modern" data-question="demam">
+                <span class="material-symbols-outlined">local_fire_department</span>
+                <span>Bagaimana menangani demam?</span>
+              </button>
+            </div>
           </div>
 
-          <form id="chat-form" class="chat-form">
-            <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." required>
-            <button type="submit" id="send-btn">
-              <span class="material-symbols-outlined">send</span>
-            </button>
-          </form>
+          <!-- Chat Input Area -->
+          <div class="ai-chat-input-wrapper">
+            <form id="chat-form" class="ai-chat-form">
+              <div class="chat-input-container">
+                <button type="button" class="chat-action-btn" title="Attach File" disabled>
+                  <span class="material-symbols-outlined">attach_file</span>
+                </button>
+                <input
+                  type="text"
+                  id="chat-input"
+                  class="ai-chat-input"
+                  placeholder="Ketik pertanyaan Anda di sini..."
+                  autocomplete="off"
+                  required
+                />
+                <button type="button" class="chat-action-btn" id="voice-btn" title="Voice Input" disabled>
+                  <span class="material-symbols-outlined">mic</span>
+                </button>
+                <button type="submit" id="send-btn" class="ai-send-btn" title="Send Message">
+                  <span class="material-symbols-outlined">send</span>
+                </button>
+              </div>
+            </form>
+            <div class="ai-chat-footer">
+              <span class="footer-text">
+                <span class="material-symbols-outlined">info</span>
+                AI dapat membuat kesalahan. Konsultasikan dengan profesional untuk keputusan medis.
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1356,283 +1921,348 @@
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════
-           PAGE: PROFIL - MODERN REDESIGN 2025
+           PAGE: PROFIL - PROFESSIONAL MODERN REDESIGN
            ═══════════════════════════════════════════════════════════════ -->
       <div id="page-profil" class="page">
+        <div class="profile-modern-container">
 
-        <!-- Profile Hero Section -->
-        <div class="profile-hero">
-          <div class="profile-hero-bg"></div>
-          <div class="profile-hero-content">
-            <div class="profile-avatar-wrapper">
-              <div class="profile-avatar-ring">
-                <div class="profile-avatar-main">
-                  <img id="profil-img" src="" alt="Foto Profil" onload="this.style.display='block'; document.getElementById('profil-default-icon').style.display='none';">
+          <!-- Profile Hero with Cover -->
+          <div class="profile-hero-modern">
+            <div class="profile-cover">
+              <div class="profile-cover-gradient"></div>
+              <div class="profile-cover-pattern"></div>
+            </div>
+            <div class="profile-header-content">
+              <div class="profile-avatar-section">
+                <div class="profile-avatar-large">
+                  <img id="profil-img" src="" alt="Profile" onload="this.style.display='block'; document.getElementById('profil-default-icon').style.display='none';">
                   <span class="material-symbols-outlined" id="profil-default-icon">person</span>
+                  <div class="profile-avatar-badge">
+                    <span class="material-symbols-outlined">verified</span>
+                  </div>
+                </div>
+                <div class="profile-info">
+                  <h1 id="profil-nama" class="profile-display-name">Loading...</h1>
+                  <p id="profil-email" class="profile-user-email">loading@example.com</p>
+                  <div class="profile-meta">
+                    <span class="profile-meta-item">
+                      <span class="material-symbols-outlined">calendar_today</span>
+                      Bergabung <span id="profile-member-since">2025</span>
+                    </span>
+                    <span class="profile-meta-item">
+                      <span class="material-symbols-outlined">badge</span>
+                      ID: <span id="profile-user-id">CR-XXXX</span>
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div class="profile-status-badge">
-                <span class="material-symbols-outlined">verified</span>
-              </div>
-            </div>
-            <h1 id="profil-nama" class="profile-name">Memuat...</h1>
-            <p id="profil-email" class="profile-email">Memuat...</p>
-            <div class="profile-badges">
-              <span class="profile-badge badge-premium">
-                <span class="material-symbols-outlined">workspace_premium</span>
-                Premium
-              </span>
-              <span class="profile-badge badge-active">
-                <span class="material-symbols-outlined">check_circle</span>
-                Aktif
-              </span>
             </div>
           </div>
-        </div>
 
-        <!-- Profile Stats Section -->
-        <div class="profile-stats-container">
-          <div class="profile-stats-grid">
-            <div class="profile-stat-card">
-              <div class="stat-icon-wrapper stat-icon-red">
+          <!-- Stats Overview Cards -->
+          <div class="profile-stats-overview">
+            <div class="stat-card-modern stat-card-pulse">
+              <div class="stat-card-icon">
                 <span class="material-symbols-outlined">favorite</span>
               </div>
-              <div class="stat-info">
-                <span class="stat-number" id="profile-stat-heartrate">--</span>
-                <span class="stat-label">Avg BPM</span>
+              <div class="stat-card-content">
+                <span class="stat-card-value" id="profile-stat-heartrate">--</span>
+                <span class="stat-card-label">Rata-rata BPM</span>
+                <span class="stat-card-trend positive">
+                  <span class="material-symbols-outlined">trending_up</span>
+                  Normal
+                </span>
               </div>
             </div>
-            <div class="profile-stat-card">
-              <div class="stat-icon-wrapper stat-icon-orange">
+            <div class="stat-card-modern stat-card-temp">
+              <div class="stat-card-icon">
                 <span class="material-symbols-outlined">thermostat</span>
               </div>
-              <div class="stat-info">
-                <span class="stat-number" id="profile-stat-temp">--</span>
-                <span class="stat-label">Suhu °C</span>
+              <div class="stat-card-content">
+                <span class="stat-card-value" id="profile-stat-temp">--</span>
+                <span class="stat-card-label">Suhu Tubuh (°C)</span>
+                <span class="stat-card-trend positive">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  Normal
+                </span>
               </div>
             </div>
-            <div class="profile-stat-card">
-              <div class="stat-icon-wrapper stat-icon-blue">
-                <span class="material-symbols-outlined">calendar_month</span>
+            <div class="stat-card-modern stat-card-days">
+              <div class="stat-card-icon">
+                <span class="material-symbols-outlined">event</span>
               </div>
-              <div class="stat-info">
-                <span class="stat-number" id="profile-stat-days">30</span>
-                <span class="stat-label">Hari Aktif</span>
-              </div>
-            </div>
-            <div class="profile-stat-card">
-              <div class="stat-icon-wrapper stat-icon-green">
-                <span class="material-symbols-outlined">monitoring</span>
-              </div>
-              <div class="stat-info">
-                <span class="stat-number" id="profile-stat-records">156</span>
-                <span class="stat-label">Data Points</span>
+              <div class="stat-card-content">
+                <span class="stat-card-value" id="profile-stat-days">--</span>
+                <span class="stat-card-label">Hari Aktif</span>
+                <span class="stat-card-trend">
+                  <span class="material-symbols-outlined">local_fire_department</span>
+                  Keep it up!
+                </span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Profile Content Container -->
-        <div class="profile-content-container">
-
-          <!-- Health Score Card -->
-          <div class="profile-health-score-card">
-            <div class="health-score-header">
-              <div class="health-score-title">
-                <span class="material-symbols-outlined">health_and_safety</span>
-                <span>Health Score</span>
+            <div class="stat-card-modern stat-card-data">
+              <div class="stat-card-icon">
+                <span class="material-symbols-outlined">analytics</span>
               </div>
-              <span class="health-score-badge">Excellent</span>
-            </div>
-            <div class="health-score-body">
-              <div class="health-score-circle">
-                <svg viewBox="0 0 100 100">
-                  <defs>
-                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style="stop-color:#FF8400;stop-opacity:1" />
-                      <stop offset="100%" style="stop-color:#007BFF;stop-opacity:1" />
-                    </linearGradient>
-                  </defs>
-                  <circle class="score-bg" cx="50" cy="50" r="42"/>
-                  <circle class="score-progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="40" stroke="url(#scoreGradient)"/>
-                <div class="score-value">
-                  <span class="score-number">85</span>
-                  <span class="score-label">/ 100</span>
-                </div>
-              </div>
-              <div class="health-score-details">
-                <div class="score-detail-item">
-                  <span class="detail-label">Detak Jantung</span>
-                  <div class="detail-bar">
-                    <div class="detail-progress" style="width: 90%;"></div>
-                  </div>
-                  <span class="detail-value">Excellent</span>
-                </div>
-                <div class="score-detail-item">
-                  <span class="detail-label">Suhu Tubuh</span>
-                  <div class="detail-bar">
-                    <div class="detail-progress" style="width: 85%;"></div>
-                  </div>
-                  <span class="detail-value">Normal</span>
-                </div>
-                <div class="score-detail-item">
-                  <span class="detail-label">SpO2 Level</span>
-                  <div class="detail-bar">
-                    <div class="detail-progress" style="width: 95%;"></div>
-                  </div>
-                  <span class="detail-value">Optimal</span>
-                </div>
+              <div class="stat-card-content">
+                <span class="stat-card-value" id="profile-stat-records">--</span>
+                <span class="stat-card-label">Data Tercatat</span>
+                <span class="stat-card-trend">
+                  <span class="material-symbols-outlined">storage</span>
+                  Records
+                </span>
               </div>
             </div>
           </div>
 
-          <!-- Device Info Card -->
-          <div class="profile-section-card">
-            <div class="section-card-header">
-              <div class="section-card-title">
-                <span class="material-symbols-outlined">bluetooth_connected</span>
-                <span>Perangkat Terhubung</span>
+          <!-- Main Content Grid -->
+          <div class="profile-content-grid">
+
+            <!-- Left Column -->
+            <div class="profile-left-column">
+
+              <!-- Health Summary Card -->
+              <div class="profile-card">
+                <div class="profile-card-header">
+                  <div class="card-header-title">
+                    <span class="material-symbols-outlined">health_and_safety</span>
+                    <span>Ringkasan Kesehatan</span>
+                  </div>
+                  <span class="health-status-badge status-excellent">Baik</span>
+                </div>
+                <div class="profile-card-body">
+                  <div class="health-metrics">
+                    <div class="health-metric-item">
+                      <div class="metric-header">
+                        <span class="metric-label">Detak Jantung</span>
+                        <span class="metric-value">Normal</span>
+                      </div>
+                      <div class="metric-progress-bar">
+                        <div class="metric-progress" style="width: 85%; background: linear-gradient(90deg, #ef4444, #f87171);"></div>
+                      </div>
+                    </div>
+                    <div class="health-metric-item">
+                      <div class="metric-header">
+                        <span class="metric-label">Suhu Tubuh</span>
+                        <span class="metric-value">Stabil</span>
+                      </div>
+                      <div class="metric-progress-bar">
+                        <div class="metric-progress" style="width: 90%; background: linear-gradient(90deg, #FF8400, #ffb347);"></div>
+                      </div>
+                    </div>
+                    <div class="health-metric-item">
+                      <div class="metric-header">
+                        <span class="metric-label">Aktivitas</span>
+                        <span class="metric-value">Aktif</span>
+                      </div>
+                      <div class="metric-progress-bar">
+                        <div class="metric-progress" style="width: 75%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <button class="section-card-action" data-navigate="perangkat">
-                <span class="material-symbols-outlined">settings</span>
+
+              <!-- Achievements Card -->
+              <div class="profile-card">
+                <div class="profile-card-header">
+                  <div class="card-header-title">
+                    <span class="material-symbols-outlined">emoji_events</span>
+                    <span>Pencapaian</span>
+                  </div>
+                </div>
+                <div class="profile-card-body">
+                  <div class="achievements-grid">
+                    <div class="achievement-item achievement-active">
+                      <span class="achievement-icon">🏆</span>
+                      <span class="achievement-label">7 Hari Berturut</span>
+                    </div>
+                    <div class="achievement-item achievement-active">
+                      <span class="achievement-icon">💪</span>
+                      <span class="achievement-label">Health Champion</span>
+                    </div>
+                    <div class="achievement-item achievement-active">
+                      <span class="achievement-icon">⭐</span>
+                      <span class="achievement-label">Data Master</span>
+                    </div>
+                    <div class="achievement-item achievement-locked">
+                      <span class="achievement-icon">🎯</span>
+                      <span class="achievement-label">30 Hari</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Device Card -->
+              <div class="profile-card">
+                <div class="profile-card-header">
+                  <div class="card-header-title">
+                    <span class="material-symbols-outlined">devices</span>
+                    <span>Perangkat Saya</span>
+                  </div>
+                  <button class="card-action-btn" data-navigate="perangkat">
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                </div>
+                <div class="profile-card-body">
+                  <div class="device-item-modern">
+                    <div class="device-icon-wrapper">
+                      <span class="material-symbols-outlined">watch</span>
+                    </div>
+                    <div class="device-info-wrapper">
+                      <span class="device-name-text" id="profile-device-name">CareRing ESP32</span>
+                      <span class="device-id-text" id="profile-device-id">Menunggu koneksi...</span>
+                    </div>
+                    <div class="device-status-badge online">
+                      <span class="status-dot-pulse"></span>
+                      Online
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Right Column -->
+            <div class="profile-right-column">
+
+              <!-- Settings Card -->
+              <div class="profile-card">
+                <div class="profile-card-header">
+                  <div class="card-header-title">
+                    <span class="material-symbols-outlined">tune</span>
+                    <span>Pengaturan</span>
+                  </div>
+                </div>
+                <div class="profile-card-body">
+                  <div class="settings-menu-modern">
+                    <button class="settings-menu-item">
+                      <div class="settings-menu-icon settings-icon-blue">
+                        <span class="material-symbols-outlined">person</span>
+                      </div>
+                      <div class="settings-menu-content">
+                        <span class="settings-menu-label">Edit Profil</span>
+                        <span class="settings-menu-desc">Nama, foto, dan bio</span>
+                      </div>
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                    <button class="settings-menu-item">
+                      <div class="settings-menu-icon settings-icon-orange">
+                        <span class="material-symbols-outlined">notifications</span>
+                      </div>
+                      <div class="settings-menu-content">
+                        <span class="settings-menu-label">Notifikasi</span>
+                        <span class="settings-menu-desc">Kelola pengingat</span>
+                      </div>
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                    <button class="settings-menu-item">
+                      <div class="settings-menu-icon settings-icon-purple">
+                        <span class="material-symbols-outlined">lock</span>
+                      </div>
+                      <div class="settings-menu-content">
+                        <span class="settings-menu-label">Privasi</span>
+                        <span class="settings-menu-desc">Keamanan akun</span>
+                      </div>
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                    <button class="settings-menu-item">
+                      <div class="settings-menu-icon settings-icon-green">
+                        <span class="material-symbols-outlined">language</span>
+                      </div>
+                      <div class="settings-menu-content">
+                        <span class="settings-menu-label">Bahasa</span>
+                        <span class="settings-menu-desc">Indonesia</span>
+                      </div>
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Support Card -->
+              <div class="profile-card">
+                <div class="profile-card-header">
+                  <div class="card-header-title">
+                    <span class="material-symbols-outlined">support_agent</span>
+                    <span>Bantuan</span>
+                  </div>
+                </div>
+                <div class="profile-card-body">
+                  <div class="settings-menu-modern">
+                    <button class="settings-menu-item">
+                      <div class="settings-menu-icon settings-icon-cyan">
+                        <span class="material-symbols-outlined">help_center</span>
+                      </div>
+                      <div class="settings-menu-content">
+                        <span class="settings-menu-label">Pusat Bantuan</span>
+                        <span class="settings-menu-desc">FAQ & Panduan</span>
+                      </div>
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                    <button class="settings-menu-item">
+                      <div class="settings-menu-icon settings-icon-green">
+                        <span class="material-symbols-outlined">forum</span>
+                      </div>
+                      <div class="settings-menu-content">
+                        <span class="settings-menu-label">Hubungi Kami</span>
+                        <span class="settings-menu-desc">Chat support</span>
+                      </div>
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                    <button class="settings-menu-item">
+                      <div class="settings-menu-icon settings-icon-yellow">
+                        <span class="material-symbols-outlined">star</span>
+                      </div>
+                      <div class="settings-menu-content">
+                        <span class="settings-menu-label">Beri Rating</span>
+                        <span class="settings-menu-desc">Bantu kami berkembang</span>
+                      </div>
+                      <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- About Card -->
+              <div class="profile-card profile-about-card">
+                <div class="profile-card-body">
+                  <div class="about-info-grid">
+                    <div class="about-info-item">
+                      <span class="about-info-icon">
+                        <span class="material-symbols-outlined">info</span>
+                      </span>
+                      <div class="about-info-text">
+                        <span class="about-info-label">Versi</span>
+                        <span class="about-info-value">v2.0.0</span>
+                      </div>
+                    </div>
+                    <div class="about-info-item">
+                      <span class="about-info-icon">
+                        <span class="material-symbols-outlined">code</span>
+                      </span>
+                      <div class="about-info-text">
+                        <span class="about-info-label">Platform</span>
+                        <span class="about-info-value">Web PWA</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Logout Button -->
+              <button class="profile-logout-modern" id="btn-logout">
+                <span class="material-symbols-outlined">logout</span>
+                <span>Keluar dari Akun</span>
               </button>
-            </div>
-            <div class="device-info-content">
-              <div class="device-info-row">
-                <div class="device-icon">
-                  <span class="material-symbols-outlined">watch</span>
-                </div>
-                <div class="device-details">
-                  <span class="device-name" id="profile-device-name">CareRing ESP32</span>
-                  <span class="device-id" id="profile-device-id">MAC: XX:XX:XX:XX</span>
-                </div>
-                <div class="device-status online">
-                  <span class="status-dot"></span>
-                  <span>Online</span>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Account Settings Card -->
-          <div class="profile-section-card">
-            <div class="section-card-header">
-              <div class="section-card-title">
-                <span class="material-symbols-outlined">settings</span>
-                <span>Pengaturan Akun</span>
-              </div>
             </div>
-            <div class="settings-list">
-              <div class="settings-item">
-                <div class="settings-item-icon">
-                  <span class="material-symbols-outlined">person</span>
-                </div>
-                <div class="settings-item-content">
-                  <span class="settings-item-label">Edit Profil</span>
-                  <span class="settings-item-desc">Ubah nama dan foto profil</span>
-                </div>
-                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
-              </div>
-              <div class="settings-item">
-                <div class="settings-item-icon">
-                  <span class="material-symbols-outlined">notifications</span>
-                </div>
-                <div class="settings-item-content">
-                  <span class="settings-item-label">Notifikasi</span>
-                  <span class="settings-item-desc">Kelola pengingat kesehatan</span>
-                </div>
-                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
-              </div>
-              <div class="settings-item">
-                <div class="settings-item-icon">
-                  <span class="material-symbols-outlined">lock</span>
-                </div>
-                <div class="settings-item-content">
-                  <span class="settings-item-label">Keamanan & Privasi</span>
-                  <span class="settings-item-desc">Password dan data pribadi</span>
-                </div>
-                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
-              </div>
-              <div class="settings-item">
-                <div class="settings-item-icon">
-                  <span class="material-symbols-outlined">language</span>
-                </div>
-                <div class="settings-item-content">
-                  <span class="settings-item-label">Bahasa</span>
-                  <span class="settings-item-desc">Indonesia</span>
-                </div>
-                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Support Card -->
-          <div class="profile-section-card">
-            <div class="section-card-header">
-              <div class="section-card-title">
-                <span class="material-symbols-outlined">support</span>
-                <span>Bantuan & Dukungan</span>
-              </div>
-            </div>
-            <div class="settings-list">
-              <div class="settings-item">
-                <div class="settings-item-icon icon-blue">
-                  <span class="material-symbols-outlined">help</span>
-                </div>
-                <div class="settings-item-content">
-                  <span class="settings-item-label">Pusat Bantuan</span>
-                  <span class="settings-item-desc">FAQ dan panduan penggunaan</span>
-                </div>
-                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
-              </div>
-              <div class="settings-item">
-                <div class="settings-item-icon icon-green">
-                  <span class="material-symbols-outlined">chat</span>
-                </div>
-                <div class="settings-item-content">
-                  <span class="settings-item-label">Hubungi Kami</span>
-                  <span class="settings-item-desc">Chat dengan tim support</span>
-                </div>
-                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
-              </div>
-              <div class="settings-item">
-                <div class="settings-item-icon icon-purple">
-                  <span class="material-symbols-outlined">star</span>
-                </div>
-                <div class="settings-item-content">
-                  <span class="settings-item-label">Beri Rating</span>
-                  <span class="settings-item-desc">Bantu kami berkembang</span>
-                </div>
-                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
-              </div>
-            </div>
           </div>
-
-          <!-- Account Info Card -->
-          <div class="profile-account-info">
-            <div class="account-info-item">
-              <span class="account-info-label">Member Sejak</span>
-              <span class="account-info-value" id="profile-member-since">Januari 2025</span>
-            </div>
-            <div class="account-info-item">
-              <span class="account-info-label">Versi Aplikasi</span>
-              <span class="account-info-value">v2.0.0</span>
-            </div>
-            <div class="account-info-item">
-              <span class="account-info-label">ID Pengguna</span>
-              <span class="account-info-value" id="profile-user-id">CR-XXXXXX</span>
-            </div>
-          </div>
-
-          <!-- Logout Button -->
-          <button class="profile-logout-btn" id="btn-logout">
-            <span class="material-symbols-outlined">logout</span>
-            <span>Keluar dari Akun</span>
-          </button>
 
           <!-- Footer -->
-          <div class="profile-footer">
-            <p>CareRing Healthcare © 2025</p>
+          <div class="profile-footer-modern">
+            <p>CareRing Healthcare © 2025 • Semua hak dilindungi</p>
             <div class="footer-links">
               <a href="#">Syarat & Ketentuan</a>
               <span>•</span>
@@ -1845,15 +2475,21 @@
           btnBLEConnect.addEventListener('click', async () => {
             try {
               // Show progress
-              bleProgress.classList.add('show');
-              bleMessage.classList.remove('show');
-              btnBLEConnect.disabled = true;
-              btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">hourglass_empty</span> Menghubungkan...';
+              if (bleProgress) bleProgress.classList.add('show');
+              if (bleMessage) bleMessage.classList.remove('show');
 
-              // Update device name prefix if needed
-              const deviceName = deviceNameInput.value.trim();
-              if (deviceName) {
-                console.log('🔍 Mencari perangkat:', deviceName);
+              // Disable button during connection
+              if (btnBLEConnect) {
+                btnBLEConnect.disabled = true;
+                btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">hourglass_empty</span> Menghubungkan...';
+              }
+
+              // Update device name prefix if needed (optional field)
+              if (deviceNameInput && deviceNameInput.value) {
+                const deviceName = deviceNameInput.value.trim();
+                if (deviceName) {
+                  console.log('🔍 Mencari perangkat:', deviceName);
+                }
               }
 
               // Call BLE connect from ble-handler.js
@@ -1861,14 +2497,20 @@
                 await window.BLEHandler.connect();
 
                 // Success!
-                bleProgress.classList.remove('show');
-                bleMessage.className = 'ble-message show success';
-                bleMessage.textContent = '✅ Berhasil terhubung! Data akan mulai disinkronkan.';
-                btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Terhubung';
+                if (bleProgress) bleProgress.classList.remove('show');
+
+                if (bleMessage) {
+                  bleMessage.className = 'ble-message show success';
+                  bleMessage.textContent = '✅ Berhasil terhubung! Data akan mulai disinkronkan.';
+                }
+
+                if (btnBLEConnect) {
+                  btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Terhubung';
+                }
 
                 // Close modal after 2 seconds
                 setTimeout(() => {
-                  modal.classList.remove('show');
+                  if (modal) modal.classList.remove('show');
                   updateDeviceUI();
                 }, 2000);
 
@@ -1879,11 +2521,19 @@
             } catch (error) {
               console.error('❌ Koneksi gagal:', error);
 
-              bleProgress.classList.remove('show');
-              bleMessage.className = 'ble-message show error';
-              bleMessage.textContent = error.message || 'Gagal menghubungkan. Pastikan Bluetooth aktif dan perangkat dalam mode pairing.';
-              btnBLEConnect.disabled = false;
-              btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">bluetooth_searching</span> Coba Lagi';
+              // Hide progress and show error message
+              if (bleProgress) bleProgress.classList.remove('show');
+
+              if (bleMessage) {
+                bleMessage.className = 'ble-message show error';
+                bleMessage.textContent = error.message || 'Gagal menghubungkan. Pastikan Bluetooth aktif dan perangkat dalam mode pairing.';
+              }
+
+              // Re-enable button
+              if (btnBLEConnect) {
+                btnBLEConnect.disabled = false;
+                btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">bluetooth_searching</span> Coba Lagi';
+              }
             }
           });
         }
@@ -2200,6 +2850,138 @@
     })();
   </script>
 
+  <!-- News Page Functionality -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Wait for DOM to be ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNewsPage);
+      } else {
+        initNewsPage();
+      }
+
+      function initNewsPage() {
+        // Category Filter Functionality
+        const categoryButtons = document.querySelectorAll('.news-category-btn');
+        const newsCards = document.querySelectorAll('.news-card');
+
+        categoryButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+
+            // Update active button
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter news cards with smooth animation
+            newsCards.forEach((card, index) => {
+              const cardCategory = card.querySelector('.news-card-category');
+              const cardCategoryClass = cardCategory ?
+                Array.from(cardCategory.classList).find(cls =>
+                  ['health', 'technology', 'research', 'tips'].includes(cls)
+                ) : null;
+
+              if (category === 'all' || cardCategoryClass === category) {
+                // Reset animation and show card
+                card.style.animation = 'none';
+                setTimeout(() => {
+                  card.style.display = 'flex';
+                  card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+                }, 10);
+              } else {
+                // Hide card with fade out
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                  card.style.display = 'none';
+                }, 300);
+              }
+            });
+
+            console.log(`📰 News filtered by category: ${category}`);
+          });
+        });
+
+        // Bookmark Toggle Functionality
+        const bookmarkButtons = document.querySelectorAll('.news-card-bookmark');
+
+        bookmarkButtons.forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent card click event
+
+            this.classList.toggle('active');
+            const icon = this.querySelector('.material-symbols-outlined');
+
+            if (this.classList.contains('active')) {
+              // Bookmark added
+              icon.style.fontVariationSettings = '"FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24';
+              console.log('🔖 Article bookmarked');
+
+              // Optional: Add to localStorage or backend
+              // saveBookmark(articleId);
+            } else {
+              // Bookmark removed
+              icon.style.fontVariationSettings = '"FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24';
+              console.log('🔖 Bookmark removed');
+
+              // Optional: Remove from localStorage or backend
+              // removeBookmark(articleId);
+            }
+          });
+        });
+
+        // Featured Article Click
+        const featuredArticle = document.querySelector('.news-featured');
+        if (featuredArticle) {
+          featuredArticle.addEventListener('click', function() {
+            console.log('📰 Featured article clicked');
+            // Add navigation to article detail page here
+            // window.location.href = '/article/featured';
+          });
+        }
+
+        // News Card Click (except bookmark button)
+        newsCards.forEach(card => {
+          card.addEventListener('click', function(e) {
+            // Don't trigger if clicking bookmark button
+            if (e.target.closest('.news-card-bookmark')) {
+              return;
+            }
+
+            const title = this.querySelector('.news-card-title')?.textContent;
+            console.log(`📰 Article clicked: ${title}`);
+            // Add navigation to article detail page here
+            // const articleId = this.getAttribute('data-article-id');
+            // window.location.href = `/article/${articleId}`;
+          });
+        });
+
+        // Load More Button
+        const loadMoreBtn = document.querySelector('.load-more-btn');
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', function() {
+            this.disabled = true;
+            this.innerHTML = '<span>Memuat...</span>';
+
+            // Simulate loading more articles
+            setTimeout(() => {
+              console.log('📰 Loading more articles...');
+              // Add logic to fetch and append more articles here
+              // fetchMoreArticles().then(articles => appendArticles(articles));
+
+              this.disabled = false;
+              this.innerHTML = '<span>Muat Lebih Banyak</span><span class="material-symbols-outlined">expand_more</span>';
+            }, 1000);
+          });
+        }
+
+        console.log('✅ News page functionality initialized');
+      }
+    })();
+  </script>
+
   <!-- Service Worker - DISABLED untuk debugging -->
   <script>
     // Service Worker temporarily disabled to fix loading issues
@@ -2216,6 +2998,250 @@
     //       });
     //   });
     // }
+  </script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('✅ Service Worker registered successfully:', registration.scope);
+
+            // Check for updates periodically
+            setInterval(() => {
+              registration.update();
+            }, 60000); // Check every minute
+
+            // Handle updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // New service worker available, show update notification
+                  showUpdateNotification();
+                }
+              });
+            });
+          })
+          .catch((error) => {
+            console.error('❌ Service Worker registration failed:', error);
+          });
+      });
+
+      // Show update notification
+      function showUpdateNotification() {
+        const updateBanner = document.createElement('div');
+        updateBanner.style.cssText = `
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: linear-gradient(135deg, #FF8400 0%, #FF6B00 100%);
+          color: white;
+          padding: 16px 24px;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(255, 132, 0, 0.3);
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          font-family: 'Poppins', sans-serif;
+          animation: slideDown 0.3s ease;
+        `;
+        updateBanner.innerHTML = `
+          <span style="font-size: 14px; font-weight: 500;">Update tersedia!</span>
+          <button onclick="window.location.reload()" style="
+            background: white;
+            color: #FF8400;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+          ">Perbarui Sekarang</button>
+        `;
+        document.body.appendChild(updateBanner);
+
+        setTimeout(() => {
+          updateBanner.remove();
+        }, 10000);
+      }
+    }
+
+    // PWA Install Prompt
+    let deferredPrompt;
+    const installButton = document.createElement('button');
+    installButton.id = 'pwa-install-btn';
+    installButton.style.cssText = `
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #FF8400 0%, #FF6B00 100%);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 4px 16px rgba(255, 132, 0, 0.3);
+      cursor: pointer;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      font-family: 'Material Symbols Outlined';
+    `;
+    installButton.innerHTML = 'download';
+    installButton.title = 'Install CARERING App';
+
+    // Hover effect
+    installButton.addEventListener('mouseenter', () => {
+      installButton.style.transform = 'scale(1.1)';
+      installButton.style.boxShadow = '0 6px 24px rgba(255, 132, 0, 0.4)';
+    });
+
+    installButton.addEventListener('mouseleave', () => {
+      installButton.style.transform = 'scale(1)';
+      installButton.style.boxShadow = '0 4px 16px rgba(255, 132, 0, 0.3)';
+    });
+
+    document.body.appendChild(installButton);
+
+    // Capture the install prompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('📥 PWA Install prompt available');
+      e.preventDefault();
+      deferredPrompt = e;
+
+      // Show install button
+      installButton.style.display = 'flex';
+
+      // Animate entrance
+      installButton.style.animation = 'bounceIn 0.5s ease';
+    });
+
+    // Handle install button click
+    installButton.addEventListener('click', async () => {
+      if (!deferredPrompt) {
+        return;
+      }
+
+      // Show install prompt
+      deferredPrompt.prompt();
+
+      // Wait for user response
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to install prompt: ${outcome}`);
+
+      if (outcome === 'accepted') {
+        console.log('✅ User accepted the install prompt');
+        showInstallSuccessMessage();
+      } else {
+        console.log('❌ User dismissed the install prompt');
+      }
+
+      // Clear the deferred prompt
+      deferredPrompt = null;
+      installButton.style.display = 'none';
+    });
+
+    // Handle successful installation
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('✅ CARERING PWA installed successfully');
+      showInstallSuccessMessage();
+      installButton.style.display = 'none';
+    });
+
+    // Show success message
+    function showInstallSuccessMessage() {
+      const successMessage = document.createElement('div');
+      successMessage.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+        z-index: 10001;
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
+        animation: fadeIn 0.3s ease;
+      `;
+      successMessage.innerHTML = `
+        <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
+        <h3 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 20px;">Berhasil Diinstall!</h3>
+        <p style="margin: 0; color: #64748b; font-size: 14px;">CARERING siap digunakan sebagai aplikasi</p>
+      `;
+      document.body.appendChild(successMessage);
+
+      // Add backdrop
+      const backdrop = document.createElement('div');
+      backdrop.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 10000;
+        animation: fadeIn 0.3s ease;
+      `;
+      document.body.appendChild(backdrop);
+
+      setTimeout(() => {
+        successMessage.remove();
+        backdrop.remove();
+      }, 3000);
+    }
+
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true) {
+      console.log('✅ App is running in standalone mode (PWA installed)');
+      installButton.style.display = 'none';
+    }
+
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -100%);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      @keyframes bounceIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.3);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 
 </body>

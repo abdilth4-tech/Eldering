@@ -1,12 +1,16 @@
 {
-  "name": "CARERING Healthcare",
+  "name": "CARERING Healthcare - Monitor Kesehatan Real-time",
   "short_name": "CARERING",
-  "description": "Aplikasi Monitoring Kesehatan CARERING dengan AI Assistant",
-  "start_url": "/index.html",
+  "description": "Aplikasi Monitoring Kesehatan Real-time dengan AI Assistant, BLE Integration, dan Health Analytics",
+  "start_url": "/app.html",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#F4F7FA",
-  "theme_color": "#4a90e2",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FF8400",
   "orientation": "portrait-primary",
+  "categories": ["health", "medical", "lifestyle"],
+  "lang": "id-ID",
+  "dir": "ltr",
   "icons": [
     {
       "src": "/images/ai-chat.png",
@@ -17,12 +21,53 @@
     {
       "src": "/images/icon-192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "/images/icon-512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-wide.png",
+      "type": "image/png",
+      "sizes": "1280x720",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/images/screenshot-narrow.png",
+      "type": "image/png",
+      "sizes": "750x1334",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Home",
+      "description": "Buka dashboard utama",
+      "url": "/app.html",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "AI Chat",
+      "short_name": "AI",
+      "description": "Chat dengan AI Assistant",
+      "url": "/app.html#ai-chat",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Profile",
+      "short_name": "Profil",
+      "description": "Lihat profil dan statistik",
+      "url": "/app.html#profil",
+      "icons": [{ "src": "/images/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
