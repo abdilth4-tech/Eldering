@@ -8,8 +8,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="style.css">
+
+  <!-- PWA & Icons -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#FF9966">
+  <link rel="icon" type="image/png" href="images/ai-chat.png">
+  <link rel="apple-touch-icon" href="images/ai-chat.png">
+  <meta name="theme-color" content="#4a90e2">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -386,6 +391,173 @@
         inset -3px -3px 6px rgba(255, 255, 255, 0.4);
       border-left: 4px solid #4a90e2;
     }
+
+    /* Enhanced BLE Modal - Guide Section */
+    .ble-guide-section {
+      margin-bottom: 20px;
+    }
+
+    .ble-section-title {
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #333;
+      margin: 0 0 12px 0;
+    }
+
+    .ble-checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ble-checklist-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      border-left: 3px solid #4a90e2;
+    }
+
+    .ble-checklist-item .check-icon {
+      font-size: 24px;
+      color: #4a90e2;
+      flex-shrink: 0;
+    }
+
+    .ble-checklist-item strong {
+      display: block;
+      color: #333;
+      font-size: 0.95em;
+      margin-bottom: 4px;
+    }
+
+    .ble-checklist-item p {
+      margin: 0;
+      color: #666;
+      font-size: 0.85em;
+      line-height: 1.4;
+    }
+
+    /* Info Box */
+    .ble-info-box {
+      display: flex;
+      gap: 12px;
+      padding: 14px;
+      background: rgba(74, 144, 226, 0.1);
+      border-radius: 12px;
+      border-left: 3px solid #4a90e2;
+      margin-bottom: 20px;
+    }
+
+    .ble-info-box .material-symbols-outlined {
+      font-size: 24px;
+      color: #4a90e2;
+      flex-shrink: 0;
+    }
+
+    .ble-info-box strong {
+      display: block;
+      color: #333;
+      font-size: 0.95em;
+      margin-bottom: 4px;
+    }
+
+    .ble-info-box p {
+      margin: 0;
+      color: #555;
+      font-size: 0.85em;
+      line-height: 1.5;
+    }
+
+    /* Troubleshooting Section */
+    .ble-troubleshooting {
+      margin-top: 20px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      padding-top: 16px;
+    }
+
+    .ble-troubleshooting summary {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #666;
+      font-size: 0.9em;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .ble-troubleshooting summary:hover {
+      background: rgba(255, 255, 255, 0.5);
+      color: #333;
+    }
+
+    .ble-troubleshooting summary .material-symbols-outlined {
+      font-size: 20px;
+      color: #F39C12;
+    }
+
+    .ble-troubleshooting[open] summary {
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .troubleshooting-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trouble-item {
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      border-left: 3px solid #F39C12;
+    }
+
+    .trouble-item strong {
+      display: block;
+      color: #333;
+      font-size: 0.9em;
+      margin-bottom: 4px;
+    }
+
+    .trouble-item p {
+      margin: 0;
+      color: #666;
+      font-size: 0.85em;
+      line-height: 1.4;
+    }
+
+    /* Update modal content untuk scroll */
+    .ble-modal-content {
+      max-height: 90vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(74, 144, 226, 0.3) transparent;
+    }
+
+    .ble-modal-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .ble-modal-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .ble-modal-content::-webkit-scrollbar-thumb {
+      background: rgba(74, 144, 226, 0.3);
+      border-radius: 10px;
+    }
+
+    .ble-modal-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(74, 144, 226, 0.5);
+    }
   </style>
 </head>
 <body>
@@ -396,8 +568,11 @@
          SHARED HEADER (Persisten di semua pages)
          ═══════════════════════════════════════════════════════════════ -->
     <div class="app-header">
-        <div class="logo" style="cursor: pointer;" data-navigate="home">
-            <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+        <div class="logo-container" style="cursor: pointer;" data-navigate="home">
+            <img src="images/ai-chat.png" alt="CareRing Logo" class="app-logo">
+            <div class="logo-text">
+                <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+            </div>
         </div>
 
         <div class="profile-icon" data-navigate="profil">
@@ -563,7 +738,7 @@
         </div>
 
         <!-- ═══════════════════════════════════════════════════════════════
-             DEVICE STATUS - MODERN CARD
+             DEVICE STATUS - COMPACT MINIMAL CARD
              ═══════════════════════════════════════════════════════════════ -->
         <div class="device-status-section">
             <div class="device-status-card">
@@ -572,23 +747,13 @@
                         <span class="material-symbols-outlined">bluetooth</span>
                     </div>
                     <div class="device-status-info">
-                        <p class="device-status-label">Connected Device</p>
+                        <p class="device-status-label">Device</p>
                         <h3 class="device-status-name" id="home-device-name">Mencari perangkat...</h3>
                     </div>
                     <span id="home-device-status" class="status-indicator status-offline">
                         <span class="status-dot"></span>
                         <span class="status-text">Offline</span>
                     </span>
-                </div>
-                <div class="device-status-details">
-                    <div class="device-detail-item">
-                        <span class="device-detail-label">Device ID</span>
-                        <span class="device-detail-value" id="home-device-id">-</span>
-                    </div>
-                    <div class="device-detail-item">
-                        <span class="device-detail-label">Connection</span>
-                        <span class="device-detail-value">Bluetooth 5.0</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -650,51 +815,195 @@
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════
-           PAGE: NEWS
+           PAGE: NEWS - MODERN REDESIGN
            ═══════════════════════════════════════════════════════════════ -->
       <div id="page-news" class="page container">
-        <div class="news-banner">
-          <img src="https://picsum.photos/600/300?grayscale" alt="Hot News" />
-          <div class="news-banner-overlay">
-            <h2>Trending Today</h2>
-            <p>Update terbaru dunia health & AI</p>
-          </div>
+
+        <!-- News Header -->
+        <div class="news-header">
+          <h2 class="news-main-title">Berita & Artikel</h2>
+          <p class="news-subtitle">Update terkini seputar kesehatan dan teknologi</p>
         </div>
 
-        <h2 class="page-title">Latest News</h2>
-
-        <div class="news-filter">
-          <span class="chip active" onclick="filterNews('all', this)">All</span>
-          <span class="chip" onclick="filterNews('Community', this)">Community</span>
-          <span class="chip" onclick="filterNews('Health', this)">Health</span>
-          <span class="chip" onclick="filterNews('Technology', this)">Technology</span>
-        </div>
-
-        <div class="news-list-container" id="news-container">
-          <p class="loading-text">Memuat berita terbaru...</p>
-        </div>
-
-        <!-- News Modal -->
-        <div id="newsModal" class="modal-overlay" onclick="closeModal(event)" style="display: none;">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button class="btn-back" onclick="closeModalDirect()">
-                <span class="material-symbols-outlined">arrow_back</span>
-              </button>
-            </div>
-            <img id="modalImg" src="" class="modal-img" onerror="this.src='https://picsum.photos/600/400?blur'">
-            <div class="modal-body">
-              <h2 id="modalTitle" class="modal-title">Loading...</h2>
-              <div class="modal-meta">
-                <span id="modalCategory" class="modal-category-badge">CATEGORY</span>
-                <span class="modal-time">
-                  <span class="material-symbols-outlined" style="font-size:16px;">schedule</span>
-                  <span id="modalDate">Baru saja</span>
-                </span>
+        <!-- Featured Article -->
+        <div class="news-featured">
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=450&fit=crop" alt="Featured" class="featured-image">
+          <div class="featured-overlay">
+            <span class="featured-badge">FEATURED</span>
+            <h3 class="featured-title">Inovasi AI dalam Monitoring Kesehatan Real-Time</h3>
+            <p class="featured-excerpt">Teknologi kecerdasan buatan kini mampu mendeteksi anomali kesehatan lebih cepat dan akurat...</p>
+            <div class="featured-meta">
+              <img src="https://ui-avatars.com/api/?name=Dr+Sarah&background=4a90e2&color=fff&size=64" alt="Author" class="featured-author-img">
+              <div class="featured-author-info">
+                <span class="featured-author-name">Dr. Sarah Johnson</span>
+                <span class="featured-author-date">3 Jan 2025 • 5 min read</span>
               </div>
-              <p id="modalDesc" class="modal-desc">Memuat konten...</p>
             </div>
           </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="news-categories">
+          <button class="news-category-btn active" data-category="all">Semua</button>
+          <button class="news-category-btn" data-category="health">Kesehatan</button>
+          <button class="news-category-btn" data-category="technology">Teknologi</button>
+          <button class="news-category-btn" data-category="research">Riset</button>
+          <button class="news-category-btn" data-category="tips">Tips</button>
+        </div>
+
+        <!-- News Grid -->
+        <div class="news-grid">
+          <!-- Article 1 -->
+          <article class="news-card">
+            <div class="news-card-image">
+              <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop" alt="Article">
+              <span class="news-card-category health">Kesehatan</span>
+            </div>
+            <div class="news-card-content">
+              <h3 class="news-card-title">Pentingnya Monitoring SpO2 untuk Kesehatan Jantung</h3>
+              <p class="news-card-excerpt">Saturasi oksigen dalam darah menjadi indikator penting untuk mendeteksi masalah kardiovaskular sejak dini...</p>
+              <div class="news-card-footer">
+                <div class="news-card-author">
+                  <img src="https://ui-avatars.com/api/?name=Ahmad+Zaki&background=27AE60&color=fff&size=64" alt="Author">
+                  <div class="news-card-author-info">
+                    <span class="author-name">Ahmad Zaki</span>
+                    <span class="publish-date">2 hari lalu • 4 min</span>
+                  </div>
+                </div>
+                <button class="news-card-bookmark">
+                  <span class="material-symbols-outlined">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-card">
+            <div class="news-card-image">
+              <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400&h=250&fit=crop" alt="Article">
+              <span class="news-card-category technology">Teknologi</span>
+            </div>
+            <div class="news-card-content">
+              <h3 class="news-card-title">Sensor Wearable: Masa Depan Healthcare</h3>
+              <p class="news-card-excerpt">Perangkat wearable kini mampu memantau 10+ parameter kesehatan secara bersamaan dengan akurasi tinggi...</p>
+              <div class="news-card-footer">
+                <div class="news-card-author">
+                  <img src="https://ui-avatars.com/api/?name=Lisa+Chen&background=E74C3C&color=fff&size=64" alt="Author">
+                  <div class="news-card-author-info">
+                    <span class="author-name">Lisa Chen</span>
+                    <span class="publish-date">5 hari lalu • 6 min</span>
+                  </div>
+                </div>
+                <button class="news-card-bookmark">
+                  <span class="material-symbols-outlined">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-card">
+            <div class="news-card-image">
+              <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=250&fit=crop" alt="Article">
+              <span class="news-card-category research">Riset</span>
+            </div>
+            <div class="news-card-content">
+              <h3 class="news-card-title">Studi: Deteksi Dini Hipotermia pada Lansia</h3>
+              <p class="news-card-excerpt">Penelitian terbaru menunjukkan monitoring suhu tubuh kontinyu dapat mencegah 70% kasus hipotermia...</p>
+              <div class="news-card-footer">
+                <div class="news-card-author">
+                  <img src="https://ui-avatars.com/api/?name=Dr+Michael&background=9B59B6&color=fff&size=64" alt="Author">
+                  <div class="news-card-author-info">
+                    <span class="author-name">Dr. Michael Wong</span>
+                    <span class="publish-date">1 minggu lalu • 8 min</span>
+                  </div>
+                </div>
+                <button class="news-card-bookmark">
+                  <span class="material-symbols-outlined">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-card">
+            <div class="news-card-image">
+              <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400&h=250&fit=crop" alt="Article">
+              <span class="news-card-category tips">Tips</span>
+            </div>
+            <div class="news-card-content">
+              <h3 class="news-card-title">10 Tips Menjaga Kesehatan Jantung di Usia 50+</h3>
+              <p class="news-card-excerpt">Panduan praktis untuk menjaga kesehatan kardiovaskular dengan gaya hidup sehat dan monitoring rutin...</p>
+              <div class="news-card-footer">
+                <div class="news-card-author">
+                  <img src="https://ui-avatars.com/api/?name=Rina+Susanti&background=F39C12&color=fff&size=64" alt="Author">
+                  <div class="news-card-author-info">
+                    <span class="author-name">Rina Susanti</span>
+                    <span class="publish-date">2 minggu lalu • 5 min</span>
+                  </div>
+                </div>
+                <button class="news-card-bookmark">
+                  <span class="material-symbols-outlined">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 5 -->
+          <article class="news-card">
+            <div class="news-card-image">
+              <img src="https://images.unsplash.com/photo-1584362917165-526a968579e8?w=400&h=250&fit=crop" alt="Article">
+              <span class="news-card-category health">Kesehatan</span>
+            </div>
+            <div class="news-card-content">
+              <h3 class="news-card-title">Manfaat Telemedicine untuk Pasien Jarak Jauh</h3>
+              <p class="news-card-excerpt">Layanan konsultasi kesehatan online memudahkan akses ke tenaga medis profesional dari rumah...</p>
+              <div class="news-card-footer">
+                <div class="news-card-author">
+                  <img src="https://ui-avatars.com/api/?name=Budi+Santoso&background=3498DB&color=fff&size=64" alt="Author">
+                  <div class="news-card-author-info">
+                    <span class="author-name">Budi Santoso</span>
+                    <span class="publish-date">3 minggu lalu • 7 min</span>
+                  </div>
+                </div>
+                <button class="news-card-bookmark">
+                  <span class="material-symbols-outlined">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 6 -->
+          <article class="news-card">
+            <div class="news-card-image">
+              <img src="https://images.unsplash.com/photo-1542884748-2b87b36c6b90?w=400&h=250&fit=crop" alt="Article">
+              <span class="news-card-category technology">Teknologi</span>
+            </div>
+            <div class="news-card-content">
+              <h3 class="news-card-title">Blockchain untuk Keamanan Data Medis</h3>
+              <p class="news-card-excerpt">Teknologi blockchain menjanjikan keamanan dan privasi data kesehatan pasien yang lebih baik...</p>
+              <div class="news-card-footer">
+                <div class="news-card-author">
+                  <img src="https://ui-avatars.com/api/?name=Kevin+Tan&background=E67E22&color=fff&size=64" alt="Author">
+                  <div class="news-card-author-info">
+                    <span class="author-name">Kevin Tan</span>
+                    <span class="publish-date">1 bulan lalu • 10 min</span>
+                  </div>
+                </div>
+                <button class="news-card-bookmark">
+                  <span class="material-symbols-outlined">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="news-load-more">
+          <button class="load-more-btn">
+            <span>Muat Lebih Banyak</span>
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
         </div>
       </div>
 
@@ -750,38 +1059,92 @@
         </div>
       </div>
 
-      <!-- BLE Connection Modal -->
+      <!-- BLE Connection Modal - Enhanced -->
       <div id="ble-modal" class="ble-modal">
         <div class="ble-modal-content">
           <div class="ble-modal-header">
-            <h3 class="ble-modal-title">Hubungkan Perangkat</h3>
+            <h3 class="ble-modal-title">Hubungkan Perangkat Bluetooth</h3>
             <button class="ble-close-btn" id="ble-close-btn">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
 
-          <div class="ble-input-group">
-            <label class="ble-input-label">Nama Perangkat</label>
-            <input type="text" class="ble-input" id="ble-device-name" placeholder="Contoh: ESP32-C3, CareRing Device" value="ESP32-C3">
+          <!-- Step Guide -->
+          <div class="ble-guide-section">
+            <h4 class="ble-section-title">Persiapan Sebelum Scan</h4>
+            <div class="ble-checklist">
+              <div class="ble-checklist-item">
+                <span class="material-symbols-outlined check-icon">check_circle</span>
+                <div>
+                  <strong>Aktifkan Bluetooth</strong>
+                  <p>Pastikan Bluetooth di perangkat Anda aktif</p>
+                </div>
+              </div>
+              <div class="ble-checklist-item">
+                <span class="material-symbols-outlined check-icon">check_circle</span>
+                <div>
+                  <strong>Nyalakan Device CareRing</strong>
+                  <p>Device harus dalam status hidup dan siap pairing</p>
+                </div>
+              </div>
+              <div class="ble-checklist-item">
+                <span class="material-symbols-outlined check-icon">check_circle</span>
+                <div>
+                  <strong>Dekatkan Device</strong>
+                  <p>Posisikan device dalam jarak 1-2 meter</p>
+                </div>
+              </div>
+            </div>
           </div>
 
+          <!-- What Will Happen -->
+          <div class="ble-info-box">
+            <span class="material-symbols-outlined">info</span>
+            <div>
+              <strong>Yang Akan Terjadi:</strong>
+              <p>Browser akan menampilkan popup untuk memilih perangkat Bluetooth yang tersedia. Pilih device dengan nama "CareRing" atau "ESP32".</p>
+            </div>
+          </div>
+
+          <!-- Connect Button -->
+          <button class="ble-connect-btn" id="ble-connect-btn">
+            <span class="material-symbols-outlined">bluetooth_searching</span>
+            Mulai Scan Perangkat
+          </button>
+
+          <!-- Progress -->
           <div class="ble-progress" id="ble-progress">
             <div class="ble-progress-bar"></div>
           </div>
 
-          <button class="ble-connect-btn" id="ble-connect-btn">
-            <span class="material-symbols-outlined">bluetooth_searching</span>
-            Cari & Hubungkan
-          </button>
-
+          <!-- Message -->
           <div class="ble-message" id="ble-message"></div>
 
-          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
-            <p style="font-size: 0.85em; color: #666; margin: 0;">
-              <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle;">info</span>
-              Pastikan perangkat dalam mode pairing dan Bluetooth aktif
-            </p>
-          </div>
+          <!-- Troubleshooting Section -->
+          <details class="ble-troubleshooting">
+            <summary>
+              <span class="material-symbols-outlined">help</span>
+              Troubleshooting - Device Tidak Muncul?
+            </summary>
+            <div class="troubleshooting-content">
+              <div class="trouble-item">
+                <strong>✓ Cek Bluetooth Windows</strong>
+                <p>Buka Settings → Bluetooth & devices, pastikan device CareRing tidak ter-pair di Windows. Jika ada, klik "Remove device".</p>
+              </div>
+              <div class="trouble-item">
+                <strong>✓ Restart Device</strong>
+                <p>Matikan dan nyalakan kembali device CareRing.</p>
+              </div>
+              <div class="trouble-item">
+                <strong>✓ Refresh Browser</strong>
+                <p>Tekan Ctrl + Shift + R untuk hard refresh halaman.</p>
+              </div>
+              <div class="trouble-item">
+                <strong>✓ Coba Browser Lain</strong>
+                <p>Gunakan Google Chrome atau Microsoft Edge (Web Bluetooth tidak support di Firefox/Safari).</p>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
 
@@ -819,65 +1182,465 @@
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════
-           PAGE: FORUM
+           PAGE: FORUM - MODERN REDESIGN
            ═══════════════════════════════════════════════════════════════ -->
       <div id="page-forum" class="page container">
-        <div class="page-header-container" style="background: #4a90e2; padding: 28px 20px; margin: -10px -10px 25px -10px; border-radius: 0 0 25px 25px; color: white; box-shadow: 0 8px 16px rgba(46, 95, 153, 0.3);">
-          <h2 class="page-title" style="font-size: 22px; font-weight: 800; margin: 0;">Forum Diskusi</h2>
+        <!-- Forum Header -->
+        <div class="forum-header">
+          <div class="forum-header-content">
+            <h2 class="forum-title">Diskusi Komunitas</h2>
+            <p class="forum-subtitle">Berbagi pengalaman dan diskusi kesehatan</p>
+          </div>
         </div>
 
-        <div class="forum-list-container">
-          <a href="#" class="list-item-card" style="display: flex; align-items: flex-start; padding: 18px; margin-bottom: 14px; border-radius: 16px; text-decoration: none; color: #222;">
-            <div class="list-item-icon" style="width: 55px; height: 55px; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 28px; margin-right: 15px; background: #e0e5ec; color: #4a90e2; box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5);">
-              <span class="material-symbols-outlined">question_answer</span>
-            </div>
-            <div class="list-item-content">
-              <h3 style="margin: 0; font-size: 16.5px; font-weight: 600;">Apa itu Hipotermia?</h3>
-              <p class="list-item-meta" style="font-size: 13px; color: #666; margin-top: 6px;">Oleh Erico Varel • 2 Balasan</p>
-            </div>
-            <span class="material-symbols-outlined list-item-chevron" style="margin-left: auto; color: #ccc; font-size: 28px;">chevron_right</span>
-          </a>
+        <!-- Forum Stats -->
+        <div class="forum-stats">
+          <div class="stat-item">
+            <div class="stat-value">124</div>
+            <div class="stat-label">Diskusi</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">342</div>
+            <div class="stat-label">Balasan</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">89</div>
+            <div class="stat-label">Anggota</div>
+          </div>
         </div>
+
+        <!-- Search & Filter -->
+        <div class="forum-search-bar">
+          <span class="material-symbols-outlined search-icon">search</span>
+          <input type="text" placeholder="Cari topik diskusi..." class="forum-search-input">
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="forum-categories">
+          <button class="category-tab active" data-category="all">Semua</button>
+          <button class="category-tab" data-category="health">Kesehatan</button>
+          <button class="category-tab" data-category="device">Perangkat</button>
+          <button class="category-tab" data-category="tips">Tips & Trik</button>
+        </div>
+
+        <!-- Forum Threads List -->
+        <div class="forum-threads">
+          <!-- Thread Item 1 -->
+          <div class="thread-card">
+            <div class="thread-avatar">
+              <img src="https://ui-avatars.com/api/?name=Erico+Varel&background=4a90e2&color=fff&size=128" alt="Avatar">
+            </div>
+            <div class="thread-content">
+              <div class="thread-header">
+                <div class="thread-meta">
+                  <span class="thread-author">Erico Varel</span>
+                  <span class="thread-dot">•</span>
+                  <span class="thread-time">2 jam lalu</span>
+                </div>
+                <span class="thread-category health">Kesehatan</span>
+              </div>
+              <h3 class="thread-title">Apa itu Hipotermia dan Bagaimana Cara Mencegahnya?</h3>
+              <p class="thread-preview">Saya ingin tahu lebih lanjut tentang hipotermia, terutama bagaimana cara mendeteksi dan mencegahnya pada lansia...</p>
+              <div class="thread-footer">
+                <div class="thread-stats">
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">comment</span>
+                    <span>12 balasan</span>
+                  </div>
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">visibility</span>
+                    <span>89 views</span>
+                  </div>
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">thumb_up</span>
+                    <span>5</span>
+                  </div>
+                </div>
+                <div class="thread-last-activity">
+                  <img src="https://ui-avatars.com/api/?name=Ahmad&background=27AE60&color=fff&size=64" alt="Last reply" class="last-reply-avatar">
+                  <span class="last-reply-text">Ahmad membalas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thread Item 2 -->
+          <div class="thread-card">
+            <div class="thread-avatar">
+              <img src="https://ui-avatars.com/api/?name=Siti+Rahayu&background=E74C3C&color=fff&size=128" alt="Avatar">
+            </div>
+            <div class="thread-content">
+              <div class="thread-header">
+                <div class="thread-meta">
+                  <span class="thread-author">Siti Rahayu</span>
+                  <span class="thread-dot">•</span>
+                  <span class="thread-time">5 jam lalu</span>
+                </div>
+                <span class="thread-category device">Perangkat</span>
+              </div>
+              <h3 class="thread-title">Tips Merawat Sensor CareRing Agar Awet</h3>
+              <p class="thread-preview">Sharing pengalaman saya dalam merawat sensor CareRing selama 6 bulan terakhir. Ada beberapa hal yang perlu diperhatikan...</p>
+              <div class="thread-footer">
+                <div class="thread-stats">
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">comment</span>
+                    <span>8 balasan</span>
+                  </div>
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">visibility</span>
+                    <span>124 views</span>
+                  </div>
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">thumb_up</span>
+                    <span>15</span>
+                  </div>
+                </div>
+                <div class="thread-last-activity">
+                  <img src="https://ui-avatars.com/api/?name=Budi&background=F39C12&color=fff&size=64" alt="Last reply" class="last-reply-avatar">
+                  <span class="last-reply-text">Budi membalas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thread Item 3 -->
+          <div class="thread-card">
+            <div class="thread-avatar">
+              <img src="https://ui-avatars.com/api/?name=Dr+Andi&background=9B59B6&color=fff&size=128" alt="Avatar">
+              <div class="verified-badge" title="Verified Expert">
+                <span class="material-symbols-outlined">verified</span>
+              </div>
+            </div>
+            <div class="thread-content">
+              <div class="thread-header">
+                <div class="thread-meta">
+                  <span class="thread-author">Dr. Andi Kurniawan</span>
+                  <span class="verified-icon" title="Verified Expert">
+                    <span class="material-symbols-outlined">verified</span>
+                  </span>
+                  <span class="thread-dot">•</span>
+                  <span class="thread-time">1 hari lalu</span>
+                </div>
+                <span class="thread-category tips">Tips & Trik</span>
+              </div>
+              <h3 class="thread-title">Cara Membaca Data SpO2 dengan Benar</h3>
+              <p class="thread-preview">Sebagai tenaga medis, saya ingin berbagi informasi tentang cara membaca dan menginterpretasi data saturasi oksigen (SpO2)...</p>
+              <div class="thread-footer">
+                <div class="thread-stats">
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">comment</span>
+                    <span>24 balasan</span>
+                  </div>
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">visibility</span>
+                    <span>456 views</span>
+                  </div>
+                  <div class="stat-badge">
+                    <span class="material-symbols-outlined">thumb_up</span>
+                    <span>42</span>
+                  </div>
+                </div>
+                <div class="thread-last-activity">
+                  <img src="https://ui-avatars.com/api/?name=Putri&background=3498DB&color=fff&size=64" alt="Last reply" class="last-reply-avatar">
+                  <span class="last-reply-text">Putri membalas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="forum-fab" title="Buat Diskusi Baru">
+          <span class="material-symbols-outlined">add</span>
+        </button>
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════
-           PAGE: PROFIL
+           PAGE: PROFIL - MODERN REDESIGN 2025
            ═══════════════════════════════════════════════════════════════ -->
-      <div id="page-profil" class="page container">
-        <h2 class="profile-page-title" style="text-align: center; margin-bottom: 20px; font-size: 1.8em; color: #333;">Profil</h2>
+      <div id="page-profil" class="page">
 
-        <div class="profile-card" style="padding: 30px 20px; margin: 20px auto; text-align: center; max-width: 350px;">
-          <div class="profile-avatar-large" style="width: 80px; height: 80px; border-radius: 50%; background: #e0e5ec; color: #4a90e2; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 40px; position: relative; overflow: hidden; box-shadow: 6px 6px 12px rgba(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5);">
-            <img id="profil-img" src="" alt="Foto Profil" style="width: 100%; height: 100%; object-fit: cover; display: none;" onload="this.style.display='block'; document.getElementById('profil-default-icon').style.display='none';">
-            <span class="material-symbols-outlined" id="profil-default-icon">person</span>
-          </div>
-
-          <h3 id="profil-nama" style="font-size: 1.5em; margin-bottom: 5px; color: #333;">Memuat...</h3>
-          <p id="profil-email" style="font-size: 0.9em; color: #777; margin-bottom: 25px;">Memuat...</p>
-
-          <div class="profile-detail-row" style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #eee; font-size: 0.95em; color: #555;">
-            <span class="profile-detail-label" style="font-weight: 500; color: #333;">Perangkat Terhubung:</span>
-            <span class="profile-detail-value">
-              <span id="profile-device-lastseen" class="status-loading">ESP32-C3</span>
-            </span>
-          </div>
-          <div class="profile-detail-row" style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #eee; font-size: 0.95em; color: #555;">
-            <span class="profile-detail-label" style="font-weight: 500; color: #333;">Member Sejak:</span>
-            <span class="profile-detail-value">2025</span>
-          </div>
-          <div class="profile-detail-row" style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin-bottom: 20px; font-size: 0.95em; color: #555;">
-            <span class="profile-detail-label" style="font-weight: 500; color: #333;">Status Akun:</span>
-            <span class="profile-detail-value" style="color: green; font-weight:600;">Aktif</span>
+        <!-- Profile Hero Section -->
+        <div class="profile-hero">
+          <div class="profile-hero-bg"></div>
+          <div class="profile-hero-content">
+            <div class="profile-avatar-wrapper">
+              <div class="profile-avatar-ring">
+                <div class="profile-avatar-main">
+                  <img id="profil-img" src="" alt="Foto Profil" onload="this.style.display='block'; document.getElementById('profil-default-icon').style.display='none';">
+                  <span class="material-symbols-outlined" id="profil-default-icon">person</span>
+                </div>
+              </div>
+              <div class="profile-status-badge">
+                <span class="material-symbols-outlined">verified</span>
+              </div>
+            </div>
+            <h1 id="profil-nama" class="profile-name">Memuat...</h1>
+            <p id="profil-email" class="profile-email">Memuat...</p>
+            <div class="profile-badges">
+              <span class="profile-badge badge-premium">
+                <span class="material-symbols-outlined">workspace_premium</span>
+                Premium
+              </span>
+              <span class="profile-badge badge-active">
+                <span class="material-symbols-outlined">check_circle</span>
+                Aktif
+              </span>
+            </div>
           </div>
         </div>
 
-        <a href="#" class="logout-btn-card" id="btn-logout" style="display: flex; align-items: center; padding: 15px 20px; margin: 30px auto; max-width: 350px; cursor: pointer; text-decoration: none; color: inherit;">
-          <div class="list-item-icon" style="background: #e0e5ec; color: #E74C3C; margin-right: 15px; width: 55px; height: 55px; border-radius: 14px; display: flex; justify-content: center; align-items: center; box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5);">
-            <span class="material-symbols-outlined">logout</span>
+        <!-- Profile Stats Section -->
+        <div class="profile-stats-container">
+          <div class="profile-stats-grid">
+            <div class="profile-stat-card">
+              <div class="stat-icon-wrapper stat-icon-red">
+                <span class="material-symbols-outlined">favorite</span>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="profile-stat-heartrate">--</span>
+                <span class="stat-label">Avg BPM</span>
+              </div>
+            </div>
+            <div class="profile-stat-card">
+              <div class="stat-icon-wrapper stat-icon-orange">
+                <span class="material-symbols-outlined">thermostat</span>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="profile-stat-temp">--</span>
+                <span class="stat-label">Suhu °C</span>
+              </div>
+            </div>
+            <div class="profile-stat-card">
+              <div class="stat-icon-wrapper stat-icon-blue">
+                <span class="material-symbols-outlined">calendar_month</span>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="profile-stat-days">30</span>
+                <span class="stat-label">Hari Aktif</span>
+              </div>
+            </div>
+            <div class="profile-stat-card">
+              <div class="stat-icon-wrapper stat-icon-green">
+                <span class="material-symbols-outlined">monitoring</span>
+              </div>
+              <div class="stat-info">
+                <span class="stat-number" id="profile-stat-records">156</span>
+                <span class="stat-label">Data Points</span>
+              </div>
+            </div>
           </div>
-          <h3 style="margin: 0; font-size: 1.1em; color: #E74C3C; flex-grow: 1; text-align: left;">Keluar</h3>
-          <span class="material-symbols-outlined list-item-chevron" style="color: #E74C3C;">chevron_right</span>
-        </a>
+        </div>
+
+        <!-- Profile Content Container -->
+        <div class="profile-content-container">
+
+          <!-- Health Score Card -->
+          <div class="profile-health-score-card">
+            <div class="health-score-header">
+              <div class="health-score-title">
+                <span class="material-symbols-outlined">health_and_safety</span>
+                <span>Health Score</span>
+              </div>
+              <span class="health-score-badge">Excellent</span>
+            </div>
+            <div class="health-score-body">
+              <div class="health-score-circle">
+                <svg viewBox="0 0 100 100">
+                  <defs>
+                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#FF8400;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#007BFF;stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="score-bg" cx="50" cy="50" r="42"/>
+                  <circle class="score-progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="40" stroke="url(#scoreGradient)"/>
+                <div class="score-value">
+                  <span class="score-number">85</span>
+                  <span class="score-label">/ 100</span>
+                </div>
+              </div>
+              <div class="health-score-details">
+                <div class="score-detail-item">
+                  <span class="detail-label">Detak Jantung</span>
+                  <div class="detail-bar">
+                    <div class="detail-progress" style="width: 90%;"></div>
+                  </div>
+                  <span class="detail-value">Excellent</span>
+                </div>
+                <div class="score-detail-item">
+                  <span class="detail-label">Suhu Tubuh</span>
+                  <div class="detail-bar">
+                    <div class="detail-progress" style="width: 85%;"></div>
+                  </div>
+                  <span class="detail-value">Normal</span>
+                </div>
+                <div class="score-detail-item">
+                  <span class="detail-label">SpO2 Level</span>
+                  <div class="detail-bar">
+                    <div class="detail-progress" style="width: 95%;"></div>
+                  </div>
+                  <span class="detail-value">Optimal</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Device Info Card -->
+          <div class="profile-section-card">
+            <div class="section-card-header">
+              <div class="section-card-title">
+                <span class="material-symbols-outlined">bluetooth_connected</span>
+                <span>Perangkat Terhubung</span>
+              </div>
+              <button class="section-card-action" data-navigate="perangkat">
+                <span class="material-symbols-outlined">settings</span>
+              </button>
+            </div>
+            <div class="device-info-content">
+              <div class="device-info-row">
+                <div class="device-icon">
+                  <span class="material-symbols-outlined">watch</span>
+                </div>
+                <div class="device-details">
+                  <span class="device-name" id="profile-device-name">CareRing ESP32</span>
+                  <span class="device-id" id="profile-device-id">MAC: XX:XX:XX:XX</span>
+                </div>
+                <div class="device-status online">
+                  <span class="status-dot"></span>
+                  <span>Online</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Settings Card -->
+          <div class="profile-section-card">
+            <div class="section-card-header">
+              <div class="section-card-title">
+                <span class="material-symbols-outlined">settings</span>
+                <span>Pengaturan Akun</span>
+              </div>
+            </div>
+            <div class="settings-list">
+              <div class="settings-item">
+                <div class="settings-item-icon">
+                  <span class="material-symbols-outlined">person</span>
+                </div>
+                <div class="settings-item-content">
+                  <span class="settings-item-label">Edit Profil</span>
+                  <span class="settings-item-desc">Ubah nama dan foto profil</span>
+                </div>
+                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
+              </div>
+              <div class="settings-item">
+                <div class="settings-item-icon">
+                  <span class="material-symbols-outlined">notifications</span>
+                </div>
+                <div class="settings-item-content">
+                  <span class="settings-item-label">Notifikasi</span>
+                  <span class="settings-item-desc">Kelola pengingat kesehatan</span>
+                </div>
+                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
+              </div>
+              <div class="settings-item">
+                <div class="settings-item-icon">
+                  <span class="material-symbols-outlined">lock</span>
+                </div>
+                <div class="settings-item-content">
+                  <span class="settings-item-label">Keamanan & Privasi</span>
+                  <span class="settings-item-desc">Password dan data pribadi</span>
+                </div>
+                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
+              </div>
+              <div class="settings-item">
+                <div class="settings-item-icon">
+                  <span class="material-symbols-outlined">language</span>
+                </div>
+                <div class="settings-item-content">
+                  <span class="settings-item-label">Bahasa</span>
+                  <span class="settings-item-desc">Indonesia</span>
+                </div>
+                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Support Card -->
+          <div class="profile-section-card">
+            <div class="section-card-header">
+              <div class="section-card-title">
+                <span class="material-symbols-outlined">support</span>
+                <span>Bantuan & Dukungan</span>
+              </div>
+            </div>
+            <div class="settings-list">
+              <div class="settings-item">
+                <div class="settings-item-icon icon-blue">
+                  <span class="material-symbols-outlined">help</span>
+                </div>
+                <div class="settings-item-content">
+                  <span class="settings-item-label">Pusat Bantuan</span>
+                  <span class="settings-item-desc">FAQ dan panduan penggunaan</span>
+                </div>
+                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
+              </div>
+              <div class="settings-item">
+                <div class="settings-item-icon icon-green">
+                  <span class="material-symbols-outlined">chat</span>
+                </div>
+                <div class="settings-item-content">
+                  <span class="settings-item-label">Hubungi Kami</span>
+                  <span class="settings-item-desc">Chat dengan tim support</span>
+                </div>
+                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
+              </div>
+              <div class="settings-item">
+                <div class="settings-item-icon icon-purple">
+                  <span class="material-symbols-outlined">star</span>
+                </div>
+                <div class="settings-item-content">
+                  <span class="settings-item-label">Beri Rating</span>
+                  <span class="settings-item-desc">Bantu kami berkembang</span>
+                </div>
+                <span class="material-symbols-outlined settings-item-chevron">chevron_right</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Info Card -->
+          <div class="profile-account-info">
+            <div class="account-info-item">
+              <span class="account-info-label">Member Sejak</span>
+              <span class="account-info-value" id="profile-member-since">Januari 2025</span>
+            </div>
+            <div class="account-info-item">
+              <span class="account-info-label">Versi Aplikasi</span>
+              <span class="account-info-value">v2.0.0</span>
+            </div>
+            <div class="account-info-item">
+              <span class="account-info-label">ID Pengguna</span>
+              <span class="account-info-value" id="profile-user-id">CR-XXXXXX</span>
+            </div>
+          </div>
+
+          <!-- Logout Button -->
+          <button class="profile-logout-btn" id="btn-logout">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Keluar dari Akun</span>
+          </button>
+
+          <!-- Footer -->
+          <div class="profile-footer">
+            <p>CareRing Healthcare © 2025</p>
+            <div class="footer-links">
+              <a href="#">Syarat & Ketentuan</a>
+              <span>•</span>
+              <a href="#">Kebijakan Privasi</a>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </main>
@@ -913,40 +1676,6 @@
       </div>
     </div>
 
-    <!-- Scroll hint indicator (auto-hide setelah 3 detik) -->
-    <script>
-      // Add subtle scroll hint on first load
-      (function() {
-        const bottomNav = document.getElementById('bottom-nav');
-        const scrollHintShown = sessionStorage.getItem('navScrollHintShown');
-
-        if (!scrollHintShown && bottomNav) {
-          // Show hint by slightly scrolling right then back
-          setTimeout(() => {
-            bottomNav.scrollTo({ left: 60, behavior: 'smooth' });
-            setTimeout(() => {
-              bottomNav.scrollTo({ left: 0, behavior: 'smooth' });
-            }, 800);
-          }, 1000);
-
-          sessionStorage.setItem('navScrollHintShown', 'true');
-        }
-
-        // Hide fade indicators when at edges
-        function updateFadeIndicators() {
-          const scrollLeft = bottomNav.scrollLeft;
-          const maxScroll = bottomNav.scrollWidth - bottomNav.clientWidth;
-
-          // You can add logic here to show/hide fade indicators dynamically
-          // For now, they're always visible unless on large screens
-        }
-
-        if (bottomNav) {
-          bottomNav.addEventListener('scroll', updateFadeIndicators);
-          updateFadeIndicators();
-        }
-      })();
-    </script>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
@@ -1028,23 +1757,10 @@
       }
 
       /**
-       * Move sliding indicator blob to active nav item
+       * Move indicator (simplified - no sliding animation)
        */
       function moveIndicator(activeElement) {
-        const bottomNav = document.getElementById('bottom-nav');
-        if (!bottomNav || !activeElement) return;
-
-        // Add ready class to show indicator
-        bottomNav.classList.add('indicator-ready');
-
-        // Calculate position
-        const navRect = bottomNav.getBoundingClientRect();
-        const itemRect = activeElement.getBoundingClientRect();
-        const offsetLeft = itemRect.left - navRect.left + bottomNav.scrollLeft;
-
-        // Apply transform to move indicator
-        bottomNav.style.setProperty('--indicator-left', `${offsetLeft}px`);
-        bottomNav.style.setProperty('--indicator-width', `${itemRect.width}px`);
+        // Indicator removed for cleaner design
       }
 
       /**
@@ -1079,7 +1795,8 @@
             break;
 
           case 'profil':
-            // Profile page init (handled by script.js)
+            // Profile page init
+            initProfilePage();
             break;
         }
       }
@@ -1253,63 +1970,134 @@
       window.disconnectDevice = disconnectDevice;
 
       /**
-       * Create ripple effect on navigation item
+       * Initialize Profile Page
        */
-      function createRipple(event, element) {
-        const ripple = document.createElement('span');
-        ripple.style.cssText = `
-          position: absolute;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.6);
-          width: 100px;
-          height: 100px;
-          margin-top: -50px;
-          margin-left: -50px;
-          top: ${event.clientY - element.getBoundingClientRect().top}px;
-          left: ${event.clientX - element.getBoundingClientRect().left}px;
-          animation: ripple 0.6s ease-out;
-          pointer-events: none;
-        `;
-
-        element.appendChild(ripple);
-
-        setTimeout(() => {
-          ripple.remove();
-        }, 600);
-
-        // Add particle burst effect
-        createParticleBurst(event, element);
-      }
-
-      /**
-       * Create particle burst effect on click
-       */
-      function createParticleBurst(event, element) {
-        const particles = ['✨', '⭐', '💫', '🌟'];
-        const particleCount = 6;
-
-        for (let i = 0; i < particleCount; i++) {
-          const particle = document.createElement('span');
-          const randomParticle = particles[Math.floor(Math.random() * particles.length)];
-          const angle = (360 / particleCount) * i;
-
-          particle.textContent = randomParticle;
-          particle.style.cssText = `
-            position: absolute;
-            top: ${event.clientY - element.getBoundingClientRect().top}px;
-            left: ${event.clientX - element.getBoundingClientRect().left}px;
-            font-size: 12px;
-            pointer-events: none;
-            animation: particleBurst 0.8s ease-out forwards;
-            --angle: ${angle}deg;
-            z-index: 1000;
-          `;
-
-          element.appendChild(particle);
-
-          setTimeout(() => {
-            particle.remove();
-          }, 800);
+      function initProfilePage() {
+        console.log('🔧 Initializing Profile page...');
+        
+        // Get user data from Firebase Auth
+        if (firebase && firebase.auth) {
+          firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              // Update profile name
+              const elNama = document.getElementById('profil-nama');
+              if (elNama) elNama.innerText = user.displayName || 'Pengguna';
+              
+              // Update profile email
+              const elEmail = document.getElementById('profil-email');
+              if (elEmail) elEmail.innerText = user.email || '';
+              
+              // Update profile image
+              const elImg = document.getElementById('profil-img');
+              const elIcon = document.getElementById('profil-default-icon');
+              if (elImg && user.photoURL) {
+                elImg.src = user.photoURL;
+                elImg.style.display = 'block';
+                if (elIcon) elIcon.style.display = 'none';
+              }
+              
+              // Update user ID
+              const elUserId = document.getElementById('profile-user-id');
+              if (elUserId && user.uid) {
+                elUserId.innerText = 'CR-' + user.uid.substring(0, 6).toUpperCase();
+              }
+              
+              // Update member since
+              const elMemberSince = document.getElementById('profile-member-since');
+              if (elMemberSince && user.metadata && user.metadata.creationTime) {
+                const creationDate = new Date(user.metadata.creationTime);
+                const options = { year: 'numeric', month: 'long' };
+                elMemberSince.innerText = creationDate.toLocaleDateString('id-ID', options);
+              }
+            }
+          });
+        }
+        
+        // Load profile stats from sensor history
+        if (firebase && firebase.database) {
+          const historyRef = firebase.database().ref("/sensorHistory");
+          historyRef.limitToLast(100).once("value", (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+              const entries = Object.values(data);
+              
+              // Calculate average heart rate
+              const bpms = entries.map(d => d.bpm || 0).filter(v => v > 0);
+              if (bpms.length > 0) {
+                const avgBpm = Math.round(bpms.reduce((a, b) => a + b, 0) / bpms.length);
+                const elStatHr = document.getElementById('profile-stat-heartrate');
+                if (elStatHr) elStatHr.innerText = avgBpm;
+              }
+              
+              // Calculate average temperature
+              const temps = entries.map(d => d.objTemp || 0).filter(v => v > 30 && v < 42);
+              if (temps.length > 0) {
+                const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
+                const elStatTemp = document.getElementById('profile-stat-temp');
+                if (elStatTemp) elStatTemp.innerText = avgTemp;
+              }
+              
+              // Update data points count
+              const elStatRecords = document.getElementById('profile-stat-records');
+              if (elStatRecords) elStatRecords.innerText = entries.length;
+              
+              // Calculate active days
+              const uniqueDays = new Set();
+              entries.forEach(entry => {
+                if (entry.timestamp) {
+                  const date = new Date(entry.timestamp);
+                  uniqueDays.add(date.toDateString());
+                }
+              });
+              const elStatDays = document.getElementById('profile-stat-days');
+              if (elStatDays) elStatDays.innerText = uniqueDays.size;
+            }
+          });
+        }
+        
+        // Load device info
+        if (firebase && firebase.database) {
+          const devicesRef = firebase.database().ref("/realtimeSensorData");
+          devicesRef.once("value", (snapshot) => {
+            const devices = snapshot.val();
+            if (devices && Object.keys(devices).length > 0) {
+              const deviceKeys = Object.keys(devices);
+              const firstDevice = devices[deviceKeys[0]];
+              
+              const elDeviceName = document.getElementById('profile-device-name');
+              if (elDeviceName && firstDevice) {
+                elDeviceName.innerText = firstDevice.deviceName || 'CareRing Device';
+              }
+              
+              const elDeviceId = document.getElementById('profile-device-id');
+              if (elDeviceId && firstDevice) {
+                elDeviceId.innerText = 'ID: ' + (firstDevice.deviceID || deviceKeys[0].substring(0, 17));
+              }
+            }
+          });
+        }
+        
+        // Logout button handler
+        const btnLogout = document.getElementById('btn-logout');
+        if (btnLogout) {
+          // Remove old listeners
+          const newBtnLogout = btnLogout.cloneNode(true);
+          btnLogout.parentNode.replaceChild(newBtnLogout, btnLogout);
+          
+          newBtnLogout.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Apakah Anda yakin ingin keluar dari akun?')) {
+              if (firebase && firebase.auth) {
+                firebase.auth().signOut().then(() => {
+                  console.log('✅ Logged out successfully');
+                  window.location.href = 'login.html';
+                }).catch((error) => {
+                  console.error('❌ Logout error:', error);
+                  alert('Gagal logout: ' + error.message);
+                });
+              }
+            }
+          });
         }
       }
 
@@ -1323,14 +2111,9 @@
             e.preventDefault();
             e.stopPropagation();
 
-            // Create ripple effect
-            if (element.classList.contains('nav-item')) {
-              createRipple(e, element);
-
-              // Haptic feedback for mobile devices
-              if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(10); // 10ms vibration
-              }
+            // Haptic feedback for mobile devices (subtle)
+            if (window.navigator && window.navigator.vibrate) {
+              window.navigator.vibrate(5);
             }
 
             const pageName = element.getAttribute('data-navigate');
@@ -1380,6 +2163,40 @@
       window.navigateToPage = navigateToPage;
 
       console.log('✅ SPA Router ready!');
+    })();
+  </script>
+
+  <!-- Header Scroll Effect -->
+  <script>
+    (function() {
+      'use strict';
+
+      const header = document.querySelector('.app-header');
+      let lastScrollY = window.scrollY;
+      let ticking = false;
+
+      function updateHeaderOnScroll() {
+        const scrollY = window.scrollY;
+
+        if (scrollY > 20) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+
+        ticking = false;
+      }
+
+      function requestTick() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateHeaderOnScroll);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', requestTick, { passive: true });
+
+      console.log('✅ Header scroll effect initialized');
     })();
   </script>
 

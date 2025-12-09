@@ -1,13 +1,19 @@
 {
   "name": "CARERING Healthcare",
   "short_name": "CARERING",
-  "description": "Aplikasi Monitoring Kesehatan CARERING",
+  "description": "Aplikasi Monitoring Kesehatan CARERING dengan AI Assistant",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#F4F7FA",
-  "theme_color": "#007BFF",
+  "theme_color": "#4a90e2",
   "orientation": "portrait-primary",
   "icons": [
+    {
+      "src": "/images/ai-chat.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
     {
       "src": "/images/icon-192.png",
       "type": "image/png",

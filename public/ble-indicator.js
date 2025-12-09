@@ -22,55 +22,59 @@
   //                      CREATE UI ELEMENTS
   // ═══════════════════════════════════════════════════════════════
 
-  // Create indicator container
+  // Create indicator container - COMPACT & MINIMAL
   const indicator = document.createElement('div');
   indicator.id = 'ble-status-indicator';
   indicator.style.cssText = `
     position: fixed;
-    top: 70px;
-    right: 16px;
+    top: 72px;
+    right: 12px;
     z-index: 999;
-    background: white;
-    padding: 10px 16px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 6px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     display: none;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
+    font-size: 11px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid #e0e0e0;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.06);
+    backdrop-filter: blur(8px);
   `;
 
   // Status dot
   const statusDot = document.createElement('div');
   statusDot.id = 'ble-status-dot';
   statusDot.style.cssText = `
-    width: 10px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: #ccc;
     animation: pulse 2s infinite;
+    flex-shrink: 0;
   `;
 
-  // Device name
+  // Device name - HIDDEN untuk save space
   const deviceName = document.createElement('span');
   deviceName.id = 'ble-device-name';
-  deviceName.textContent = 'CareRing';
+  deviceName.textContent = 'BLE';
   deviceName.style.cssText = `
     font-weight: 600;
-    color: #333;
+    color: #555;
+    font-size: 10px;
   `;
 
   // Status text
   const statusText = document.createElement('span');
   statusText.id = 'ble-status-text';
-  statusText.textContent = 'Terputus';
+  statusText.textContent = 'Off';
   statusText.style.cssText = `
-    font-size: 11px;
+    font-size: 10px;
     color: #999;
+    display: none;
   `;
 
   // Reconnect button (hidden by default)
@@ -81,10 +85,11 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     padding: 0;
-    margin-left: 4px;
+    margin: 0;
     display: none;
+    line-height: 1;
   `;
   reconnectBtn.title = 'Reconnect';
 
@@ -94,29 +99,31 @@
   indicator.appendChild(statusText);
   indicator.appendChild(reconnectBtn);
 
-  // Add CSS animations
+  // Add CSS animations - SUBTLE & MINIMAL
   const style = document.createElement('style');
   style.textContent = `
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      50% { opacity: 0.6; }
     }
 
     #ble-status-indicator:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
     }
 
     #ble-status-indicator.connected {
-      border-color: #4CAF50;
+      background: rgba(76, 175, 80, 0.08);
+      border-color: rgba(76, 175, 80, 0.2);
     }
 
     #ble-status-indicator.disconnected {
-      border-color: #f44336;
+      background: rgba(244, 67, 54, 0.06);
+      border-color: rgba(244, 67, 54, 0.15);
     }
 
     #ble-status-indicator.connecting {
-      border-color: #FF9800;
+      background: rgba(255, 152, 0, 0.06);
+      border-color: rgba(255, 152, 0, 0.15);
     }
   `;
   document.head.appendChild(style);
@@ -151,22 +158,18 @@
         indicator.style.display = 'flex';
         statusDot.style.background = '#4CAF50';
         statusDot.style.animation = 'none';
-        statusText.textContent = 'Terhubung';
-        statusText.style.color = '#4CAF50';
+        deviceName.textContent = 'BLE';
         reconnectBtn.style.display = 'none';
-
-        if (deviceInfo && deviceInfo.name) {
-          deviceName.textContent = deviceInfo.name;
-        }
+        indicator.title = 'Bluetooth Connected';
         break;
 
       case 'connecting':
         indicator.style.display = 'flex';
         statusDot.style.background = '#FF9800';
         statusDot.style.animation = 'pulse 1s infinite';
-        statusText.textContent = 'Menghubungkan...';
-        statusText.style.color = '#FF9800';
+        deviceName.textContent = 'BLE';
         reconnectBtn.style.display = 'none';
+        indicator.title = 'Connecting to device...';
         break;
 
       case 'disconnected':
@@ -176,15 +179,10 @@
         if (savedDevice) {
           indicator.style.display = 'flex';
           statusDot.style.background = '#f44336';
-          statusDot.style.animation = 'pulse 1s infinite';  // Pulse to show it's waiting
-          statusText.textContent = 'Terputus';
-          statusText.style.color = '#f44336';
+          statusDot.style.animation = 'pulse 1.5s infinite';
+          deviceName.textContent = 'BLE';
           reconnectBtn.style.display = 'inline-block';
-          reconnectBtn.style.animation = 'pulse 1.5s infinite';  // Make button pulse too
-          deviceName.textContent = savedDevice.name;
-
-          // Add helpful title
-          indicator.title = 'Klik untuk ke halaman Perangkat, atau klik 🔄 untuk reconnect';
+          indicator.title = 'Disconnected - Click 🔄 to reconnect';
         } else {
           // No saved device, hide indicator
           indicator.style.display = 'none';
@@ -308,25 +306,11 @@
   window.addEventListener('bleNeedsReconnect', (e) => {
     console.log('📢 BLE needs reconnect event received');
     const device = e.detail?.device;
-    const autoRequest = e.detail?.autoRequest;
-    const message = e.detail?.message;
-    
+
     if (device) {
       updateIndicator('disconnected');
       // Show indicator with reconnect button
       indicator.style.display = 'flex';
-      
-      if (autoRequest) {
-        console.log('💡 Auto-request enabled: User can click/scroll to reconnect');
-        console.log('   Message:', message || 'Klik atau scroll untuk reconnect otomatis');
-        
-        // Update indicator text to show auto-request is available
-        if (deviceNameEl) {
-          deviceNameEl.textContent = message || 'Klik/scroll untuk reconnect';
-        }
-      } else {
-        console.log('💡 Reconnect button is available in the indicator');
-      }
     }
   });
 

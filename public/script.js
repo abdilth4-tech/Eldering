@@ -773,6 +773,60 @@ if (document.getElementById('google-login-btn')) {
             if (elNama) elNama.innerText = user.displayName;
             if (elEmail) elEmail.innerText = user.email;
             if (elImg) elImg.src = user.photoURL;
+            
+            // Update user ID
+            const elUserId = document.getElementById('profile-user-id');
+            if (elUserId && user.uid) {
+                elUserId.innerText = 'CR-' + user.uid.substring(0, 6).toUpperCase();
+            }
+            
+            // Update member since
+            const elMemberSince = document.getElementById('profile-member-since');
+            if (elMemberSince && user.metadata && user.metadata.creationTime) {
+                const creationDate = new Date(user.metadata.creationTime);
+                const options = { year: 'numeric', month: 'long' };
+                elMemberSince.innerText = creationDate.toLocaleDateString('id-ID', options);
+            }
+        }
+    });
+    
+    // Load profile stats from sensor history
+    const historyRef = database.ref("/sensorHistory");
+    historyRef.limitToLast(100).once("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            const entries = Object.values(data);
+            
+            // Calculate average heart rate
+            const bpms = entries.map(d => d.bpm || 0).filter(v => v > 0);
+            if (bpms.length > 0) {
+                const avgBpm = Math.round(bpms.reduce((a, b) => a + b, 0) / bpms.length);
+                const elStatHr = document.getElementById('profile-stat-heartrate');
+                if (elStatHr) elStatHr.innerText = avgBpm;
+            }
+            
+            // Calculate average temperature
+            const temps = entries.map(d => d.objTemp || 0).filter(v => v > 30 && v < 42);
+            if (temps.length > 0) {
+                const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
+                const elStatTemp = document.getElementById('profile-stat-temp');
+                if (elStatTemp) elStatTemp.innerText = avgTemp;
+            }
+            
+            // Update data points count
+            const elStatRecords = document.getElementById('profile-stat-records');
+            if (elStatRecords) elStatRecords.innerText = entries.length;
+            
+            // Calculate active days
+            const uniqueDays = new Set();
+            entries.forEach(entry => {
+                if (entry.timestamp) {
+                    const date = new Date(entry.timestamp);
+                    uniqueDays.add(date.toDateString());
+                }
+            });
+            const elStatDays = document.getElementById('profile-stat-days');
+            if (elStatDays) elStatDays.innerText = uniqueDays.size;
         }
     });
 
