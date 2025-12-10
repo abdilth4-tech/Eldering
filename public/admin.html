@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CareRing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f6f9; margin: 0; display: flex; }
+        
+        .sidebar { width: 260px; background: #ffffff; height: 100vh; padding: 25px; box-shadow: 4px 0 10px rgba(0,0,0,0.02); position: fixed; z-index: 100; }
+        .logo { font-size: 26px; font-weight: 800; color: #007bff; margin-bottom: 50px; display: flex; align-items: center; gap: 5px; }
+        .logo span { color: #ffa500; }
+        .menu-item { padding: 15px; cursor: pointer; border-radius: 12px; margin-bottom: 12px; color: #6c757d; transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .menu-item:hover, .menu-item.active { background: #eef7ff; color: #007bff; font-weight: 600; transform: translateX(5px); }
+
+        .content { margin-left: 260px; padding: 40px; width: 100%; box-sizing: border-box; }
+        .section { display: none; animation: fadeIn 0.4s ease-in-out; } 
+        .section.active { display: block; } 
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 { color: #343a40; margin-bottom: 25px; font-size: 24px; border-left: 5px solid #007bff; padding-left: 15px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #495057; }
+        input, select, textarea { width: 100%; padding: 14px; border: 1px solid #ced4da; border-radius: 10px; box-sizing: border-box; font-family: inherit; font-size: 14px; transition: border 0.3s; }
+        input:focus, select:focus, textarea:focus { border-color: #007bff; outline: none; }
+        
+        /* Tombol Save / Update */
+        button.btn-save { 
+            background: linear-gradient(135deg, #007bff, #0056b3); color: white; border: none; 
+            padding: 14px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; 
+            width: 100%; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,123,255,0.2); transition: transform 0.2s;
+        }
+        button.btn-save:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,123,255,0.3); }
+
+        /* Tombol Batal (Hidden by default) */
+        button.btn-cancel {
+            background: #6c757d; color: white; border: none; 
+            padding: 14px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; 
+            width: 100%; margin-top: 10px; display: none; /* Tersembunyi */
+        }
+        button.btn-cancel:hover { background: #5a6268; }
+
+        .card { background: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); border: 1px solid #e9ecef; }
+        
+        .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 900px; }
+        th { background-color: #f8f9fa; color: #6c757d; font-weight: 700; text-transform: uppercase; font-size: 13px; padding: 18px; border-bottom: 2px solid #e9ecef; text-align: left; }
+        td { padding: 18px; border-bottom: 1px solid #f1f3f5; color: #495057; vertical-align: middle; }
+        
+        /* List Item Berita */
+        .news-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f3f5; padding: 15px 0; }
+        
+        /* Tombol Aksi di List */
+        .action-buttons { display: flex; gap: 10px; }
+        
+        .btn-edit { background: #ffc107; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; }
+        .btn-edit:hover { background: #e0a800; color: white;}
+
+        .btn-delete { background: #ffebee; color: #c62828; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.2s; }
+        .btn-delete:hover { background: #ffcdd2; }
+
+        /* Responsive untuk Mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 15px;
+            }
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            body {
+                flex-direction: column;
+            }
+            .menu-item {
+                display: inline-flex;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">Care<span>Ring</span> Admin</div>
+        <div class="menu-item active" onclick="showSection('news-section', this)">📰 Manajemen Berita</div>
+        <div class="menu-item" onclick="showSection('device-section', this)">❤️ Monitoring Device</div>
+        <div class="menu-item" onclick="logoutAdmin()">🚪 Logout</div>
+    </div>
+
+    <div class="content">
+        
+        <div id="news-section" class="section active">
+            <h2>Manajemen Berita</h2>
+            <div class="card">
+                <h3 id="formTitle">Tambah Berita Baru</h3>
+                <form id="newsForm">
+                    <div class="form-group">
+                        <label>Judul Berita</label>
+                        <input type="text" id="newsTitle" placeholder="Contoh: Manfaat AI dalam Kesehatan" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select id="newsCategory">
+                            <option value="Health">Health</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Community">Community</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>URL Gambar (Link)</label>
+                        <input type="text" id="newsImage" placeholder="https://..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Isi Berita (Deskripsi Lengkap)</label>
+                        <textarea id="newsContent" rows="6" placeholder="Tulis detail berita di sini..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-save" id="btnPublish">Publish Berita</button>
+                    <button type="button" class="btn-cancel" id="btnCancelEdit" onclick="cancelEditMode()">Batal Edit</button>
+                </form>
+            </div>
+
+            <h2>Daftar Berita Aktif</h2>
+            <div class="card" id="newsListContainer">
+                <p style="color:#888; font-style:italic;">Sedang memuat data...</p>
+            </div>
+        </div>
+
+        <div id="device-section" class="section">
+            <h2>Monitoring User & Device</h2>
+            <div class="card table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Device Name</th>
+                            <th style="width: 15%;">Device ID</th>
+                            <th style="text-align: center;">Baterai</th>
+                            <th style="text-align: center;">BPM</th>
+                            <th style="text-align: center;">Suhu (Amb)</th>
+                            <th style="text-align: center;">Suhu (BMP)</th>
+                            <th style="text-align: center;">Altitude</th>
+                            <th style="text-align: center;">IR Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deviceTableBody">
+                        <tr><td colspan="8" style="text-align:center; padding: 30px;">Menghubungkan ke Realtime Database...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showSection(sectionId, element) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+    </script>
+
+    <!-- Load admin.js dengan path yang benar -->
+    <script type="module" src="/admin.js"></script>
+</body>
+</html>
+

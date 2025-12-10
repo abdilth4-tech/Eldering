@@ -32,7 +32,7 @@ onAuthStateChanged(auth, (user) => {
     } else {
         // User TIDAK login -> Tendang ke halaman login
         alert("Anda harus login sebagai Admin!");
-        window.location.href = "login-admin.html";
+        window.location.href = "/login-admin.html";
     }
 });
 
@@ -41,7 +41,7 @@ window.logoutAdmin = () => {
     if(confirm("Keluar dari dashboard admin?")) {
         signOut(auth).then(() => {
             alert("Berhasil logout!");
-            window.location.href = 'login-admin.html';
+            window.location.href = '/login-admin.html';
         }).catch((error) => {
             alert("Error saat logout: " + error.message);
         });

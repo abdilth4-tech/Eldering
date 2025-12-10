@@ -546,6 +546,11 @@ if (document.getElementById('google-login-btn')) {
     button.addEventListener('click', () => {
       const questionText = button.querySelector('span:last-child').innerText;
       sendMessageToBot(questionText);
+      // Hide suggested questions after first interaction
+      const suggestedQuestionsEl = document.getElementById('suggested-questions');
+      if (suggestedQuestionsEl) {
+        suggestedQuestionsEl.classList.add('hidden');
+      }
     });
   });
 
@@ -620,6 +625,12 @@ if (document.getElementById('google-login-btn')) {
     saveChatHistory();
     setChatLoading(true);
 
+    // Hide suggested questions after first message
+    const suggestedQuestionsEl = document.getElementById('suggested-questions');
+    if (suggestedQuestionsEl) {
+      suggestedQuestionsEl.classList.add('hidden');
+    }
+
     const loadingMessage = addMessageToWindow("", 'ai', true);
     const botResponse = await getBotResponse(userMessage);
 
@@ -640,9 +651,9 @@ if (document.getElementById('google-login-btn')) {
         return "Detak jantung istirahat yang normal untuk orang dewasa berkisar antara 60 hingga 100 denyut per menit (BPM).";
     } else if (msg.includes("hipotermia")) {
         return "Hipotermia adalah kondisi darurat medis yang terjadi ketika tubuh Anda kehilangan panas lebih cepat daripada kemampuannya menghasilkan panas, menyebabkan suhu tubuh turun drastis di bawah 35°C.";
-    } else if (msg.includes("demam")) {
-        return "Demam umumnya didefinisikan sebagai suhu tubuh di atas 37.5°C. Ini adalah respons alami tubuh terhadap infeksi.";
-    } else if (msg.includes("suhu tubuh")) { 
+    } else if (msg.includes("demam") || msg.includes("menangani demam")) {
+        return "Demam umumnya didefinisikan sebagai suhu tubuh di atas 37.5°C. Ini adalah respons alami tubuh terhadap infeksi.\n\nCara menangani demam:\n• Istirahat yang cukup\n• Minum banyak cairan\n• Kompres air hangat (bukan dingin)\n• Minum obat penurun panas jika suhu >38°C\n• Konsultasi dokter jika demam berlangsung >3 hari";
+    } else if (msg.includes("suhu tubuh") || msg.includes("bagaimana suhu")) { 
       try {
         const snapshot = await dataRef.once('value');
         const data = snapshot.val();
@@ -652,7 +663,7 @@ if (document.getElementById('google-login-btn')) {
         if (suhu < 36.0 && suhu > 10) status = "Hipotermia";
         return `Suhu tubuh Anda saat ini ${suhu}°C, yang terdeteksi ${status}.`;
       } catch (error) { return "Maaf, saya gagal mengambil data suhu. Coba lagi."; }
-    } else if (msg.includes("detak jantung")) { 
+    } else if (msg.includes("detak jantung") || msg.includes("jantung saya")) { 
       try {
         const snapshot = await dataRef.once('value');
         const data = snapshot.val();
