@@ -84,6 +84,9 @@
             }
         }
     </style>
+
+    <!-- SheetJS Library for Excel Export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -91,6 +94,7 @@
         <div class="logo">Care<span>Ring</span> Admin</div>
         <div class="menu-item active" onclick="showSection('news-section', this)">📰 Manajemen Berita</div>
         <div class="menu-item" onclick="showSection('device-section', this)">❤️ Monitoring Device</div>
+        <div class="menu-item" onclick="showSection('questionnaire-section', this)">📋 Hasil Kuisioner</div>
         <div class="menu-item" onclick="logoutAdmin()">🚪 Logout</div>
     </div>
 
@@ -159,6 +163,76 @@
             </div>
         </div>
 
+        <div id="questionnaire-section" class="section">
+            <h2>Hasil Kuisioner</h2>
+
+            <div class="card" style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h3 style="margin: 0; color: #343a40;">Total Responden: <span id="totalResponses" style="color: #007bff;">0</span></h3>
+                        <p style="margin: 5px 0 0 0; color: #6c757d; font-size: 14px;">Data kuisioner aplikasi dan smartring</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button onclick="window.downloadQuestionnaireExcel()" class="btn-save" style="width: auto; padding: 12px 25px; background: linear-gradient(135deg, #28a745, #218838);">
+                            📊 Download Excel
+                        </button>
+                        <button onclick="window.downloadQuestionnaireCSV()" class="btn-save" style="width: auto; padding: 12px 25px; background: linear-gradient(135deg, #20c997, #17a085);">
+                            📥 Download CSV
+                        </button>
+                        <button onclick="window.downloadQuestionnaireJSON()" class="btn-save" style="width: auto; padding: 12px 25px; background: linear-gradient(135deg, #17a2b8, #138496);">
+                            📥 Download JSON
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="searchQuestionnaire" placeholder="🔍 Cari berdasarkan nama atau email..."
+                           style="flex: 1; min-width: 250px; padding: 12px; border: 2px solid #e9ecef; border-radius: 10px;">
+                    <select id="filterUsageDuration" style="padding: 12px; border: 2px solid #e9ecef; border-radius: 10px;">
+                        <option value="">Semua Durasi Penggunaan</option>
+                        <option value="< 1 bulan">< 1 bulan</option>
+                        <option value="1-3 bulan">1-3 bulan</option>
+                        <option value="3-6 bulan">3-6 bulan</option>
+                        <option value="> 6 bulan">> 6 bulan</option>
+                    </select>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Nama</th>
+                                <th style="width: 15%;">Email</th>
+                                <th style="text-align: center;">Usia</th>
+                                <th style="text-align: center;">Durasi</th>
+                                <th style="text-align: center;">Mudah App</th>
+                                <th style="text-align: center;">UI App</th>
+                                <th style="text-align: center;">Nyaman Ring</th>
+                                <th style="text-align: center;">Akurat Ring</th>
+                                <th style="text-align: center;">NPS</th>
+                                <th style="width: 10%; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="questionnaireTableBody">
+                            <tr><td colspan="10" style="text-align:center; padding: 30px;">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal untuk detail kuisioner -->
+    <div id="questionnaireModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 20px; max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative;">
+            <button onclick="window.closeQuestionnaireModal()" style="position: absolute; top: 20px; right: 20px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; font-weight: bold;">×</button>
+
+            <h2 style="color: #343a40; margin-bottom: 25px;">Detail Kuisioner</h2>
+            <div id="modalContent"></div>
+        </div>
     </div>
 
     <script>

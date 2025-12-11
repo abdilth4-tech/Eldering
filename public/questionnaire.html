@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire - CareRing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --border-focus: #6366f1;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--bg-primary);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--bg-secondary);
+            padding: 24px 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-tertiary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 8px;
+        }
+
+        .step.active .step-circle {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .step.completed .step-circle {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            text-align: center;
+            max-width: 100px;
+            transition: color 0.3s;
+        }
+
+        .step.active .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .step.completed .step-label {
+            color: var(--text-secondary);
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .progress-percentage {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .progress-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Header */
+        .header {
+            padding: 40px 40px 32px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(to bottom, var(--bg-secondary), var(--bg-primary));
+        }
+
+        .header-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Form Content */
+        .form-content {
+            padding: 40px;
+        }
+
+        .step-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .step-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .question {
+            margin-bottom: 28px;
+        }
+
+        .question-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            background: var(--primary-light);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--error-color);
+            font-weight: 700;
+        }
+
+        .help-text {
+            display: block;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 6px;
+            font-weight: 400;
+        }
+
+        /* Form Inputs */
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="number"]:hover,
+        textarea:hover,
+        select:hover {
+            border-color: var(--primary-light);
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        /* Validation States */
+        .question.error input,
+        .question.error textarea,
+        .question.error select {
+            border-color: var(--error-color);
+        }
+
+        .error-message {
+            display: none;
+            color: var(--error-color);
+            font-size: 13px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .question.error .error-message {
+            display: block;
+        }
+
+        /* Radio and Checkbox Groups */
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bg-primary);
+        }
+
+        .radio-option:hover,
+        .checkbox-option:hover {
+            border-color: var(--primary-light);
+            background: var(--bg-secondary);
+            transform: translateX(4px);
+        }
+
+        .radio-option input:checked + span,
+        .checkbox-option input:checked + span {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .radio-option input:checked,
+        .checkbox-option input:checked {
+            accent-color: var(--primary-color);
+        }
+
+        .radio-option input,
+        .checkbox-option input {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .radio-option span,
+        .checkbox-option span {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        /* Rating Group */
+        .rating-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .rating-btn {
+            position: relative;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .rating-btn:hover {
+            border-color: var(--primary-light);
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .rating-btn.selected {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .rating-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* NPS Scale */
+        .nps-scale {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+        }
+
+        .nps-scale .rating-btn {
+            padding: 12px 8px;
+            min-width: 50px;
+        }
+
+        .nps-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* Navigation Buttons */
+        .form-navigation {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background: var(--text-tertiary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--text-tertiary);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .rating-group {
+                flex-direction: column;
+            }
+
+            .rating-btn {
+                width: 100%;
+            }
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="formContainer">
+            <div class="header">
+                <h1>📋 Kuisioner CareRing</h1>
+                <p>Bantu kami meningkatkan aplikasi dan smartring CareRing dengan mengisi kuisioner singkat ini</p>
+            </div>
+
+            <form id="questionnaireForm">
+                <!-- BAGIAN 1: INFORMASI RESPONDEN -->
+                <div class="section">
+                    <div class="section-title">👤 Informasi Responden</div>
+
+                    <div class="question">
+                        <label class="question-label">Nama Lengkap <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap Anda">
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="contoh@email.com">
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Usia <span class="required">*</span></label>
+                        <input type="number" id="age" name="age" required min="10" max="100" placeholder="Masukkan usia Anda">
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Berapa lama Anda menggunakan CareRing? <span class="required">*</span></label>
+                        <select id="usageDuration" name="usageDuration" required>
+                            <option value="">Pilih durasi</option>
+                            <option value="< 1 bulan">Kurang dari 1 bulan</option>
+                            <option value="1-3 bulan">1-3 bulan</option>
+                            <option value="3-6 bulan">3-6 bulan</option>
+                            <option value="> 6 bulan">Lebih dari 6 bulan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 2: PENGGUNAAN APLIKASI -->
+                <div class="section">
+                    <div class="section-title">📱 Pengalaman Aplikasi</div>
+
+                    <div class="question">
+                        <label class="question-label">Seberapa mudah Anda menggunakan aplikasi CareRing? <span class="required">*</span></label>
+                        <div class="rating-group">
+                            <button type="button" class="rating-btn" data-rating="app-ease" data-value="1">1 - Sangat Sulit</button>
+                            <button type="button" class="rating-btn" data-rating="app-ease" data-value="2">2</button>
+                            <button type="button" class="rating-btn" data-rating="app-ease" data-value="3">3</button>
+                            <button type="button" class="rating-btn" data-rating="app-ease" data-value="4">4</button>
+                            <button type="button" class="rating-btn" data-rating="app-ease" data-value="5">5 - Sangat Mudah</button>
+                        </div>
+                        <input type="hidden" id="appEase" name="appEase" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Fitur aplikasi apa yang paling Anda sukai? <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="appFeatures" value="Monitoring real-time">
+                                <span>Monitoring kesehatan real-time</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="appFeatures" value="Chat AI">
+                                <span>Chat dengan AI</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="appFeatures" value="Riwayat data">
+                                <span>Riwayat data kesehatan</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="appFeatures" value="Notifikasi">
+                                <span>Notifikasi dan peringatan</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="appFeatures" value="Berita kesehatan">
+                                <span>Berita dan artikel kesehatan</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Seberapa puas Anda dengan tampilan aplikasi? <span class="required">*</span></label>
+                        <div class="rating-group">
+                            <button type="button" class="rating-btn" data-rating="app-ui" data-value="1">1 - Tidak Puas</button>
+                            <button type="button" class="rating-btn" data-rating="app-ui" data-value="2">2</button>
+                            <button type="button" class="rating-btn" data-rating="app-ui" data-value="3">3</button>
+                            <button type="button" class="rating-btn" data-rating="app-ui" data-value="4">4</button>
+                            <button type="button" class="rating-btn" data-rating="app-ui" data-value="5">5 - Sangat Puas</button>
+                        </div>
+                        <input type="hidden" id="appUI" name="appUI" required>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 3: PENGGUNAAN SMARTRING -->
+                <div class="section">
+                    <div class="section-title">💍 Pengalaman Smartring</div>
+
+                    <div class="question">
+                        <label class="question-label">Seberapa nyaman Anda menggunakan smartring? <span class="required">*</span></label>
+                        <div class="rating-group">
+                            <button type="button" class="rating-btn" data-rating="ring-comfort" data-value="1">1 - Tidak Nyaman</button>
+                            <button type="button" class="rating-btn" data-rating="ring-comfort" data-value="2">2</button>
+                            <button type="button" class="rating-btn" data-rating="ring-comfort" data-value="3">3</button>
+                            <button type="button" class="rating-btn" data-rating="ring-comfort" data-value="4">4</button>
+                            <button type="button" class="rating-btn" data-rating="ring-comfort" data-value="5">5 - Sangat Nyaman</button>
+                        </div>
+                        <input type="hidden" id="ringComfort" name="ringComfort" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Seberapa akurat menurut Anda data yang dihasilkan smartring? <span class="required">*</span></label>
+                        <div class="rating-group">
+                            <button type="button" class="rating-btn" data-rating="ring-accuracy" data-value="1">1 - Tidak Akurat</button>
+                            <button type="button" class="rating-btn" data-rating="ring-accuracy" data-value="2">2</button>
+                            <button type="button" class="rating-btn" data-rating="ring-accuracy" data-value="3">3</button>
+                            <button type="button" class="rating-btn" data-rating="ring-accuracy" data-value="4">4</button>
+                            <button type="button" class="rating-btn" data-rating="ring-accuracy" data-value="5">5 - Sangat Akurat</button>
+                        </div>
+                        <input type="hidden" id="ringAccuracy" name="ringAccuracy" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Bagaimana ketahanan baterai smartring? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="batteryLife" value="Kurang dari 1 hari" required>
+                                <span>Kurang dari 1 hari</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="batteryLife" value="1-2 hari" required>
+                                <span>1-2 hari</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="batteryLife" value="3-5 hari" required>
+                                <span>3-5 hari</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="batteryLife" value="Lebih dari 5 hari" required>
+                                <span>Lebih dari 5 hari</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Apakah Anda pernah mengalami masalah koneksi Bluetooth? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="bleIssue" value="Tidak pernah" required>
+                                <span>Tidak pernah</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="bleIssue" value="Jarang" required>
+                                <span>Jarang (1-2 kali)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="bleIssue" value="Kadang-kadang" required>
+                                <span>Kadang-kadang (3-5 kali)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="bleIssue" value="Sering" required>
+                                <span>Sering (lebih dari 5 kali)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 4: KEPUASAN KESELURUHAN -->
+                <div class="section">
+                    <div class="section-title">⭐ Kepuasan Keseluruhan</div>
+
+                    <div class="question">
+                        <label class="question-label">Seberapa besar kemungkinan Anda merekomendasikan CareRing kepada teman/keluarga? <span class="required">*</span></label>
+                        <div class="rating-group">
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="1">1</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="2">2</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="3">3</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="4">4</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="5">5</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="6">6</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="7">7</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="8">8</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="9">9</button>
+                            <button type="button" class="rating-btn" data-rating="nps" data-value="10">10</button>
+                        </div>
+                        <input type="hidden" id="nps" name="nps" required>
+                    </div>
+
+                    <div class="question">
+                        <label class="question-label">Apa saran atau kritik Anda untuk pengembangan CareRing ke depan?</label>
+                        <textarea id="feedback" name="feedback" placeholder="Tuliskan saran atau kritik Anda di sini..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Kirim Kuisioner</button>
+            </form>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">✅</div>
+            <h2 style="color: #28a745; margin-bottom: 10px;">Terima Kasih!</h2>
+            <p style="color: #6c757d; margin-bottom: 20px;">Kuisioner Anda telah berhasil dikirim. Masukan Anda sangat berharga bagi kami!</p>
+            <a href="app.html" class="submit-btn" style="display: inline-block; text-decoration: none; width: auto; padding: 12px 40px;">Kembali ke Aplikasi</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJBm5uuEvHy2R4PhqJy8-mCIb6q2V5xIE",
+            authDomain: "testing-5db96.firebaseapp.com",
+            databaseURL: "https://testing-5db96-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "testing-5db96",
+            storageBucket: "testing-5db96.appspot.com",
+            messagingSenderId: "...",
+            appId: "..."
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Rating buttons handler
+        document.querySelectorAll('.rating-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const ratingGroup = this.dataset.rating;
+                const value = this.dataset.value;
+
+                // Remove selected class from siblings
+                document.querySelectorAll(`[data-rating="${ratingGroup}"]`).forEach(b => {
+                    b.classList.remove('selected');
+                });
+
+                // Add selected class to clicked button
+                this.classList.add('selected');
+
+                // Update hidden input
+                document.getElementById(ratingGroup.replace(/-([a-z])/g, (g) => g[1].toUpperCase())).value = value;
+            });
+        });
+
+        // Form submission
+        document.getElementById('questionnaireForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Mengirim...';
+
+            // Collect form data
+            const formData = {
+                // Personal Info
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                age: document.getElementById('age').value,
+                usageDuration: document.getElementById('usageDuration').value,
+
+                // App Experience
+                appEase: document.getElementById('appEase').value,
+                appFeatures: Array.from(document.querySelectorAll('input[name="appFeatures"]:checked')).map(cb => cb.value),
+                appUI: document.getElementById('appUI').value,
+
+                // Smartring Experience
+                ringComfort: document.getElementById('ringComfort').value,
+                ringAccuracy: document.getElementById('ringAccuracy').value,
+                batteryLife: document.querySelector('input[name="batteryLife"]:checked')?.value || '',
+                bleIssue: document.querySelector('input[name="bleIssue"]:checked')?.value || '',
+
+                // Overall Satisfaction
+                nps: document.getElementById('nps').value,
+                feedback: document.getElementById('feedback').value,
+
+                // Metadata
+                timestamp: Date.now(),
+                submittedAt: new Date().toISOString()
+            };
+
+            try {
+                await push(ref(db, 'questionnaires'), formData);
+
+                // Show success message
+                document.getElementById('formContainer').style.display = 'none';
+                document.getElementById('successMessage').classList.add('show');
+            } catch (error) {
+                alert('Gagal mengirim kuisioner: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Kirim Kuisioner';
+            }
+        });
+    </script>
+</body>
+</html>

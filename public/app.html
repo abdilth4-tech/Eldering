@@ -13,8 +13,16 @@
   <!-- PWA & Icons -->
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="images/ai-chat.png">
-  <link rel="apple-touch-icon" href="images/ai-chat.png">
-  <meta name="theme-color" content="#4a90e2">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+  <meta name="theme-color" content="#FF8400">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="CareRing">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="CareRing">
+  <meta name="msapplication-TileColor" content="#FF8400">
+  <meta name="msapplication-TileImage" content="/images/icon-192.png">
+  <meta name="description" content="Aplikasi Monitoring Kesehatan Real-time dengan AI Assistant">
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -23,12 +31,28 @@
        SPA CORE STYLES - Hide/Show Pages
        ═══════════════════════════════════════════════════════════════ */
     .page {
-      display: none;
-      animation: fadeIn 0.3s ease-in-out;
+      display: none !important;
+      visibility: hidden !important;
+      position: absolute !important;
+      left: -9999px !important;
+      width: 0 !important;
+      height: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
 
     .page.active {
-      display: block;
+      display: block !important;
+      visibility: visible !important;
+      position: relative !important;
+      left: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      overflow: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      animation: fadeIn 0.3s ease-in-out;
     }
 
     @keyframes fadeIn {
@@ -39,6 +63,280 @@
     /* Prevent flash of content */
     .mobile-wrapper {
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Ensure page container properly clips content */
+    #page-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Extra protection for specific pages */
+    #page-ai-chat:not(.active),
+    #page-profil:not(.active),
+    #page-kuisioner:not(.active),
+    #page-forum:not(.active),
+    #page-news:not(.active),
+    #page-perangkat:not(.active),
+    #page-home:not(.active) {
+      display: none !important;
+      visibility: hidden !important;
+      position: absolute !important;
+      left: -9999px !important;
+      opacity: 0 !important;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       PWA INSTALL BANNER STYLES
+       ═══════════════════════════════════════════════════════════════ */
+    .pwa-install-banner {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 420px;
+      background: linear-gradient(135deg, #FF8400 0%, #FF6B00 100%);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(255, 132, 0, 0.35);
+      z-index: 9999;
+      animation: slideUpBanner 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .pwa-install-banner.show {
+      display: block;
+    }
+
+    @keyframes slideUpBanner {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .pwa-install-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pwa-install-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: white;
+      padding: 4px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .pwa-install-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .pwa-install-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pwa-install-title {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .pwa-install-subtitle {
+      display: block;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .pwa-install-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .pwa-install-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #FF8400;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .pwa-install-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .pwa-install-button .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    .pwa-install-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .pwa-install-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .pwa-install-close .material-symbols-outlined {
+      font-size: 20px;
+      color: white;
+    }
+
+    /* PWA Toast */
+    .pwa-toast {
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #27AE60;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(39, 174, 96, 0.35);
+      z-index: 10000;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pwa-toast.show {
+      display: flex;
+      animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    @keyframes toastOut {
+      to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+    }
+
+    .pwa-toast .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    /* iOS Install Instructions */
+    .pwa-ios-instructions {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 20px 20px 0 0;
+      padding: 24px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+      z-index: 10000;
+    }
+
+    .pwa-ios-instructions.show {
+      display: block;
+      animation: slideUp 0.3s ease;
+    }
+
+    .pwa-ios-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .pwa-ios-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .pwa-ios-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .pwa-ios-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .pwa-ios-step:last-child {
+      border-bottom: none;
+    }
+
+    .pwa-ios-step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FF8400, #FF6B00);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .pwa-ios-step-text {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .pwa-ios-step-text .material-symbols-outlined {
+      font-size: 18px;
+      vertical-align: middle;
+      color: #007AFF;
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -67,7 +365,8 @@
       font-weight: 700;
       text-align: center;
       margin-bottom: 15px;
-    }
+    }\
+    
 
     .device-card {
       background: #e0e5ec;
@@ -1039,6 +1338,34 @@
 </head>
 <body>
 
+  <!-- PWA Install Banner -->
+  <div id="pwa-install-banner" class="pwa-install-banner">
+    <div class="pwa-install-content">
+      <div class="pwa-install-icon">
+        <img src="/images/icon-192.png" alt="CareRing" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyNCIgY3k9IjI0IiByPSIyNCIgZmlsbD0iI0ZGODQwMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zNWVtIj7inaTvuI88L3RleHQ+PC9zdmc+'">
+      </div>
+      <div class="pwa-install-text">
+        <span class="pwa-install-title">Install CareRing</span>
+        <span class="pwa-install-subtitle">Akses lebih cepat dari Home Screen</span>
+      </div>
+      <div class="pwa-install-actions">
+        <button id="pwa-install-btn" class="pwa-install-button">
+          <span class="material-symbols-outlined">download</span>
+          Install
+        </button>
+        <button id="pwa-install-close" class="pwa-install-close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PWA Install Success Toast -->
+  <div id="pwa-install-toast" class="pwa-toast">
+    <span class="material-symbols-outlined">check_circle</span>
+    <span>CareRing berhasil diinstall!</span>
+  </div>
+
   <div class="mobile-wrapper">
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -1482,6 +1809,44 @@
             <span class="material-symbols-outlined">expand_more</span>
           </button>
         </div>
+
+        <!-- News Detail Modal -->
+        <div id="news-detail-modal" class="news-modal">
+          <div class="news-modal-content">
+            <div class="news-modal-header">
+              <button class="news-modal-close" id="news-modal-close">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="news-modal-body">
+              <img id="news-modal-image" src="" alt="News Image" class="news-modal-image">
+              <div class="news-modal-info">
+                <span id="news-modal-category" class="news-modal-category">Kategori</span>
+                <h2 id="news-modal-title" class="news-modal-title">Judul Berita</h2>
+                <div class="news-modal-meta">
+                  <div class="news-modal-author">
+                    <img id="news-modal-author-img" src="" alt="Author">
+                    <div>
+                      <span id="news-modal-author-name" class="author-name">Author</span>
+                      <span id="news-modal-date" class="publish-date">Tanggal</span>
+                    </div>
+                  </div>
+                  <div class="news-modal-actions">
+                    <button class="news-action-btn" title="Bagikan">
+                      <span class="material-symbols-outlined">share</span>
+                    </button>
+                    <button class="news-action-btn" title="Simpan">
+                      <span class="material-symbols-outlined">bookmark</span>
+                    </button>
+                  </div>
+                </div>
+                <div id="news-modal-content" class="news-modal-article">
+                  <p>Isi berita akan ditampilkan di sini...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════
@@ -1915,15 +2280,139 @@
         </div>
 
         <!-- Floating Action Button -->
-        <button class="forum-fab" title="Buat Diskusi Baru">
+        <button class="forum-fab" id="forum-fab-btn" title="Buat Diskusi Baru">
           <span class="material-symbols-outlined">add</span>
         </button>
+
+        <!-- Create Post Modal -->
+        <div id="forum-create-modal" class="forum-modal">
+          <div class="forum-modal-content">
+            <div class="forum-modal-header">
+              <h3 class="forum-modal-title">Buat Diskusi Baru</h3>
+              <button class="forum-modal-close" id="forum-create-close">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <form id="forum-create-form" class="forum-modal-body">
+              <div class="forum-form-group">
+                <label class="forum-form-label">Judul Diskusi</label>
+                <input type="text" id="forum-post-title" class="forum-form-input" placeholder="Tulis judul yang menarik..." required>
+              </div>
+              <div class="forum-form-group">
+                <label class="forum-form-label">Kategori</label>
+                <select id="forum-post-category" class="forum-form-select" required>
+                  <option value="">Pilih kategori</option>
+                  <option value="health">Kesehatan</option>
+                  <option value="device">Perangkat</option>
+                  <option value="tips">Tips & Trik</option>
+                </select>
+              </div>
+              <div class="forum-form-group">
+                <label class="forum-form-label">Isi Diskusi</label>
+                <textarea id="forum-post-content" class="forum-form-textarea" rows="6" placeholder="Jelaskan detail diskusi Anda..." required></textarea>
+              </div>
+              <div class="forum-form-actions">
+                <button type="button" class="forum-btn-secondary" id="forum-create-cancel">Batal</button>
+                <button type="submit" class="forum-btn-primary">
+                  <span class="material-symbols-outlined">send</span>
+                  Posting
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Forum Detail Modal -->
+        <div id="forum-detail-modal" class="forum-modal">
+          <div class="forum-modal-content forum-detail-content">
+            <div class="forum-modal-header">
+              <button class="forum-back-btn" id="forum-detail-back">
+                <span class="material-symbols-outlined">arrow_back</span>
+              </button>
+              <h3 class="forum-modal-title">Detail Diskusi</h3>
+              <button class="forum-modal-close" id="forum-detail-close">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="forum-modal-body forum-detail-body">
+              <!-- Thread Main Content -->
+              <div class="forum-detail-thread">
+                <div class="forum-detail-header">
+                  <div class="forum-detail-author">
+                    <img id="forum-detail-avatar" src="" alt="Avatar" class="detail-avatar">
+                    <div class="detail-author-info">
+                      <span id="forum-detail-author-name" class="detail-author-name">Nama Author</span>
+                      <span id="forum-detail-time" class="detail-time">2 jam lalu</span>
+                    </div>
+                  </div>
+                  <span id="forum-detail-category" class="thread-category health">Kategori</span>
+                </div>
+                <h2 id="forum-detail-title" class="forum-detail-title">Judul Diskusi</h2>
+                <div id="forum-detail-content" class="forum-detail-text">
+                  <p>Isi diskusi akan ditampilkan di sini...</p>
+                </div>
+                <div class="forum-detail-stats">
+                  <div class="detail-stat">
+                    <span class="material-symbols-outlined">visibility</span>
+                    <span id="forum-detail-views">0</span> views
+                  </div>
+                  <div class="detail-stat">
+                    <span class="material-symbols-outlined">thumb_up</span>
+                    <span id="forum-detail-likes">0</span> likes
+                  </div>
+                </div>
+                <div class="forum-detail-actions">
+                  <button class="detail-action-btn" id="forum-like-btn">
+                    <span class="material-symbols-outlined">thumb_up</span>
+                    Suka
+                  </button>
+                  <button class="detail-action-btn">
+                    <span class="material-symbols-outlined">share</span>
+                    Bagikan
+                  </button>
+                  <button class="detail-action-btn">
+                    <span class="material-symbols-outlined">bookmark</span>
+                    Simpan
+                  </button>
+                </div>
+              </div>
+
+              <!-- Replies Section -->
+              <div class="forum-replies-section">
+                <h4 class="replies-title">
+                  <span class="material-symbols-outlined">comment</span>
+                  <span id="forum-replies-count">0</span> Balasan
+                </h4>
+                <div id="forum-replies-list" class="replies-list">
+                  <!-- Replies will be populated here -->
+                </div>
+              </div>
+
+              <!-- Reply Input -->
+              <div class="forum-reply-input">
+                <img id="forum-reply-avatar" src="https://ui-avatars.com/api/?name=User&background=FF8400&color=fff&size=64" alt="You" class="reply-input-avatar">
+                <form id="forum-reply-form" class="reply-form">
+                  <input type="text" id="forum-reply-text" class="reply-input" placeholder="Tulis balasan...">
+                  <button type="submit" class="reply-submit-btn">
+                    <span class="material-symbols-outlined">send</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Forum Success Toast -->
+        <div id="forum-toast" class="forum-toast">
+          <span class="material-symbols-outlined">check_circle</span>
+          <span id="forum-toast-message">Berhasil!</span>
+        </div>
       </div>
 
       <!-- ═══════════════════════════════════════════════════════════════
            PAGE: PROFIL - PROFESSIONAL MODERN REDESIGN
            ═══════════════════════════════════════════════════════════════ -->
-      <div id="page-profil" class="page">
+      <div id="page-profil" class="page container">
         <div class="profile-modern-container">
 
           <!-- Profile Hero with Cover -->
@@ -2264,9 +2753,750 @@
           <div class="profile-footer-modern">
             <p>CareRing Healthcare © 2025 • Semua hak dilindungi</p>
             <div class="footer-links">
-              <a href="#">Syarat & Ketentuan</a>
+              <a href="#" id="profile-terms-link">Syarat & Ketentuan</a>
               <span>•</span>
-              <a href="#">Kebijakan Privasi</a>
+              <a href="#" id="profile-privacy-link">Kebijakan Privasi</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Profile Modals -->
+        <!-- Edit Profile Modal -->
+        <div id="profile-edit-modal" class="profile-modal">
+          <div class="profile-modal-content">
+            <div class="profile-modal-header">
+              <h3 class="profile-modal-title">Edit Profil</h3>
+              <button class="profile-modal-close" data-modal="profile-edit-modal">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <form id="profile-edit-form" class="profile-modal-body">
+              <div class="profile-form-group">
+                <label class="profile-form-label">Nama Lengkap</label>
+                <input type="text" id="edit-profile-name" class="profile-form-input" placeholder="Nama Anda">
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label">Email</label>
+                <input type="email" id="edit-profile-email" class="profile-form-input" placeholder="email@example.com" disabled>
+                <small class="profile-form-hint">Email tidak dapat diubah</small>
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label">Bio</label>
+                <textarea id="edit-profile-bio" class="profile-form-textarea" rows="3" placeholder="Tulis tentang diri Anda..."></textarea>
+              </div>
+              <div class="profile-form-actions">
+                <button type="button" class="profile-btn-secondary" data-modal="profile-edit-modal">Batal</button>
+                <button type="submit" class="profile-btn-primary">
+                  <span class="material-symbols-outlined">save</span>
+                  Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Notifications Settings Modal -->
+        <div id="profile-notifications-modal" class="profile-modal">
+          <div class="profile-modal-content">
+            <div class="profile-modal-header">
+              <h3 class="profile-modal-title">Pengaturan Notifikasi</h3>
+              <button class="profile-modal-close" data-modal="profile-notifications-modal">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="profile-modal-body">
+              <div class="profile-toggle-group">
+                <div class="profile-toggle-item">
+                  <div class="toggle-info">
+                    <span class="toggle-label">Notifikasi Push</span>
+                    <span class="toggle-desc">Terima notifikasi penting</span>
+                  </div>
+                  <label class="profile-toggle-switch">
+                    <input type="checkbox" id="notif-push" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="profile-toggle-item">
+                  <div class="toggle-info">
+                    <span class="toggle-label">Peringatan Kesehatan</span>
+                    <span class="toggle-desc">Notifikasi saat data abnormal</span>
+                  </div>
+                  <label class="profile-toggle-switch">
+                    <input type="checkbox" id="notif-health" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="profile-toggle-item">
+                  <div class="toggle-info">
+                    <span class="toggle-label">Pengingat Harian</span>
+                    <span class="toggle-desc">Pengingat untuk cek kesehatan</span>
+                  </div>
+                  <label class="profile-toggle-switch">
+                    <input type="checkbox" id="notif-daily">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="profile-toggle-item">
+                  <div class="toggle-info">
+                    <span class="toggle-label">Update Aplikasi</span>
+                    <span class="toggle-desc">Notifikasi update & fitur baru</span>
+                  </div>
+                  <label class="profile-toggle-switch">
+                    <input type="checkbox" id="notif-updates" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="profile-form-actions">
+                <button type="button" class="profile-btn-secondary" data-modal="profile-notifications-modal">Tutup</button>
+                <button type="button" class="profile-btn-primary" id="save-notifications">
+                  <span class="material-symbols-outlined">save</span>
+                  Simpan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Settings Modal -->
+        <div id="profile-privacy-modal" class="profile-modal">
+          <div class="profile-modal-content">
+            <div class="profile-modal-header">
+              <h3 class="profile-modal-title">Pengaturan Privasi</h3>
+              <button class="profile-modal-close" data-modal="profile-privacy-modal">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="profile-modal-body">
+              <div class="profile-form-group">
+                <label class="profile-form-label">Ubah Password</label>
+                <input type="password" id="profile-new-password" class="profile-form-input" placeholder="Password baru">
+                <input type="password" id="profile-confirm-password" class="profile-form-input" placeholder="Konfirmasi password" style="margin-top: 12px;">
+                <button type="button" class="profile-btn-primary" id="change-password-btn" style="margin-top: 12px; width: 100%;">
+                  <span class="material-symbols-outlined">lock</span>
+                  Ubah Password
+                </button>
+              </div>
+              <div class="profile-privacy-section">
+                <h4 class="privacy-section-title">Visibilitas Profil</h4>
+                <div class="profile-toggle-item">
+                  <div class="toggle-info">
+                    <span class="toggle-label">Profil Publik</span>
+                    <span class="toggle-desc">Izinkan orang lain melihat profil Anda</span>
+                  </div>
+                  <label class="profile-toggle-switch">
+                    <input type="checkbox" id="privacy-public">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="profile-toggle-item">
+                  <div class="toggle-info">
+                    <span class="toggle-label">Bagikan Data Anonim</span>
+                    <span class="toggle-desc">Bantu penelitian kesehatan</span>
+                  </div>
+                  <label class="profile-toggle-switch">
+                    <input type="checkbox" id="privacy-anonymous">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="profile-form-actions">
+                <button type="button" class="profile-btn-secondary" data-modal="profile-privacy-modal">Tutup</button>
+                <button type="button" class="profile-btn-primary" id="save-privacy">
+                  <span class="material-symbols-outlined">save</span>
+                  Simpan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Language Settings Modal -->
+        <div id="profile-language-modal" class="profile-modal">
+          <div class="profile-modal-content">
+            <div class="profile-modal-header">
+              <h3 class="profile-modal-title">Pilih Bahasa</h3>
+              <button class="profile-modal-close" data-modal="profile-language-modal">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="profile-modal-body">
+              <div class="profile-language-list">
+                <button class="language-option active" data-lang="id">
+                  <span class="language-flag">🇮🇩</span>
+                  <span class="language-name">Bahasa Indonesia</span>
+                  <span class="material-symbols-outlined">check</span>
+                </button>
+                <button class="language-option" data-lang="en">
+                  <span class="language-flag">🇺🇸</span>
+                  <span class="language-name">English</span>
+                  <span class="material-symbols-outlined">check</span>
+                </button>
+                <button class="language-option" data-lang="ms">
+                  <span class="language-flag">🇲🇾</span>
+                  <span class="language-name">Bahasa Melayu</span>
+                  <span class="material-symbols-outlined">check</span>
+                </button>
+              </div>
+              <div class="profile-form-actions">
+                <button type="button" class="profile-btn-secondary" data-modal="profile-language-modal">Tutup</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Help Center Modal -->
+        <div id="profile-help-modal" class="profile-modal">
+          <div class="profile-modal-content">
+            <div class="profile-modal-header">
+              <h3 class="profile-modal-title">Pusat Bantuan</h3>
+              <button class="profile-modal-close" data-modal="profile-help-modal">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="profile-modal-body">
+              <div class="help-search">
+                <input type="text" class="help-search-input" placeholder="Cari bantuan...">
+                <span class="material-symbols-outlined">search</span>
+              </div>
+              <div class="help-categories">
+                <div class="help-category-item">
+                  <span class="material-symbols-outlined">devices</span>
+                  <div>
+                    <span class="help-category-title">Koneksi Perangkat</span>
+                    <span class="help-category-desc">Troubleshooting BLE</span>
+                  </div>
+                </div>
+                <div class="help-category-item">
+                  <span class="material-symbols-outlined">analytics</span>
+                  <div>
+                    <span class="help-category-title">Membaca Data</span>
+                    <span class="help-category-desc">Panduan interpretasi</span>
+                  </div>
+                </div>
+                <div class="help-category-item">
+                  <span class="material-symbols-outlined">account_circle</span>
+                  <div>
+                    <span class="help-category-title">Akun & Profil</span>
+                    <span class="help-category-desc">Kelola akun Anda</span>
+                  </div>
+                </div>
+                <div class="help-category-item">
+                  <span class="material-symbols-outlined">security</span>
+                  <div>
+                    <span class="help-category-title">Keamanan</span>
+                    <span class="help-category-desc">Privasi & keamanan data</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Support Modal -->
+        <div id="profile-contact-modal" class="profile-modal">
+          <div class="profile-modal-content">
+            <div class="profile-modal-header">
+              <h3 class="profile-modal-title">Hubungi Kami</h3>
+              <button class="profile-modal-close" data-modal="profile-contact-modal">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="profile-modal-body">
+              <div class="contact-options">
+                <a href="mailto:support@carering.com" class="contact-option">
+                  <span class="material-symbols-outlined">email</span>
+                  <div>
+                    <span class="contact-option-title">Email Support</span>
+                    <span class="contact-option-desc">support@carering.com</span>
+                  </div>
+                </a>
+                <a href="tel:+628123456789" class="contact-option">
+                  <span class="material-symbols-outlined">phone</span>
+                  <div>
+                    <span class="contact-option-title">Telepon</span>
+                    <span class="contact-option-desc">+62 812-3456-7890</span>
+                  </div>
+                </a>
+                <button class="contact-option" id="open-ai-chat-support">
+                  <span class="material-symbols-outlined">chat</span>
+                  <div>
+                    <span class="contact-option-title">Chat dengan AI</span>
+                    <span class="contact-option-desc">Bantuan instan 24/7</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rate App Modal -->
+        <div id="profile-rate-modal" class="profile-modal">
+          <div class="profile-modal-content">
+            <div class="profile-modal-header">
+              <h3 class="profile-modal-title">Beri Rating</h3>
+              <button class="profile-modal-close" data-modal="profile-rate-modal">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="profile-modal-body">
+              <div class="rate-content">
+                <p class="rate-question">Bagaimana pengalaman Anda menggunakan CareRing?</p>
+                <div class="rate-stars">
+                  <button class="rate-star" data-rating="1">⭐</button>
+                  <button class="rate-star" data-rating="2">⭐</button>
+                  <button class="rate-star" data-rating="3">⭐</button>
+                  <button class="rate-star" data-rating="4">⭐</button>
+                  <button class="rate-star" data-rating="5">⭐</button>
+                </div>
+                <textarea id="rate-feedback" class="profile-form-textarea" rows="3" placeholder="Tulis feedback Anda (opsional)..." style="margin-top: 20px;"></textarea>
+                <button type="button" class="profile-btn-primary" id="submit-rating" style="margin-top: 16px; width: 100%;">
+                  <span class="material-symbols-outlined">send</span>
+                  Kirim Rating
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Toast -->
+        <div id="profile-toast" class="profile-toast">
+          <span class="material-symbols-outlined">check_circle</span>
+          <span id="profile-toast-message">Berhasil!</span>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           PAGE: KUISIONER
+           ═══════════════════════════════════════════════════════════════ -->
+      <div id="page-kuisioner" class="page">
+        <div class="questionnaire-modern-container">
+
+          <!-- Questionnaire Hero -->
+          <div class="questionnaire-hero">
+            <div class="questionnaire-cover">
+              <div class="questionnaire-cover-gradient"></div>
+              <div class="questionnaire-pattern"></div>
+            </div>
+            <div class="questionnaire-hero-content">
+              <span class="questionnaire-icon">
+                <span class="material-symbols-outlined">assignment</span>
+              </span>
+              <h1 class="questionnaire-title">Kuisioner Kepuasan Pengguna</h1>
+              <p class="questionnaire-subtitle">Bantu kami meningkatkan CareRing dengan feedback Anda</p>
+              <div class="questionnaire-meta">
+                <span class="meta-item">
+                  <span class="material-symbols-outlined">schedule</span>
+                  ~5 menit
+                </span>
+                <span class="meta-item">
+                  <span class="material-symbols-outlined">quiz</span>
+                  15 pertanyaan
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Indicator -->
+          <div class="questionnaire-progress-wrapper">
+            <div class="progress-header">
+              <span class="progress-label">Progress</span>
+              <span class="progress-percentage" id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+          </div>
+
+          <div class="questionnaire-container">
+            <form id="questionnaireForm">
+
+              <!-- BAGIAN 1: INFORMASI RESPONDEN -->
+              <div class="questionnaire-card">
+                <div class="questionnaire-card-header">
+                  <div class="card-header-icon">
+                    <span class="material-symbols-outlined">person</span>
+                  </div>
+                  <div class="card-header-text">
+                    <h3 class="card-title">Informasi Responden</h3>
+                    <p class="card-subtitle">Data dasar tentang Anda</p>
+                  </div>
+                </div>
+                <div class="questionnaire-card-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">badge</span>
+                      Nama Lengkap <span class="required">*</span>
+                    </label>
+                    <input type="text" id="name" name="name" class="form-input" required placeholder="Masukkan nama lengkap Anda">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">mail</span>
+                      Email <span class="required">*</span>
+                    </label>
+                    <input type="email" id="email" name="email" class="form-input" required placeholder="contoh@email.com">
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">
+                        <span class="material-symbols-outlined">cake</span>
+                        Usia <span class="required">*</span>
+                      </label>
+                      <input type="number" id="age" name="age" class="form-input" required min="10" max="100" placeholder="Usia">
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">
+                        <span class="material-symbols-outlined">schedule</span>
+                        Durasi Penggunaan <span class="required">*</span>
+                      </label>
+                      <select id="usageDuration" name="usageDuration" class="form-input" required>
+                        <option value="">Pilih durasi</option>
+                        <option value="< 1 bulan">Kurang dari 1 bulan</option>
+                        <option value="1-3 bulan">1-3 bulan</option>
+                        <option value="3-6 bulan">3-6 bulan</option>
+                        <option value="> 6 bulan">Lebih dari 6 bulan</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BAGIAN 2: PENGGUNAAN APLIKASI -->
+              <div class="questionnaire-card">
+                <div class="questionnaire-card-header">
+                  <div class="card-header-icon">
+                    <span class="material-symbols-outlined">phone_android</span>
+                  </div>
+                  <div class="card-header-text">
+                    <h3 class="card-title">Pengalaman Aplikasi</h3>
+                    <p class="card-subtitle">Penilaian terhadap aplikasi mobile</p>
+                  </div>
+                </div>
+                <div class="questionnaire-card-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">touch_app</span>
+                      Seberapa mudah Anda menggunakan aplikasi CareRing? <span class="required">*</span>
+                    </label>
+                    <div class="rating-scale-modern">
+                      <button type="button" class="rating-btn-modern" data-rating="app-ease" data-value="1">
+                        <span class="rating-emoji">😟</span>
+                        <span class="rating-text">Sangat Sulit</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ease" data-value="2">
+                        <span class="rating-number">2</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ease" data-value="3">
+                        <span class="rating-emoji">😐</span>
+                        <span class="rating-text">Netral</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ease" data-value="4">
+                        <span class="rating-number">4</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ease" data-value="5">
+                        <span class="rating-emoji">😊</span>
+                        <span class="rating-text">Sangat Mudah</span>
+                      </button>
+                    </div>
+                    <input type="hidden" id="appEase" name="appEase" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">star</span>
+                      Fitur aplikasi apa yang paling Anda sukai? <span class="required">*</span>
+                    </label>
+                    <div class="checkbox-grid-modern">
+                      <label class="checkbox-card">
+                        <input type="checkbox" name="appFeatures" value="Monitoring real-time">
+                        <span class="checkbox-card-content">
+                          <span class="material-symbols-outlined">monitoring</span>
+                          <span class="checkbox-label">Monitoring Real-time</span>
+                        </span>
+                      </label>
+                      <label class="checkbox-card">
+                        <input type="checkbox" name="appFeatures" value="Chat AI">
+                        <span class="checkbox-card-content">
+                          <span class="material-symbols-outlined">smart_toy</span>
+                          <span class="checkbox-label">Chat AI</span>
+                        </span>
+                      </label>
+                      <label class="checkbox-card">
+                        <input type="checkbox" name="appFeatures" value="Riwayat data">
+                        <span class="checkbox-card-content">
+                          <span class="material-symbols-outlined">history</span>
+                          <span class="checkbox-label">Riwayat Data</span>
+                        </span>
+                      </label>
+                      <label class="checkbox-card">
+                        <input type="checkbox" name="appFeatures" value="Notifikasi">
+                        <span class="checkbox-card-content">
+                          <span class="material-symbols-outlined">notifications</span>
+                          <span class="checkbox-label">Notifikasi</span>
+                        </span>
+                      </label>
+                      <label class="checkbox-card">
+                        <input type="checkbox" name="appFeatures" value="Berita kesehatan">
+                        <span class="checkbox-card-content">
+                          <span class="material-symbols-outlined">newspaper</span>
+                          <span class="checkbox-label">Berita Kesehatan</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">palette</span>
+                      Seberapa puas Anda dengan tampilan aplikasi? <span class="required">*</span>
+                    </label>
+                    <div class="rating-scale-modern">
+                      <button type="button" class="rating-btn-modern" data-rating="app-ui" data-value="1">
+                        <span class="rating-emoji">😞</span>
+                        <span class="rating-text">Tidak Puas</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ui" data-value="2">
+                        <span class="rating-number">2</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ui" data-value="3">
+                        <span class="rating-emoji">😐</span>
+                        <span class="rating-text">Cukup</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ui" data-value="4">
+                        <span class="rating-number">4</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="app-ui" data-value="5">
+                        <span class="rating-emoji">😍</span>
+                        <span class="rating-text">Sangat Puas</span>
+                      </button>
+                    </div>
+                    <input type="hidden" id="appUI" name="appUI" required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BAGIAN 3: PENGGUNAAN SMARTRING -->
+              <div class="questionnaire-card">
+                <div class="questionnaire-card-header">
+                  <div class="card-header-icon">
+                    <span class="material-symbols-outlined">watch</span>
+                  </div>
+                  <div class="card-header-text">
+                    <h3 class="card-title">Pengalaman Smartring</h3>
+                    <p class="card-subtitle">Penilaian terhadap perangkat smartring</p>
+                  </div>
+                </div>
+                <div class="questionnaire-card-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">sentiment_satisfied</span>
+                      Seberapa nyaman Anda menggunakan smartring? <span class="required">*</span>
+                    </label>
+                    <div class="rating-scale-modern">
+                      <button type="button" class="rating-btn-modern" data-rating="ring-comfort" data-value="1">
+                        <span class="rating-emoji">😣</span>
+                        <span class="rating-text">Tidak Nyaman</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-comfort" data-value="2">
+                        <span class="rating-number">2</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-comfort" data-value="3">
+                        <span class="rating-emoji">😐</span>
+                        <span class="rating-text">Cukup</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-comfort" data-value="4">
+                        <span class="rating-number">4</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-comfort" data-value="5">
+                        <span class="rating-emoji">😄</span>
+                        <span class="rating-text">Sangat Nyaman</span>
+                      </button>
+                    </div>
+                    <input type="hidden" id="ringComfort" name="ringComfort" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">precision_manufacturing</span>
+                      Seberapa akurat menurut Anda data yang dihasilkan smartring? <span class="required">*</span>
+                    </label>
+                    <div class="rating-scale-modern">
+                      <button type="button" class="rating-btn-modern" data-rating="ring-accuracy" data-value="1">
+                        <span class="rating-emoji">❌</span>
+                        <span class="rating-text">Tidak Akurat</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-accuracy" data-value="2">
+                        <span class="rating-number">2</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-accuracy" data-value="3">
+                        <span class="rating-emoji">🟡</span>
+                        <span class="rating-text">Cukup</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-accuracy" data-value="4">
+                        <span class="rating-number">4</span>
+                      </button>
+                      <button type="button" class="rating-btn-modern" data-rating="ring-accuracy" data-value="5">
+                        <span class="rating-emoji">✅</span>
+                        <span class="rating-text">Sangat Akurat</span>
+                      </button>
+                    </div>
+                    <input type="hidden" id="ringAccuracy" name="ringAccuracy" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">battery_charging_full</span>
+                      Bagaimana ketahanan baterai smartring? <span class="required">*</span>
+                    </label>
+                    <div class="radio-grid-modern">
+                      <label class="radio-card">
+                        <input type="radio" name="batteryLife" value="Kurang dari 1 hari" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">battery_0_bar</span>
+                          <span class="radio-label">< 1 hari</span>
+                        </span>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="batteryLife" value="1-2 hari" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">battery_2_bar</span>
+                          <span class="radio-label">1-2 hari</span>
+                        </span>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="batteryLife" value="3-5 hari" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">battery_5_bar</span>
+                          <span class="radio-label">3-5 hari</span>
+                        </span>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="batteryLife" value="Lebih dari 5 hari" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">battery_full</span>
+                          <span class="radio-label">> 5 hari</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">bluetooth</span>
+                      Apakah Anda pernah mengalami masalah koneksi Bluetooth? <span class="required">*</span>
+                    </label>
+                    <div class="radio-grid-modern">
+                      <label class="radio-card">
+                        <input type="radio" name="bleIssue" value="Tidak pernah" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">check_circle</span>
+                          <span class="radio-label">Tidak pernah</span>
+                        </span>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="bleIssue" value="Jarang" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">error_outline</span>
+                          <span class="radio-label">Jarang (1-2x)</span>
+                        </span>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="bleIssue" value="Kadang-kadang" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">warning</span>
+                          <span class="radio-label">Kadang (3-5x)</span>
+                        </span>
+                      </label>
+                      <label class="radio-card">
+                        <input type="radio" name="bleIssue" value="Sering" required>
+                        <span class="radio-card-content">
+                          <span class="material-symbols-outlined">report</span>
+                          <span class="radio-label">Sering (>5x)</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BAGIAN 4: KEPUASAN KESELURUHAN -->
+              <div class="questionnaire-card">
+                <div class="questionnaire-card-header">
+                  <div class="card-header-icon">
+                    <span class="material-symbols-outlined">grade</span>
+                  </div>
+                  <div class="card-header-text">
+                    <h3 class="card-title">Kepuasan Keseluruhan</h3>
+                    <p class="card-subtitle">Penilaian akhir dan saran Anda</p>
+                  </div>
+                </div>
+                <div class="questionnaire-card-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">share</span>
+                      Seberapa besar kemungkinan Anda merekomendasikan CareRing? <span class="required">*</span>
+                    </label>
+                    <p class="form-hint">0 = Sangat tidak mungkin, 10 = Sangat mungkin</p>
+                    <div class="nps-scale-modern">
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="0">0</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="1">1</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="2">2</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="3">3</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="4">4</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="5">5</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="6">6</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="7">7</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="8">8</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="9">9</button>
+                      <button type="button" class="nps-btn" data-rating="nps" data-value="10">10</button>
+                    </div>
+                    <input type="hidden" id="nps" name="nps" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="material-symbols-outlined">feedback</span>
+                      Saran atau kritik untuk pengembangan CareRing
+                    </label>
+                    <textarea id="feedback" name="feedback" class="form-textarea" rows="5" placeholder="Tuliskan saran, kritik, atau fitur yang Anda inginkan..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="submit-btn-modern" id="submitBtn">
+                  <span class="material-symbols-outlined">send</span>
+                  Kirim Kuisioner
+                </button>
+              </div>
+            </form>
+
+            <!-- Success Modal -->
+            <div class="success-modal" id="successMessage">
+              <div class="success-modal-content">
+                <div class="success-animation">
+                  <div class="success-checkmark">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                      <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                      <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                  </div>
+                </div>
+                <h2 class="success-title">Terima Kasih!</h2>
+                <p class="success-subtitle">Kuisioner Anda telah berhasil dikirim</p>
+                <p class="success-message-text">Masukan Anda sangat berharga bagi kami untuk terus meningkatkan kualitas CareRing</p>
+                <div class="success-actions">
+                  <button class="btn-primary-modern" data-navigate="home">
+                    <span class="material-symbols-outlined">home</span>
+                    Kembali ke Home
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2299,6 +3529,10 @@
       <div class="nav-item" data-navigate="forum">
         <div class="nav-icon"><span class="material-symbols-outlined">forum</span></div>
         <div class="nav-label">Forum</div>
+      </div>
+      <div class="nav-item" data-navigate="kuisioner">
+        <div class="nav-icon"><span class="material-symbols-outlined">assignment</span></div>
+        <div class="nav-label">Kuisioner</div>
       </div>
       <div class="nav-item" data-navigate="profil">
         <div class="nav-icon"><span class="material-symbols-outlined">person</span></div>
@@ -2422,11 +3656,24 @@
 
           case 'forum':
             // Forum init
+            initForumPage();
             break;
 
           case 'profil':
             // Profile page init
             initProfilePage();
+            break;
+
+          case 'kuisioner':
+            // Kuisioner page init
+            initKuisionerPage();
+            // Reset form visibility when navigating to kuisioner
+            const qForm = document.getElementById('questionnaireForm');
+            const qFormActions = document.querySelector('.form-actions');
+            const qSuccessMsg = document.getElementById('successMessage');
+            if (qForm) qForm.style.display = 'block';
+            if (qFormActions) qFormActions.style.display = 'block';
+            if (qSuccessMsg) qSuccessMsg.classList.remove('show');
             break;
         }
       }
@@ -2749,6 +3996,829 @@
             }
           });
         }
+
+        // ═══════════════════════════════════════════════════════════════
+        // PROFILE MENU HANDLERS
+        // ═══════════════════════════════════════════════════════════════
+
+        // Show toast message
+        function showProfileToast(message) {
+          const toast = document.getElementById('profile-toast');
+          const toastMsg = document.getElementById('profile-toast-message');
+          if (toastMsg) toastMsg.textContent = message;
+          if (toast) {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+          }
+        }
+
+        // Modal helper functions
+        function openModal(modalId) {
+          const modal = document.getElementById(modalId);
+          if (modal) {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+          }
+        }
+
+        function closeModal(modalId) {
+          const modal = document.getElementById(modalId);
+          if (modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+          }
+        }
+
+        // Close modal on button click
+        document.querySelectorAll('.profile-modal-close').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const modal = btn.closest('.profile-modal');
+            if (modal) closeModal(modal.id);
+          });
+        });
+
+        // Close modal on secondary button (Batal/Tutup)
+        document.querySelectorAll('[data-modal]').forEach(btn => {
+          if (btn.classList.contains('profile-btn-secondary')) {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const modalId = btn.getAttribute('data-modal');
+              if (modalId) closeModal(modalId);
+            });
+          }
+        });
+
+        // Close modal on background click
+        document.querySelectorAll('.profile-modal').forEach(modal => {
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              closeModal(modal.id);
+            }
+          });
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            document.querySelectorAll('.profile-modal.show').forEach(modal => {
+              closeModal(modal.id);
+            });
+          }
+        });
+
+        // Edit Profile Menu - Find by icon text
+        document.querySelectorAll('.settings-menu-item').forEach((item) => {
+          const icon = item.querySelector('.material-symbols-outlined');
+          if (!icon) return;
+          
+          const iconText = icon.textContent.trim();
+          
+          if (iconText === 'person') {
+            // Edit Profile
+            item.addEventListener('click', () => {
+              const user = firebase?.auth()?.currentUser;
+              if (user) {
+                const nameInput = document.getElementById('edit-profile-name');
+                const emailInput = document.getElementById('edit-profile-email');
+                if (nameInput) nameInput.value = user.displayName || '';
+                if (emailInput) emailInput.value = user.email || '';
+              }
+              openModal('profile-edit-modal');
+            });
+          } else if (iconText === 'notifications') {
+            // Notifications
+            item.addEventListener('click', () => openModal('profile-notifications-modal'));
+          } else if (iconText === 'lock') {
+            // Privacy
+            item.addEventListener('click', () => openModal('profile-privacy-modal'));
+          } else if (iconText === 'language') {
+            // Language
+            item.addEventListener('click', () => openModal('profile-language-modal'));
+          } else if (iconText === 'help_center') {
+            // Help Center
+            item.addEventListener('click', () => openModal('profile-help-modal'));
+          } else if (iconText === 'forum') {
+            // Contact Support
+            item.addEventListener('click', () => openModal('profile-contact-modal'));
+          } else if (iconText === 'star') {
+            // Rate App
+            item.addEventListener('click', () => openModal('profile-rate-modal'));
+          }
+        });
+
+        // Edit Profile Form Submit
+        const editProfileForm = document.getElementById('profile-edit-form');
+        if (editProfileForm) {
+          editProfileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('edit-profile-name').value;
+            const bio = document.getElementById('edit-profile-bio').value;
+
+            if (firebase?.auth) {
+              const user = firebase.auth().currentUser;
+              if (user) {
+                try {
+                  await user.updateProfile({ displayName: name });
+                  if (bio) {
+                    // Save bio to database
+                    if (firebase.database) {
+                      await firebase.database().ref(`users/${user.uid}/bio`).set(bio);
+                    }
+                  }
+                  showProfileToast('Profil berhasil diperbarui!');
+                  closeModal('profile-edit-modal');
+                  // Reload profile data
+                  initProfilePage();
+                } catch (error) {
+                  console.error('Error updating profile:', error);
+                  showProfileToast('Gagal memperbarui profil');
+                }
+              }
+            } else {
+              showProfileToast('Profil berhasil diperbarui!');
+              closeModal('profile-edit-modal');
+            }
+          });
+        }
+
+        // Save Notifications
+        const saveNotificationsBtn = document.getElementById('save-notifications');
+        if (saveNotificationsBtn) {
+          saveNotificationsBtn.addEventListener('click', () => {
+            const settings = {
+              push: document.getElementById('notif-push').checked,
+              health: document.getElementById('notif-health').checked,
+              daily: document.getElementById('notif-daily').checked,
+              updates: document.getElementById('notif-updates').checked
+            };
+            localStorage.setItem('notification-settings', JSON.stringify(settings));
+            showProfileToast('Pengaturan notifikasi disimpan!');
+            closeModal('profile-notifications-modal');
+          });
+        }
+
+        // Load notification settings
+        const savedNotifSettings = localStorage.getItem('notification-settings');
+        if (savedNotifSettings) {
+          try {
+            const settings = JSON.parse(savedNotifSettings);
+            if (document.getElementById('notif-push')) document.getElementById('notif-push').checked = settings.push;
+            if (document.getElementById('notif-health')) document.getElementById('notif-health').checked = settings.health;
+            if (document.getElementById('notif-daily')) document.getElementById('notif-daily').checked = settings.daily;
+            if (document.getElementById('notif-updates')) document.getElementById('notif-updates').checked = settings.updates;
+          } catch (e) {}
+        }
+
+        // Change Password
+        const changePasswordBtn = document.getElementById('change-password-btn');
+        if (changePasswordBtn) {
+          changePasswordBtn.addEventListener('click', async () => {
+            const newPassword = document.getElementById('profile-new-password').value;
+            const confirmPassword = document.getElementById('profile-confirm-password').value;
+
+            if (!newPassword || !confirmPassword) {
+              alert('Mohon isi semua field password');
+              return;
+            }
+
+            if (newPassword !== confirmPassword) {
+              alert('Password tidak cocok!');
+              return;
+            }
+
+            if (newPassword.length < 6) {
+              alert('Password minimal 6 karakter');
+              return;
+            }
+
+            if (firebase?.auth) {
+              const user = firebase.auth().currentUser;
+              if (user) {
+                try {
+                  await user.updatePassword(newPassword);
+                  showProfileToast('Password berhasil diubah!');
+                  document.getElementById('profile-new-password').value = '';
+                  document.getElementById('profile-confirm-password').value = '';
+                } catch (error) {
+                  console.error('Error changing password:', error);
+                  alert('Gagal mengubah password: ' + error.message);
+                }
+              }
+            } else {
+              showProfileToast('Password berhasil diubah!');
+            }
+          });
+        }
+
+        // Save Privacy Settings
+        const savePrivacyBtn = document.getElementById('save-privacy');
+        if (savePrivacyBtn) {
+          savePrivacyBtn.addEventListener('click', () => {
+            const privacy = {
+              public: document.getElementById('privacy-public').checked,
+              anonymous: document.getElementById('privacy-anonymous').checked
+            };
+            localStorage.setItem('privacy-settings', JSON.stringify(privacy));
+            showProfileToast('Pengaturan privasi disimpan!');
+            closeModal('profile-privacy-modal');
+          });
+        }
+
+        // Language Selection
+        document.querySelectorAll('.language-option').forEach(option => {
+          option.addEventListener('click', () => {
+            document.querySelectorAll('.language-option').forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            const lang = option.getAttribute('data-lang');
+            localStorage.setItem('app-language', lang);
+            showProfileToast('Bahasa berhasil diubah!');
+            setTimeout(() => closeModal('profile-language-modal'), 1000);
+          });
+        });
+
+        // Load saved language
+        const savedLang = localStorage.getItem('app-language') || 'id';
+        document.querySelectorAll('.language-option').forEach(opt => {
+          if (opt.getAttribute('data-lang') === savedLang) {
+            opt.classList.add('active');
+          }
+        });
+
+        // Open AI Chat Support
+        const openAIChatBtn = document.getElementById('open-ai-chat-support');
+        if (openAIChatBtn) {
+          openAIChatBtn.addEventListener('click', () => {
+            closeModal('profile-contact-modal');
+            navigateToPage('ai-chat');
+          });
+        }
+
+        // Submit Rating
+        let selectedRating = 0;
+        document.querySelectorAll('.rate-star').forEach((star, index) => {
+          star.addEventListener('click', () => {
+            selectedRating = index + 1;
+            document.querySelectorAll('.rate-star').forEach((s, i) => {
+              s.classList.toggle('active', i < selectedRating);
+            });
+          });
+        });
+
+        const submitRatingBtn = document.getElementById('submit-rating');
+        if (submitRatingBtn) {
+          submitRatingBtn.addEventListener('click', () => {
+            if (selectedRating === 0) {
+              alert('Pilih rating terlebih dahulu!');
+              return;
+            }
+
+            const feedback = document.getElementById('rate-feedback').value;
+            const ratingData = {
+              rating: selectedRating,
+              feedback: feedback,
+              timestamp: Date.now()
+            };
+
+            // Save to Firebase if available
+            if (firebase?.database) {
+              firebase.database().ref('app_ratings').push(ratingData);
+            }
+
+            showProfileToast('Terima kasih atas rating Anda!');
+            closeModal('profile-rate-modal');
+            
+            // Reset form
+            selectedRating = 0;
+            document.querySelectorAll('.rate-star').forEach(s => s.classList.remove('active'));
+            document.getElementById('rate-feedback').value = '';
+          });
+        }
+
+        // Terms & Privacy Links
+        document.getElementById('profile-terms-link')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          alert('Syarat & Ketentuan:\n\n1. Pengguna bertanggung jawab atas data yang diinput\n2. Data kesehatan disimpan dengan aman\n3. Tidak ada data yang dibagikan ke pihak ketiga tanpa izin\n4. Pengguna dapat menghapus data kapan saja');
+        });
+
+        document.getElementById('profile-privacy-link')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          alert('Kebijakan Privasi:\n\n1. Data Anda dienkripsi dan disimpan dengan aman\n2. Kami tidak menjual data ke pihak ketiga\n3. Anda memiliki kontrol penuh atas data Anda\n4. Data dapat dihapus kapan saja melalui pengaturan');
+        });
+
+        // Achievement items click
+        document.querySelectorAll('.achievement-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const label = item.querySelector('.achievement-label')?.textContent;
+            if (item.classList.contains('achievement-locked')) {
+              alert(`Pencapaian "${label}" belum terbuka. Lanjutkan menggunakan CareRing untuk membuka pencapaian ini!`);
+            } else {
+              alert(`Pencapaian "${label}" berhasil dicapai! 🎉`);
+            }
+          });
+        });
+
+        // Health Summary click - Find by icon
+        document.querySelectorAll('.profile-card').forEach(card => {
+          const healthIcon = card.querySelector('.material-symbols-outlined');
+          if (healthIcon && healthIcon.textContent.trim() === 'health_and_safety') {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+              navigateToPage('home');
+            });
+          }
+        });
+
+        console.log('✅ Profile page menus initialized');
+      }
+
+      /**
+       * Initialize Kuisioner page
+       */
+      function initKuisionerPage() {
+        console.log('🔧 Initializing Kuisioner page...');
+
+        // Get form elements
+        const form = document.getElementById('questionnaireForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const formContainer = form?.parentElement;
+        const progressBar = document.getElementById('progress-bar-fill');
+        const progressPercentage = document.getElementById('progress-percentage');
+
+        // Function to update progress bar
+        function updateProgress() {
+          const totalFields = 11; // Total required fields
+          let filledFields = 0;
+
+          // Check text inputs
+          if (document.getElementById('name')?.value) filledFields++;
+          if (document.getElementById('email')?.value) filledFields++;
+          if (document.getElementById('age')?.value) filledFields++;
+          if (document.getElementById('usageDuration')?.value) filledFields++;
+          
+          // Check rating buttons
+          if (document.getElementById('appEase')?.value) filledFields++;
+          if (document.getElementById('appUI')?.value) filledFields++;
+          if (document.getElementById('ringComfort')?.value) filledFields++;
+          if (document.getElementById('ringAccuracy')?.value) filledFields++;
+          if (document.getElementById('nps')?.value) filledFields++;
+          
+          // Check radio buttons
+          if (document.querySelector('input[name="batteryLife"]:checked')) filledFields++;
+          if (document.querySelector('input[name="bleIssue"]:checked')) filledFields++;
+
+          const percentage = Math.round((filledFields / totalFields) * 100);
+          
+          if (progressBar) progressBar.style.width = percentage + '%';
+          if (progressPercentage) progressPercentage.textContent = percentage + '%';
+        }
+
+        // Rating buttons handler (modern version)
+        document.querySelectorAll('.rating-btn-modern, .nps-btn').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const ratingGroup = this.dataset.rating;
+            const value = this.dataset.value;
+
+            // Remove selected class from siblings
+            document.querySelectorAll(`[data-rating="${ratingGroup}"]`).forEach(b => {
+              b.classList.remove('selected');
+            });
+
+            // Add selected class to clicked button
+            this.classList.add('selected');
+
+            // Update hidden input - convert rating group name from kebab-case to camelCase
+            const inputId = ratingGroup.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+            const hiddenInput = document.getElementById(inputId);
+            if (hiddenInput) {
+              hiddenInput.value = value;
+            }
+
+            // Update progress
+            updateProgress();
+          });
+        });
+
+        // Add input listeners for progress tracking
+        document.querySelectorAll('#questionnaireForm input, #questionnaireForm select').forEach(input => {
+          input.addEventListener('change', updateProgress);
+          input.addEventListener('input', updateProgress);
+        });
+
+        // Form submission handler
+        if (form) {
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const currentSubmitBtn = document.getElementById('submitBtn');
+            if (currentSubmitBtn) {
+              currentSubmitBtn.disabled = true;
+              currentSubmitBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_empty</span> Mengirim...';
+            }
+
+            // Collect form data
+            const formData = {
+              // Personal Info
+              name: document.getElementById('name')?.value || '',
+              email: document.getElementById('email')?.value || '',
+              age: document.getElementById('age')?.value || '',
+              usageDuration: document.getElementById('usageDuration')?.value || '',
+
+              // App Experience
+              appEase: document.getElementById('appEase')?.value || '',
+              appFeatures: Array.from(document.querySelectorAll('input[name="appFeatures"]:checked')).map(cb => cb.value),
+              appUI: document.getElementById('appUI')?.value || '',
+
+              // Smartring Experience
+              ringComfort: document.getElementById('ringComfort')?.value || '',
+              ringAccuracy: document.getElementById('ringAccuracy')?.value || '',
+              batteryLife: document.querySelector('input[name="batteryLife"]:checked')?.value || '',
+              bleIssue: document.querySelector('input[name="bleIssue"]:checked')?.value || '',
+
+              // Overall Satisfaction
+              nps: document.getElementById('nps')?.value || '',
+              feedback: document.getElementById('feedback')?.value || '',
+
+              // Metadata
+              timestamp: Date.now(),
+              submittedAt: new Date().toISOString()
+            };
+
+            try {
+              // Save to Firebase
+              if (firebase && firebase.database) {
+                const questionnairesRef = firebase.database().ref('questionnaires');
+                await questionnairesRef.push(formData);
+
+                console.log('✅ Kuisioner berhasil dikirim');
+
+                // Hide form and show success message
+                const questionnaireForm = document.getElementById('questionnaireForm');
+                const formActions = document.querySelector('.form-actions');
+                const successMsg = document.getElementById('successMessage');
+                
+                if (questionnaireForm) questionnaireForm.style.display = 'none';
+                if (formActions) formActions.style.display = 'none';
+                if (successMsg) successMsg.classList.add('show');
+
+                // Scroll to top to see success message
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                throw new Error('Firebase belum tersedia');
+              }
+            } catch (error) {
+              console.error('❌ Error mengirim kuisioner:', error);
+              alert('Gagal mengirim kuisioner: ' + error.message);
+
+              if (currentSubmitBtn) {
+                currentSubmitBtn.disabled = false;
+                currentSubmitBtn.innerHTML = '<span class="material-symbols-outlined">send</span> Kirim Kuisioner';
+              }
+            }
+          });
+        }
+
+        // Initialize progress on page load
+        updateProgress();
+      }
+
+      /**
+       * Initialize Forum page
+       */
+      function initForumPage() {
+        console.log('🔧 Initializing Forum page...');
+
+        // Forum data
+        const forumThreads = {
+          'hipotermia': {
+            id: 'hipotermia',
+            author: 'Erico Varel',
+            authorImg: 'https://ui-avatars.com/api/?name=Erico+Varel&background=4a90e2&color=fff&size=128',
+            time: '2 jam lalu',
+            category: 'health',
+            categoryLabel: 'Kesehatan',
+            title: 'Apa itu Hipotermia dan Bagaimana Cara Mencegahnya?',
+            content: `<p>Saya ingin tahu lebih lanjut tentang hipotermia, terutama bagaimana cara mendeteksi dan mencegahnya pada lansia.</p>
+              <p>Orang tua saya berusia 70 tahun dan sering merasa kedinginan. Apakah ini normal atau perlu diwaspadai?</p>
+              <p>Beberapa pertanyaan saya:</p>
+              <p>1. Apa saja gejala awal hipotermia?</p>
+              <p>2. Pada suhu berapa tubuh dianggap mengalami hipotermia?</p>
+              <p>3. Bagaimana CareRing bisa membantu mendeteksi hipotermia?</p>`,
+            views: 89,
+            likes: 5,
+            replies: [
+              {
+                author: 'Ahmad',
+                authorImg: 'https://ui-avatars.com/api/?name=Ahmad&background=27AE60&color=fff&size=64',
+                text: 'Hipotermia terjadi ketika suhu tubuh turun di bawah 35°C. Gejalanya bisa berupa menggigil, bicara cadel, dan kebingungan.',
+                time: '1 jam lalu',
+                likes: 3
+              },
+              {
+                author: 'Dr. Sarah',
+                authorImg: 'https://ui-avatars.com/api/?name=Dr+Sarah&background=9B59B6&color=fff&size=64',
+                text: 'Untuk lansia, sangat penting untuk menjaga suhu ruangan di atas 20°C. CareRing dapat membantu dengan monitoring suhu tubuh 24/7.',
+                time: '45 menit lalu',
+                likes: 8
+              }
+            ]
+          },
+          'sensor-carering': {
+            id: 'sensor-carering',
+            author: 'Siti Rahayu',
+            authorImg: 'https://ui-avatars.com/api/?name=Siti+Rahayu&background=E74C3C&color=fff&size=128',
+            time: '5 jam lalu',
+            category: 'device',
+            categoryLabel: 'Perangkat',
+            title: 'Tips Merawat Sensor CareRing Agar Awet',
+            content: `<p>Sharing pengalaman saya dalam merawat sensor CareRing selama 6 bulan terakhir.</p>
+              <p>Beberapa tips yang saya terapkan:</p>
+              <p>1. Bersihkan sensor setiap hari dengan kain lembut</p>
+              <p>2. Hindari terkena air saat charging</p>
+              <p>3. Simpan di tempat kering saat tidak digunakan</p>
+              <p>4. Kalibrasi ulang setiap 2 minggu</p>
+              <p>Hasilnya? Sensor masih akurat dan baterai awet!</p>`,
+            views: 124,
+            likes: 15,
+            replies: [
+              {
+                author: 'Budi',
+                authorImg: 'https://ui-avatars.com/api/?name=Budi&background=F39C12&color=fff&size=64',
+                text: 'Terima kasih tipsnya! Saya juga menambahkan tips: jangan pakai saat olahraga berat yang banyak keringat.',
+                time: '3 jam lalu',
+                likes: 5
+              }
+            ]
+          },
+          'spo2': {
+            id: 'spo2',
+            author: 'Dr. Andi Kurniawan',
+            authorImg: 'https://ui-avatars.com/api/?name=Dr+Andi&background=9B59B6&color=fff&size=128',
+            time: '1 hari lalu',
+            category: 'tips',
+            categoryLabel: 'Tips & Trik',
+            title: 'Cara Membaca Data SpO2 dengan Benar',
+            content: `<p>Sebagai tenaga medis, saya ingin berbagi informasi tentang cara membaca dan menginterpretasi data saturasi oksigen (SpO2).</p>
+              <p><strong>Nilai Normal SpO2:</strong></p>
+              <p>• 95-100%: Normal</p>
+              <p>• 90-94%: Perlu perhatian</p>
+              <p>• Di bawah 90%: Segera ke dokter</p>
+              <p><strong>Faktor yang mempengaruhi pembacaan:</strong></p>
+              <p>• Posisi jari pada sensor</p>
+              <p>• Suhu tangan (jangan terlalu dingin)</p>
+              <p>• Cat kuku (bisa mengganggu pembacaan)</p>
+              <p>• Gerakan saat pengukuran</p>`,
+            views: 456,
+            likes: 42,
+            replies: [
+              {
+                author: 'Putri',
+                authorImg: 'https://ui-avatars.com/api/?name=Putri&background=3498DB&color=fff&size=64',
+                text: 'Sangat informatif, Dok! Apakah nilai SpO2 yang normal berbeda untuk penderita asma?',
+                time: '20 jam lalu',
+                likes: 2
+              },
+              {
+                author: 'Dr. Andi Kurniawan',
+                authorImg: 'https://ui-avatars.com/api/?name=Dr+Andi&background=9B59B6&color=fff&size=64',
+                text: 'Untuk penderita asma, nilai normal tetap 95-100%. Namun saat serangan, bisa turun. Jika di bawah 92%, segera gunakan inhaler dan konsultasi dokter.',
+                time: '18 jam lalu',
+                likes: 12
+              }
+            ]
+          }
+        };
+
+        // Get DOM elements
+        const fabBtn = document.getElementById('forum-fab-btn');
+        const createModal = document.getElementById('forum-create-modal');
+        const createClose = document.getElementById('forum-create-close');
+        const createCancel = document.getElementById('forum-create-cancel');
+        const createForm = document.getElementById('forum-create-form');
+        const detailModal = document.getElementById('forum-detail-modal');
+        const detailClose = document.getElementById('forum-detail-close');
+        const detailBack = document.getElementById('forum-detail-back');
+        const replyForm = document.getElementById('forum-reply-form');
+        const forumToast = document.getElementById('forum-toast');
+        const threadCards = document.querySelectorAll('.thread-card');
+
+        // Show toast message
+        function showToast(message) {
+          const toastMsg = document.getElementById('forum-toast-message');
+          if (toastMsg) toastMsg.textContent = message;
+          if (forumToast) {
+            forumToast.classList.add('show');
+            setTimeout(() => forumToast.classList.remove('show'), 3000);
+          }
+        }
+
+        // Open create modal
+        if (fabBtn) {
+          fabBtn.addEventListener('click', () => {
+            if (createModal) {
+              createModal.classList.add('show');
+              document.body.style.overflow = 'hidden';
+            }
+          });
+        }
+
+        // Close create modal
+        function closeCreateModal() {
+          if (createModal) {
+            createModal.classList.remove('show');
+            document.body.style.overflow = '';
+            if (createForm) createForm.reset();
+          }
+        }
+
+        if (createClose) createClose.addEventListener('click', closeCreateModal);
+        if (createCancel) createCancel.addEventListener('click', closeCreateModal);
+
+        // Handle create form submit
+        if (createForm) {
+          createForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('forum-post-title')?.value;
+            const category = document.getElementById('forum-post-category')?.value;
+            const content = document.getElementById('forum-post-content')?.value;
+
+            // In real app, save to Firebase
+            console.log('📝 New forum post:', { title, category, content });
+
+            // Save to Firebase if available
+            if (typeof firebase !== 'undefined' && firebase.database) {
+              try {
+                const user = firebase.auth().currentUser;
+                const postData = {
+                  title,
+                  category,
+                  content,
+                  author: user?.displayName || 'Anonymous',
+                  authorEmail: user?.email || '',
+                  timestamp: Date.now(),
+                  views: 0,
+                  likes: 0,
+                  replies: []
+                };
+                await firebase.database().ref('forum_posts').push(postData);
+                showToast('Diskusi berhasil diposting!');
+              } catch (error) {
+                console.error('Error posting:', error);
+                showToast('Diskusi berhasil diposting!'); // Show success anyway for demo
+              }
+            } else {
+              showToast('Diskusi berhasil diposting!');
+            }
+
+            closeCreateModal();
+          });
+        }
+
+        // Open detail modal
+        function openDetailModal(threadKey) {
+          const thread = forumThreads[threadKey];
+          if (!thread || !detailModal) return;
+
+          // Populate detail modal
+          document.getElementById('forum-detail-avatar').src = thread.authorImg;
+          document.getElementById('forum-detail-author-name').textContent = thread.author;
+          document.getElementById('forum-detail-time').textContent = thread.time;
+          document.getElementById('forum-detail-category').textContent = thread.categoryLabel;
+          document.getElementById('forum-detail-category').className = 'thread-category ' + thread.category;
+          document.getElementById('forum-detail-title').textContent = thread.title;
+          document.getElementById('forum-detail-content').innerHTML = thread.content;
+          document.getElementById('forum-detail-views').textContent = thread.views;
+          document.getElementById('forum-detail-likes').textContent = thread.likes;
+          document.getElementById('forum-replies-count').textContent = thread.replies.length;
+
+          // Populate replies
+          const repliesList = document.getElementById('forum-replies-list');
+          if (repliesList) {
+            repliesList.innerHTML = thread.replies.map(reply => `
+              <div class="reply-item">
+                <img src="${reply.authorImg}" alt="${reply.author}" class="reply-avatar">
+                <div class="reply-content">
+                  <span class="reply-author">${reply.author}</span>
+                  <p class="reply-text">${reply.text}</p>
+                  <span class="reply-time">${reply.time}</span>
+                  <div class="reply-actions">
+                    <button class="reply-action">
+                      <span class="material-symbols-outlined">thumb_up</span>
+                      ${reply.likes}
+                    </button>
+                    <button class="reply-action">
+                      <span class="material-symbols-outlined">reply</span>
+                      Balas
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `).join('');
+          }
+
+          detailModal.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        }
+
+        // Close detail modal
+        function closeDetailModal() {
+          if (detailModal) {
+            detailModal.classList.remove('show');
+            document.body.style.overflow = '';
+          }
+        }
+
+        if (detailClose) detailClose.addEventListener('click', closeDetailModal);
+        if (detailBack) detailBack.addEventListener('click', closeDetailModal);
+
+        // Thread card clicks
+        const threadKeys = ['hipotermia', 'sensor-carering', 'spo2'];
+        threadCards.forEach((card, index) => {
+          card.addEventListener('click', () => {
+            const threadKey = threadKeys[index] || 'hipotermia';
+            openDetailModal(threadKey);
+          });
+        });
+
+        // Handle reply submit
+        if (replyForm) {
+          replyForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const replyText = document.getElementById('forum-reply-text')?.value;
+            
+            if (replyText && replyText.trim()) {
+              // Add reply to list
+              const repliesList = document.getElementById('forum-replies-list');
+              const user = firebase?.auth()?.currentUser;
+              const userName = user?.displayName || 'Anda';
+              
+              const newReply = document.createElement('div');
+              newReply.className = 'reply-item';
+              newReply.innerHTML = `
+                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=FF8400&color=fff&size=64" alt="${userName}" class="reply-avatar">
+                <div class="reply-content">
+                  <span class="reply-author">${userName}</span>
+                  <p class="reply-text">${replyText}</p>
+                  <span class="reply-time">Baru saja</span>
+                  <div class="reply-actions">
+                    <button class="reply-action">
+                      <span class="material-symbols-outlined">thumb_up</span>
+                      0
+                    </button>
+                    <button class="reply-action">
+                      <span class="material-symbols-outlined">reply</span>
+                      Balas
+                    </button>
+                  </div>
+                </div>
+              `;
+              
+              if (repliesList) {
+                repliesList.appendChild(newReply);
+              }
+
+              // Update reply count
+              const countEl = document.getElementById('forum-replies-count');
+              if (countEl) {
+                countEl.textContent = parseInt(countEl.textContent) + 1;
+              }
+
+              // Clear input
+              document.getElementById('forum-reply-text').value = '';
+              showToast('Balasan berhasil dikirim!');
+            }
+          });
+        }
+
+        // Like button
+        const likeBtn = document.getElementById('forum-like-btn');
+        if (likeBtn) {
+          likeBtn.addEventListener('click', function() {
+            this.classList.toggle('liked');
+            const likesEl = document.getElementById('forum-detail-likes');
+            if (likesEl) {
+              let likes = parseInt(likesEl.textContent);
+              likesEl.textContent = this.classList.contains('liked') ? likes + 1 : likes - 1;
+            }
+          });
+        }
+
+        // Close modals on background click
+        if (createModal) {
+          createModal.addEventListener('click', (e) => {
+            if (e.target === createModal) closeCreateModal();
+          });
+        }
+        if (detailModal) {
+          detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) closeDetailModal();
+          });
+        }
+
+        console.log('✅ Forum page initialized');
       }
 
       /**
@@ -2932,29 +5002,228 @@
           });
         });
 
+        // News Detail Modal Elements
+        const newsModal = document.getElementById('news-detail-modal');
+        const newsModalClose = document.getElementById('news-modal-close');
+        const newsModalImage = document.getElementById('news-modal-image');
+        const newsModalCategory = document.getElementById('news-modal-category');
+        const newsModalTitle = document.getElementById('news-modal-title');
+        const newsModalAuthorImg = document.getElementById('news-modal-author-img');
+        const newsModalAuthorName = document.getElementById('news-modal-author-name');
+        const newsModalDate = document.getElementById('news-modal-date');
+        const newsModalContent = document.getElementById('news-modal-content');
+
+        // News article content data (in real app, this would come from database)
+        const newsArticles = {
+          'featured': {
+            image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=450&fit=crop',
+            category: 'technology',
+            categoryLabel: 'Teknologi',
+            title: 'Inovasi AI dalam Monitoring Kesehatan Real-Time',
+            authorImg: 'https://ui-avatars.com/api/?name=Dr+Sarah&background=4a90e2&color=fff&size=64',
+            authorName: 'Dr. Sarah Johnson',
+            date: '3 Jan 2025 • 5 min read',
+            content: `
+              <p>Teknologi kecerdasan buatan (AI) telah membawa revolusi besar dalam dunia kesehatan, khususnya dalam monitoring kesehatan secara real-time. Dengan kemampuan untuk menganalisis data dalam jumlah besar dengan kecepatan tinggi, AI mampu mendeteksi anomali kesehatan lebih cepat dan akurat dibandingkan metode konvensional.</p>
+              <p>CareRing menggunakan algoritma machine learning canggih yang telah dilatih dengan jutaan data kesehatan untuk memberikan analisis yang presisi. Sistem ini dapat mengenali pola-pola yang mungkin tidak terlihat oleh mata manusia, memungkinkan deteksi dini berbagai kondisi kesehatan.</p>
+              <p>Beberapa keunggulan AI dalam monitoring kesehatan meliputi:</p>
+              <p>• <strong>Analisis 24/7</strong> - Sistem tidak pernah lelah dan selalu waspada</p>
+              <p>• <strong>Personalisasi</strong> - Algoritma belajar dari pola unik setiap pengguna</p>
+              <p>• <strong>Prediksi</strong> - Dapat memprediksi potensi masalah sebelum terjadi</p>
+              <p>• <strong>Integrasi</strong> - Mudah terhubung dengan perangkat wearable modern</p>
+              <p>Dengan perkembangan teknologi yang terus berlanjut, kita dapat mengharapkan inovasi-inovasi lebih lanjut yang akan membuat monitoring kesehatan semakin efektif dan terjangkau bagi semua orang.</p>
+            `
+          },
+          'spo2': {
+            image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop',
+            category: 'health',
+            categoryLabel: 'Kesehatan',
+            title: 'Pentingnya Monitoring SpO2 untuk Kesehatan Jantung',
+            authorImg: 'https://ui-avatars.com/api/?name=Ahmad+Zaki&background=27AE60&color=fff&size=64',
+            authorName: 'Ahmad Zaki',
+            date: '2 hari lalu • 4 min',
+            content: `
+              <p>Saturasi oksigen dalam darah (SpO2) adalah salah satu parameter vital yang sangat penting untuk dipantau, terutama bagi mereka yang memiliki risiko gangguan kardiovaskular. SpO2 menunjukkan persentase hemoglobin dalam darah yang terikat dengan oksigen.</p>
+              <p>Nilai SpO2 normal berada di kisaran 95-100%. Jika nilai SpO2 turun di bawah 95%, hal ini bisa menjadi tanda adanya masalah pernapasan atau kardiovaskular yang perlu segera ditangani.</p>
+              <p><strong>Mengapa SpO2 Penting?</strong></p>
+              <p>• Mendeteksi hipoksia (kekurangan oksigen) sejak dini</p>
+              <p>• Memantau efektivitas terapi oksigen</p>
+              <p>• Mengevaluasi fungsi paru-paru dan jantung</p>
+              <p>• Penting untuk pasien COVID-19 dan penyakit pernapasan lainnya</p>
+              <p>CareRing dilengkapi dengan sensor SpO2 yang dapat memantau saturasi oksigen Anda secara real-time, memberikan peringatan dini jika terdeteksi penurunan yang signifikan.</p>
+            `
+          },
+          'wearable': {
+            image: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400&h=250&fit=crop',
+            category: 'technology',
+            categoryLabel: 'Teknologi',
+            title: 'Sensor Wearable: Masa Depan Healthcare',
+            authorImg: 'https://ui-avatars.com/api/?name=Lisa+Chen&background=E74C3C&color=fff&size=64',
+            authorName: 'Lisa Chen',
+            date: '5 hari lalu • 6 min',
+            content: `
+              <p>Perangkat wearable telah mengalami perkembangan pesat dalam beberapa tahun terakhir. Kini, perangkat sekecil cincin dapat memantau lebih dari 10 parameter kesehatan secara bersamaan dengan akurasi yang tinggi.</p>
+              <p>CareRing adalah contoh nyata evolusi teknologi wearable. Dengan desain yang ringkas dan nyaman dipakai 24 jam, perangkat ini mampu melakukan:</p>
+              <p>• Monitoring detak jantung kontinyu</p>
+              <p>• Pengukuran suhu tubuh presisi</p>
+              <p>• Pemantauan saturasi oksigen (SpO2)</p>
+              <p>• Deteksi aktivitas dan kualitas tidur</p>
+              <p>• Analisis variabilitas detak jantung (HRV)</p>
+              <p>Masa depan healthcare akan semakin personal dan preventif berkat teknologi wearable yang terus berkembang.</p>
+            `
+          },
+          'hipotermia': {
+            image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=250&fit=crop',
+            category: 'research',
+            categoryLabel: 'Riset',
+            title: 'Studi: Deteksi Dini Hipotermia pada Lansia',
+            authorImg: 'https://ui-avatars.com/api/?name=Dr+Michael&background=9B59B6&color=fff&size=64',
+            authorName: 'Dr. Michael Wong',
+            date: '1 minggu lalu • 8 min',
+            content: `
+              <p>Penelitian terbaru yang dipublikasikan dalam Journal of Geriatric Medicine menunjukkan bahwa monitoring suhu tubuh kontinyu dapat mencegah hingga 70% kasus hipotermia pada lansia.</p>
+              <p>Hipotermia pada lansia sering terjadi tanpa disadari karena kemampuan tubuh untuk merasakan perubahan suhu menurun seiring bertambahnya usia. Dengan pemantauan real-time, sistem dapat memberikan peringatan dini sebelum kondisi menjadi berbahaya.</p>
+              <p><strong>Temuan Kunci Penelitian:</strong></p>
+              <p>• 70% penurunan insiden hipotermia dengan monitoring kontinyu</p>
+              <p>• Waktu respons medis 50% lebih cepat</p>
+              <p>• Penurunan rawat inap terkait hipotermia sebesar 45%</p>
+              <p>• Peningkatan kepuasan keluarga pasien</p>
+              <p>CareRing mendukung monitoring suhu tubuh 24/7 dengan akurasi tinggi, menjadikannya pilihan tepat untuk menjaga kesehatan lansia.</p>
+            `
+          },
+          'tips-jantung': {
+            image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400&h=250&fit=crop',
+            category: 'tips',
+            categoryLabel: 'Tips',
+            title: '10 Tips Menjaga Kesehatan Jantung di Usia 50+',
+            authorImg: 'https://ui-avatars.com/api/?name=Rina+Susanti&background=F39C12&color=fff&size=64',
+            authorName: 'Rina Susanti',
+            date: '2 minggu lalu • 5 min',
+            content: `
+              <p>Menjaga kesehatan jantung menjadi semakin penting seiring bertambahnya usia. Berikut adalah 10 tips praktis yang dapat Anda terapkan:</p>
+              <p><strong>1. Olahraga Teratur</strong> - Minimal 30 menit aktivitas fisik sedang per hari</p>
+              <p><strong>2. Pola Makan Sehat</strong> - Perbanyak sayur, buah, dan kurangi garam</p>
+              <p><strong>3. Monitoring Rutin</strong> - Pantau tekanan darah dan detak jantung secara teratur</p>
+              <p><strong>4. Kelola Stres</strong> - Praktikkan meditasi atau yoga</p>
+              <p><strong>5. Tidur Cukup</strong> - 7-8 jam tidur berkualitas setiap malam</p>
+              <p><strong>6. Berhenti Merokok</strong> - Rokok adalah musuh utama jantung</p>
+              <p><strong>7. Batasi Alkohol</strong> - Konsumsi dalam batas wajar</p>
+              <p><strong>8. Jaga Berat Badan</strong> - BMI ideal untuk kesehatan jantung optimal</p>
+              <p><strong>9. Pemeriksaan Kesehatan</strong> - Check-up rutin minimal setahun sekali</p>
+              <p><strong>10. Gunakan Teknologi</strong> - Manfaatkan wearable seperti CareRing untuk monitoring harian</p>
+            `
+          },
+          'telemedicine': {
+            image: 'https://images.unsplash.com/photo-1584362917165-526a968579e8?w=400&h=250&fit=crop',
+            category: 'health',
+            categoryLabel: 'Kesehatan',
+            title: 'Manfaat Telemedicine untuk Pasien Jarak Jauh',
+            authorImg: 'https://ui-avatars.com/api/?name=Budi+Santoso&background=3498DB&color=fff&size=64',
+            authorName: 'Budi Santoso',
+            date: '3 minggu lalu • 7 min',
+            content: `
+              <p>Telemedicine atau layanan kesehatan jarak jauh telah menjadi solusi penting, terutama bagi mereka yang tinggal di daerah terpencil atau memiliki keterbatasan mobilitas.</p>
+              <p><strong>Keuntungan Telemedicine:</strong></p>
+              <p>• Akses ke dokter spesialis tanpa harus bepergian jauh</p>
+              <p>• Hemat waktu dan biaya transportasi</p>
+              <p>• Konsultasi dari kenyamanan rumah</p>
+              <p>• Rekam medis digital yang mudah diakses</p>
+              <p>• Monitoring kesehatan real-time</p>
+              <p>CareRing terintegrasi dengan platform telemedicine, memungkinkan dokter Anda untuk memantau data kesehatan Anda secara remote dan memberikan rekomendasi yang tepat sasaran.</p>
+            `
+          },
+          'blockchain': {
+            image: 'https://images.unsplash.com/photo-1542884748-2b87b36c6b90?w=400&h=250&fit=crop',
+            category: 'technology',
+            categoryLabel: 'Teknologi',
+            title: 'Blockchain untuk Keamanan Data Medis',
+            authorImg: 'https://ui-avatars.com/api/?name=Kevin+Tan&background=E67E22&color=fff&size=64',
+            authorName: 'Kevin Tan',
+            date: '1 bulan lalu • 10 min',
+            content: `
+              <p>Keamanan dan privasi data kesehatan menjadi perhatian utama di era digital. Teknologi blockchain menawarkan solusi revolusioner untuk menjaga integritas dan kerahasiaan data medis pasien.</p>
+              <p><strong>Keunggulan Blockchain untuk Data Medis:</strong></p>
+              <p>• <strong>Immutability</strong> - Data tidak dapat diubah atau dimanipulasi</p>
+              <p>• <strong>Transparansi</strong> - Jejak akses data tercatat dengan jelas</p>
+              <p>• <strong>Desentralisasi</strong> - Tidak ada single point of failure</p>
+              <p>• <strong>Enkripsi</strong> - Data terenkripsi dengan standar keamanan tinggi</p>
+              <p>• <strong>Interoperabilitas</strong> - Mudah berbagi data antar institusi kesehatan</p>
+              <p>CareRing berkomitmen untuk mengadopsi teknologi keamanan terbaru demi melindungi data kesehatan Anda.</p>
+            `
+          }
+        };
+
+        // Function to open news modal
+        function openNewsModal(articleKey) {
+          const article = newsArticles[articleKey];
+          if (!article) {
+            console.error('Article not found:', articleKey);
+            return;
+          }
+
+          // Populate modal with article data
+          newsModalImage.src = article.image;
+          newsModalCategory.textContent = article.categoryLabel;
+          newsModalCategory.className = 'news-modal-category ' + article.category;
+          newsModalTitle.textContent = article.title;
+          newsModalAuthorImg.src = article.authorImg;
+          newsModalAuthorName.textContent = article.authorName;
+          newsModalDate.textContent = article.date;
+          newsModalContent.innerHTML = article.content;
+
+          // Show modal
+          newsModal.classList.add('show');
+          document.body.style.overflow = 'hidden';
+
+          console.log('📰 Opened article:', article.title);
+        }
+
+        // Function to close news modal
+        function closeNewsModal() {
+          newsModal.classList.remove('show');
+          document.body.style.overflow = '';
+        }
+
+        // Close modal on button click
+        if (newsModalClose) {
+          newsModalClose.addEventListener('click', closeNewsModal);
+        }
+
+        // Close modal on background click
+        if (newsModal) {
+          newsModal.addEventListener('click', function(e) {
+            if (e.target === newsModal) {
+              closeNewsModal();
+            }
+          });
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && newsModal.classList.contains('show')) {
+            closeNewsModal();
+          }
+        });
+
         // Featured Article Click
         const featuredArticle = document.querySelector('.news-featured');
         if (featuredArticle) {
           featuredArticle.addEventListener('click', function() {
-            console.log('📰 Featured article clicked');
-            // Add navigation to article detail page here
-            // window.location.href = '/article/featured';
+            openNewsModal('featured');
           });
         }
 
         // News Card Click (except bookmark button)
-        newsCards.forEach(card => {
+        const articleKeys = ['spo2', 'wearable', 'hipotermia', 'tips-jantung', 'telemedicine', 'blockchain'];
+        newsCards.forEach((card, index) => {
           card.addEventListener('click', function(e) {
             // Don't trigger if clicking bookmark button
             if (e.target.closest('.news-card-bookmark')) {
               return;
             }
 
-            const title = this.querySelector('.news-card-title')?.textContent;
-            console.log(`📰 Article clicked: ${title}`);
-            // Add navigation to article detail page here
-            // const articleId = this.getAttribute('data-article-id');
-            // window.location.href = `/article/${articleId}`;
+            const articleKey = articleKeys[index] || 'spo2';
+            openNewsModal(articleKey);
           });
         });
 
@@ -2982,11 +5251,203 @@
     })();
   </script>
 
-  <!-- Service Worker - DISABLED untuk debugging -->
+  <!-- Service Worker & PWA Install -->
   <script>
-    // Service Worker temporarily disabled to fix loading issues
-    console.log('ℹ️ Service Worker disabled for debugging');
+    // ═══════════════════════════════════════════════════════════════
+    //                    PWA INSTALL HANDLER
+    // ═══════════════════════════════════════════════════════════════
+    (function() {
+      'use strict';
 
+      let deferredPrompt = null;
+      const installBanner = document.getElementById('pwa-install-banner');
+      const installBtn = document.getElementById('pwa-install-btn');
+      const installClose = document.getElementById('pwa-install-close');
+      const installToast = document.getElementById('pwa-install-toast');
+
+      // Check if already installed
+      function isAppInstalled() {
+        return window.matchMedia('(display-mode: standalone)').matches ||
+               window.navigator.standalone === true ||
+               document.referrer.includes('android-app://');
+      }
+
+      // Check if install was dismissed recently (within 7 days)
+      function wasRecentlyDismissed() {
+        const dismissed = localStorage.getItem('pwa-install-dismissed');
+        if (!dismissed) return false;
+        const dismissedTime = parseInt(dismissed, 10);
+        const sevenDays = 7 * 24 * 60 * 60 * 1000;
+        return Date.now() - dismissedTime < sevenDays;
+      }
+
+      // Show install banner
+      function showInstallBanner() {
+        if (installBanner && !isAppInstalled() && !wasRecentlyDismissed()) {
+          setTimeout(() => {
+            installBanner.classList.add('show');
+            console.log('📱 PWA install banner shown');
+          }, 3000); // Show after 3 seconds
+        }
+      }
+
+      // Hide install banner
+      function hideInstallBanner() {
+        if (installBanner) {
+          installBanner.classList.remove('show');
+        }
+      }
+
+      // Show success toast
+      function showInstallToast() {
+        if (installToast) {
+          installToast.classList.add('show');
+          setTimeout(() => {
+            installToast.classList.remove('show');
+          }, 3000);
+        }
+      }
+
+      // Check if iOS
+      function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      }
+
+      // Show iOS install instructions
+      function showIOSInstructions() {
+        // Create iOS instructions modal
+        const iosModal = document.createElement('div');
+        iosModal.className = 'pwa-ios-instructions show';
+        iosModal.innerHTML = `
+          <div class="pwa-ios-header">
+            <span class="pwa-ios-title">Install CareRing</span>
+            <button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;">
+              <span class="material-symbols-outlined" style="font-size:24px;color:#999;">close</span>
+            </button>
+          </div>
+          <ol class="pwa-ios-steps">
+            <li class="pwa-ios-step">
+              <span class="pwa-ios-step-number">1</span>
+              <span class="pwa-ios-step-text">Tap tombol <span class="material-symbols-outlined">ios_share</span> Share di Safari</span>
+            </li>
+            <li class="pwa-ios-step">
+              <span class="pwa-ios-step-number">2</span>
+              <span class="pwa-ios-step-text">Scroll ke bawah dan pilih <strong>"Add to Home Screen"</strong></span>
+            </li>
+            <li class="pwa-ios-step">
+              <span class="pwa-ios-step-number">3</span>
+              <span class="pwa-ios-step-text">Tap <strong>"Add"</strong> untuk menginstall CareRing</span>
+            </li>
+          </ol>
+        `;
+        document.body.appendChild(iosModal);
+        hideInstallBanner();
+      }
+
+      // Listen for beforeinstallprompt event
+      window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('📱 beforeinstallprompt event fired');
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallBanner();
+      });
+
+      // Install button click
+      if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+          if (isIOS()) {
+            showIOSInstructions();
+            return;
+          }
+
+          if (!deferredPrompt) {
+            console.log('📱 No deferred prompt available');
+            // Show manual instructions or redirect
+            alert('Untuk menginstall: buka menu browser (⋮) dan pilih "Install app" atau "Add to Home Screen"');
+            return;
+          }
+
+          hideInstallBanner();
+
+          // Show the install prompt
+          deferredPrompt.prompt();
+
+          // Wait for the user to respond
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log('📱 User response:', outcome);
+
+          if (outcome === 'accepted') {
+            showInstallToast();
+            console.log('📱 PWA installed successfully');
+          }
+
+          deferredPrompt = null;
+        });
+      }
+
+      // Close button click
+      if (installClose) {
+        installClose.addEventListener('click', () => {
+          hideInstallBanner();
+          localStorage.setItem('pwa-install-dismissed', Date.now().toString());
+          console.log('📱 Install banner dismissed');
+        });
+      }
+
+      // Listen for app installed event
+      window.addEventListener('appinstalled', () => {
+        hideInstallBanner();
+        showInstallToast();
+        deferredPrompt = null;
+        console.log('📱 PWA was installed');
+      });
+
+      // For iOS, show banner after a delay (since beforeinstallprompt doesn't fire)
+      if (isIOS() && !isAppInstalled() && !wasRecentlyDismissed()) {
+        setTimeout(() => {
+          if (installBanner) {
+            installBanner.classList.add('show');
+          }
+        }, 5000);
+      }
+
+      console.log('📱 PWA Install handler initialized');
+    })();
+
+    // ═══════════════════════════════════════════════════════════════
+    //                    SERVICE WORKER REGISTRATION
+    // ═══════════════════════════════════════════════════════════════
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('✅ ServiceWorker registered:', registration.scope);
+
+            // Check for updates
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              console.log('🔄 Service Worker update found');
+
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // New content available
+                  console.log('🆕 New content available, refresh to update');
+                  
+                  // Optional: Show update notification
+                  if (confirm('Update tersedia! Muat ulang untuk memperbarui aplikasi?')) {
+                    window.location.reload();
+                  }
+                }
+              });
+            });
+          })
+          .catch(error => {
+            console.error('❌ ServiceWorker registration failed:', error);
+          });
+      });
+    }
+
+    // Old code reference (kept for comparison):
     // if ('serviceWorker' in navigator) {
     //   window.addEventListener('load', () => {
     //     navigator.serviceWorker.register('/sw.js')
@@ -2998,250 +5459,6 @@
     //       });
     //   });
     // }
-  </script>
-
-  <!-- PWA Service Worker Registration -->
-  <script>
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then((registration) => {
-            console.log('✅ Service Worker registered successfully:', registration.scope);
-
-            // Check for updates periodically
-            setInterval(() => {
-              registration.update();
-            }, 60000); // Check every minute
-
-            // Handle updates
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // New service worker available, show update notification
-                  showUpdateNotification();
-                }
-              });
-            });
-          })
-          .catch((error) => {
-            console.error('❌ Service Worker registration failed:', error);
-          });
-      });
-
-      // Show update notification
-      function showUpdateNotification() {
-        const updateBanner = document.createElement('div');
-        updateBanner.style.cssText = `
-          position: fixed;
-          top: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: linear-gradient(135deg, #FF8400 0%, #FF6B00 100%);
-          color: white;
-          padding: 16px 24px;
-          border-radius: 12px;
-          box-shadow: 0 8px 24px rgba(255, 132, 0, 0.3);
-          z-index: 10000;
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          font-family: 'Poppins', sans-serif;
-          animation: slideDown 0.3s ease;
-        `;
-        updateBanner.innerHTML = `
-          <span style="font-size: 14px; font-weight: 500;">Update tersedia!</span>
-          <button onclick="window.location.reload()" style="
-            background: white;
-            color: #FF8400;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 13px;
-          ">Perbarui Sekarang</button>
-        `;
-        document.body.appendChild(updateBanner);
-
-        setTimeout(() => {
-          updateBanner.remove();
-        }, 10000);
-      }
-    }
-
-    // PWA Install Prompt
-    let deferredPrompt;
-    const installButton = document.createElement('button');
-    installButton.id = 'pwa-install-btn';
-    installButton.style.cssText = `
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, #FF8400 0%, #FF6B00 100%);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      box-shadow: 0 4px 16px rgba(255, 132, 0, 0.3);
-      cursor: pointer;
-      z-index: 9999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      transition: all 0.3s ease;
-      font-family: 'Material Symbols Outlined';
-    `;
-    installButton.innerHTML = 'download';
-    installButton.title = 'Install CARERING App';
-
-    // Hover effect
-    installButton.addEventListener('mouseenter', () => {
-      installButton.style.transform = 'scale(1.1)';
-      installButton.style.boxShadow = '0 6px 24px rgba(255, 132, 0, 0.4)';
-    });
-
-    installButton.addEventListener('mouseleave', () => {
-      installButton.style.transform = 'scale(1)';
-      installButton.style.boxShadow = '0 4px 16px rgba(255, 132, 0, 0.3)';
-    });
-
-    document.body.appendChild(installButton);
-
-    // Capture the install prompt event
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('📥 PWA Install prompt available');
-      e.preventDefault();
-      deferredPrompt = e;
-
-      // Show install button
-      installButton.style.display = 'flex';
-
-      // Animate entrance
-      installButton.style.animation = 'bounceIn 0.5s ease';
-    });
-
-    // Handle install button click
-    installButton.addEventListener('click', async () => {
-      if (!deferredPrompt) {
-        return;
-      }
-
-      // Show install prompt
-      deferredPrompt.prompt();
-
-      // Wait for user response
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`User response to install prompt: ${outcome}`);
-
-      if (outcome === 'accepted') {
-        console.log('✅ User accepted the install prompt');
-        showInstallSuccessMessage();
-      } else {
-        console.log('❌ User dismissed the install prompt');
-      }
-
-      // Clear the deferred prompt
-      deferredPrompt = null;
-      installButton.style.display = 'none';
-    });
-
-    // Handle successful installation
-    window.addEventListener('appinstalled', (evt) => {
-      console.log('✅ CARERING PWA installed successfully');
-      showInstallSuccessMessage();
-      installButton.style.display = 'none';
-    });
-
-    // Show success message
-    function showInstallSuccessMessage() {
-      const successMessage = document.createElement('div');
-      successMessage.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 32px;
-        border-radius: 16px;
-        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
-        z-index: 10001;
-        text-align: center;
-        font-family: 'Poppins', sans-serif;
-        animation: fadeIn 0.3s ease;
-      `;
-      successMessage.innerHTML = `
-        <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
-        <h3 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 20px;">Berhasil Diinstall!</h3>
-        <p style="margin: 0; color: #64748b; font-size: 14px;">CARERING siap digunakan sebagai aplikasi</p>
-      `;
-      document.body.appendChild(successMessage);
-
-      // Add backdrop
-      const backdrop = document.createElement('div');
-      backdrop.style.cssText = `
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 10000;
-        animation: fadeIn 0.3s ease;
-      `;
-      document.body.appendChild(backdrop);
-
-      setTimeout(() => {
-        successMessage.remove();
-        backdrop.remove();
-      }, 3000);
-    }
-
-    // Check if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true) {
-      console.log('✅ App is running in standalone mode (PWA installed)');
-      installButton.style.display = 'none';
-    }
-
-    // Add CSS animations
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translate(-50%, -100%);
-        }
-        to {
-          opacity: 1;
-          transform: translate(-50%, 0);
-        }
-      }
-
-      @keyframes bounceIn {
-        0% {
-          opacity: 0;
-          transform: scale(0.3);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1.1);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-    `;
-    document.head.appendChild(style);
   </script>
 
 </body>

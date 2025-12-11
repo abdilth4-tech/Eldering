@@ -227,3 +227,315 @@ onValue(sensorRef, (snapshot) => {
         deviceTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 40px; color: #adb5bd;">Tidak ada data.</td></tr>`;
     }
 });
+
+// ============================================
+// 3. LOGIKA KUISIONER
+// ============================================
+
+let questionnaireData = {};
+const questionnaireTableBody = document.getElementById('questionnaireTableBody');
+const questionnaireRef = ref(db, 'questionnaires');
+
+// Load questionnaire data
+onValue(questionnaireRef, (snapshot) => {
+    questionnaireData = snapshot.val() || {};
+    renderQuestionnaireTable();
+});
+
+function renderQuestionnaireTable() {
+    const searchTerm = document.getElementById('searchQuestionnaire')?.value.toLowerCase() || '';
+    const filterDuration = document.getElementById('filterUsageDuration')?.value || '';
+
+    questionnaireTableBody.innerHTML = "";
+
+    const entries = Object.entries(questionnaireData);
+
+    // Update total count
+    if (document.getElementById('totalResponses')) {
+        document.getElementById('totalResponses').textContent = entries.length;
+    }
+
+    if (entries.length === 0) {
+        questionnaireTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 40px; color: #adb5bd;">Belum ada data kuisioner.</td></tr>`;
+        return;
+    }
+
+    // Filter and display
+    const filtered = entries.filter(([key, data]) => {
+        const matchSearch = !searchTerm ||
+            data.name?.toLowerCase().includes(searchTerm) ||
+            data.email?.toLowerCase().includes(searchTerm);
+
+        const matchDuration = !filterDuration || data.usageDuration === filterDuration;
+
+        return matchSearch && matchDuration;
+    });
+
+    if (filtered.length === 0) {
+        questionnaireTableBody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 40px; color: #adb5bd;">Tidak ada hasil yang sesuai filter.</td></tr>`;
+        return;
+    }
+
+    // Sort by timestamp (newest first)
+    filtered.sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+
+    filtered.forEach(([key, data]) => {
+        const centerStyle = "text-align: center; font-weight: 600;";
+
+        // NPS color coding
+        let npsColor = "#28a745"; // Green for promoters (9-10)
+        if (data.nps <= 6) npsColor = "#dc3545"; // Red for detractors (0-6)
+        else if (data.nps <= 8) npsColor = "#ffc107"; // Yellow for passives (7-8)
+
+        const row = `
+            <tr style="transition: background 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background=''">
+                <td><strong style="color: #007bff;">${data.name || '-'}</strong></td>
+                <td style="font-size: 13px; color: #6c757d;">${data.email || '-'}</td>
+                <td style="${centerStyle}">${data.age || '-'}</td>
+                <td style="${centerStyle} font-size: 12px;">${data.usageDuration || '-'}</td>
+                <td style="${centerStyle} color: #007bff;">${data.appEase || '-'}/5</td>
+                <td style="${centerStyle} color: #007bff;">${data.appUI || '-'}/5</td>
+                <td style="${centerStyle} color: #17a2b8;">${data.ringComfort || '-'}/5</td>
+                <td style="${centerStyle} color: #17a2b8;">${data.ringAccuracy || '-'}/5</td>
+                <td style="${centerStyle} color: ${npsColor}; font-size: 16px; font-weight: 700;">${data.nps || '-'}</td>
+                <td style="text-align: center;">
+                    <button class="btn-edit" onclick="window.viewQuestionnaireDetail('${key}')" style="padding: 8px 16px;">Detail</button>
+                </td>
+            </tr>
+        `;
+        questionnaireTableBody.innerHTML += row;
+    });
+}
+
+// Search and filter handlers
+if (document.getElementById('searchQuestionnaire')) {
+    document.getElementById('searchQuestionnaire').addEventListener('input', renderQuestionnaireTable);
+}
+
+if (document.getElementById('filterUsageDuration')) {
+    document.getElementById('filterUsageDuration').addEventListener('change', renderQuestionnaireTable);
+}
+
+// View detail modal
+window.viewQuestionnaireDetail = (key) => {
+    const data = questionnaireData[key];
+    if (!data) return;
+
+    const modal = document.getElementById('questionnaireModal');
+    const modalContent = document.getElementById('modalContent');
+
+    const formatDate = (timestamp) => {
+        if (!timestamp) return '-';
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    modalContent.innerHTML = `
+        <div style="display: grid; gap: 25px;">
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                <h3 style="color: #007bff; margin-bottom: 15px;">👤 Informasi Responden</h3>
+                <p><strong>Nama:</strong> ${data.name || '-'}</p>
+                <p><strong>Email:</strong> ${data.email || '-'}</p>
+                <p><strong>Usia:</strong> ${data.age || '-'} tahun</p>
+                <p><strong>Durasi Penggunaan:</strong> ${data.usageDuration || '-'}</p>
+                <p><strong>Tanggal Pengisian:</strong> ${formatDate(data.timestamp)}</p>
+            </div>
+
+            <div style="background: #e7f3ff; padding: 20px; border-radius: 15px;">
+                <h3 style="color: #007bff; margin-bottom: 15px;">📱 Pengalaman Aplikasi</h3>
+                <p><strong>Kemudahan Penggunaan:</strong> ${data.appEase || '-'}/5</p>
+                <p><strong>Kepuasan UI:</strong> ${data.appUI || '-'}/5</p>
+                <p><strong>Fitur Favorit:</strong></p>
+                <ul style="margin: 10px 0; padding-left: 25px;">
+                    ${data.appFeatures && data.appFeatures.length > 0
+                        ? data.appFeatures.map(f => `<li>${f}</li>`).join('')
+                        : '<li>Tidak ada data</li>'}
+                </ul>
+            </div>
+
+            <div style="background: #e7f9f5; padding: 20px; border-radius: 15px;">
+                <h3 style="color: #17a2b8; margin-bottom: 15px;">💍 Pengalaman Smartring</h3>
+                <p><strong>Kenyamanan:</strong> ${data.ringComfort || '-'}/5</p>
+                <p><strong>Akurasi Data:</strong> ${data.ringAccuracy || '-'}/5</p>
+                <p><strong>Ketahanan Baterai:</strong> ${data.batteryLife || '-'}</p>
+                <p><strong>Masalah Bluetooth:</strong> ${data.bleIssue || '-'}</p>
+            </div>
+
+            <div style="background: #fff3cd; padding: 20px; border-radius: 15px;">
+                <h3 style="color: #856404; margin-bottom: 15px;">⭐ Kepuasan Keseluruhan</h3>
+                <p><strong>Net Promoter Score (NPS):</strong> ${data.nps || '-'}/10</p>
+                <p><strong>Kategori:</strong> ${
+                    data.nps >= 9 ? '<span style="color: #28a745; font-weight: 600;">Promoter 🎉</span>' :
+                    data.nps >= 7 ? '<span style="color: #ffc107; font-weight: 600;">Passive 😐</span>' :
+                    '<span style="color: #dc3545; font-weight: 600;">Detractor 😞</span>'
+                }</p>
+            </div>
+
+            ${data.feedback ? `
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                <h3 style="color: #343a40; margin-bottom: 15px;">💬 Saran & Kritik</h3>
+                <p style="white-space: pre-wrap; line-height: 1.6;">${data.feedback}</p>
+            </div>
+            ` : ''}
+        </div>
+    `;
+
+    modal.style.display = 'flex';
+};
+
+window.closeQuestionnaireModal = () => {
+    document.getElementById('questionnaireModal').style.display = 'none';
+};
+
+// Download as CSV
+window.downloadQuestionnaireCSV = () => {
+    const entries = Object.entries(questionnaireData);
+
+    if (entries.length === 0) {
+        alert('Tidak ada data untuk didownload!');
+        return;
+    }
+
+    // CSV Headers
+    const headers = [
+        'Timestamp', 'Nama', 'Email', 'Usia', 'Durasi Penggunaan',
+        'Kemudahan App', 'UI App', 'Fitur Favorit',
+        'Kenyamanan Ring', 'Akurasi Ring', 'Ketahanan Baterai', 'Masalah BLE',
+        'NPS', 'Saran/Kritik'
+    ];
+
+    // CSV Rows
+    const rows = entries.map(([key, data]) => {
+        const date = data.timestamp ? new Date(data.timestamp).toLocaleString('id-ID') : '-';
+        const features = data.appFeatures ? data.appFeatures.join('; ') : '-';
+        const feedback = data.feedback ? `"${data.feedback.replace(/"/g, '""')}"` : '-';
+
+        return [
+            date,
+            data.name || '-',
+            data.email || '-',
+            data.age || '-',
+            data.usageDuration || '-',
+            data.appEase || '-',
+            data.appUI || '-',
+            features,
+            data.ringComfort || '-',
+            data.ringAccuracy || '-',
+            data.batteryLife || '-',
+            data.bleIssue || '-',
+            data.nps || '-',
+            feedback
+        ].join(',');
+    });
+
+    // Combine
+    const csv = [headers.join(','), ...rows].join('\n');
+
+    // Download
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `questionnaire_results_${Date.now()}.csv`;
+    link.click();
+};
+
+// Download as JSON
+window.downloadQuestionnaireJSON = () => {
+    if (Object.keys(questionnaireData).length === 0) {
+        alert('Tidak ada data untuk didownload!');
+        return;
+    }
+
+    const json = JSON.stringify(questionnaireData, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `questionnaire_results_${Date.now()}.json`;
+    link.click();
+};
+
+// Download as Excel (XLSX)
+window.downloadQuestionnaireExcel = () => {
+    const entries = Object.entries(questionnaireData);
+
+    if (entries.length === 0) {
+        alert('Tidak ada data untuk didownload!');
+        return;
+    }
+
+    // Prepare data for Excel
+    const excelData = entries.map(([key, data]) => {
+        const date = data.timestamp ? new Date(data.timestamp).toLocaleString('id-ID') : '-';
+        const features = data.appFeatures ? data.appFeatures.join(', ') : '-';
+
+        // Determine NPS Category
+        let npsCategory = '';
+        if (data.nps >= 9) npsCategory = 'Promoter';
+        else if (data.nps >= 7) npsCategory = 'Passive';
+        else npsCategory = 'Detractor';
+
+        return {
+            'Tanggal Pengisian': date,
+            'Nama': data.name || '-',
+            'Email': data.email || '-',
+            'Usia': data.age || '-',
+            'Durasi Penggunaan': data.usageDuration || '-',
+
+            // Pengalaman Aplikasi
+            'Kemudahan Aplikasi (1-5)': data.appEase || '-',
+            'Kepuasan UI (1-5)': data.appUI || '-',
+            'Fitur Favorit': features,
+
+            // Pengalaman Smartring
+            'Kenyamanan Ring (1-5)': data.ringComfort || '-',
+            'Akurasi Ring (1-5)': data.ringAccuracy || '-',
+            'Ketahanan Baterai': data.batteryLife || '-',
+            'Masalah Bluetooth': data.bleIssue || '-',
+
+            // Kepuasan Keseluruhan
+            'NPS Score (0-10)': data.nps || '-',
+            'Kategori NPS': npsCategory,
+            'Saran/Kritik': data.feedback || '-'
+        };
+    });
+
+    // Create workbook and worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(excelData);
+
+    // Set column widths for better readability
+    const colWidths = [
+        { wch: 20 },  // Tanggal
+        { wch: 25 },  // Nama
+        { wch: 30 },  // Email
+        { wch: 8 },   // Usia
+        { wch: 18 },  // Durasi
+        { wch: 20 },  // Kemudahan App
+        { wch: 18 },  // Kepuasan UI
+        { wch: 40 },  // Fitur Favorit
+        { wch: 20 },  // Kenyamanan Ring
+        { wch: 18 },  // Akurasi Ring
+        { wch: 18 },  // Ketahanan Baterai
+        { wch: 20 },  // Masalah BLE
+        { wch: 15 },  // NPS Score
+        { wch: 15 },  // Kategori NPS
+        { wch: 50 }   // Saran/Kritik
+    ];
+    ws['!cols'] = colWidths;
+
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Hasil Kuisioner');
+
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().slice(0, 10);
+    const filename = `CareRing_Questionnaire_${timestamp}.xlsx`;
+
+    // Download the file
+    XLSX.writeFile(wb, filename);
+};
