@@ -215,7 +215,26 @@ async function uploadToFirebase(data) {
       return false;
     }
 
+    // Upload to realtime data path
     await firebase.database().ref(dataPath).set(firebaseData);
+
+    // ALSO save to sensorHistory for charts
+    // Convert BLE format to old format for compatibility
+    const historyData = {
+      bpm: data.heartRate || 0,
+      spO2: data.spo2 || 0,
+      objTemp: data.temperature || 0,
+      ambTemp: data.ambient || 0,
+      timestamp: now,
+      deviceName: data.deviceName || 'CareRing',
+      source: 'BLE'
+    };
+
+    // Only save to history if there's valid heart rate data (sensor is working)
+    if (historyData.bpm > 0) {
+      await firebase.database().ref('/sensorHistory').push(historyData);
+      console.log('✅ Data saved to history for charts');
+    }
 
     lastUploadTime = now;
     console.log('✅ Data uploaded to Firebase:', dataPath);
