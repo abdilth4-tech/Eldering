@@ -7,27 +7,18 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#007BFF">
 
   <style>
-    /* === STYLE FOTO PROFIL (ADDED) === */
-    .profile-icon img {
-        width: 32px; height: 32px; 
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+    /* === CSS KHUSUS HALAMAN CHAT === */
 
-    /* === HERO AI === */
+    /* 1. HERO SECTION (Avatar Robot) */
     .ai-hero {
       margin: 10px auto 20px;
       text-align: center;
       animation: fadeIn .4s ease;
     }
-
     .ai-avatar {
       width: 90px;
       height: 90px;
@@ -40,32 +31,30 @@
       font-size: 42px;
       font-weight: 600;
       box-shadow: 0 10px 30px rgba(0, 102, 255, 0.25);
+      margin: 0 auto;
     }
-
     .ai-hero h2 {
       margin-top: 12px;
       font-size: 1.4em;
       font-weight: 700;
+      color: #333;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-
-    /* === CHAT WINDOW === */
+    /* 2. AREA CHAT (Wadah Pesan) */
     .chat-window {
       background: #fff;
       border-radius: 20px;
       padding: 20px;
-      height: 60vh;
+      height: 55vh; /* Tinggi area chat */
       overflow-y: auto;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
       scroll-behavior: smooth;
+      margin-bottom: 10px;
+      position: relative;
     }
 
-    .ai-message, .user-message {
+    /* 3. BUBBLE CHAT DESIGN */
+    .message {
       max-width: 85%;
       padding: 12px 15px;
       border-radius: 16px;
@@ -73,113 +62,82 @@
       font-size: 0.95em;
       line-height: 1.5em;
       animation: fadeInChat .25s ease;
+      word-wrap: break-word;
     }
 
-    @keyframes fadeInChat {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-
-    /* AI bubble */
     .ai-message {
       background: #e9f2ff;
       color: #084c9e;
       border-radius: 18px 18px 18px 6px;
+      align-self: flex-start;
+      margin-right: auto;
     }
 
-    /* USER bubble */
     .user-message {
       background: #ffffff;
       color: #333;
       border: 1px solid #e5e5e5;
       border-radius: 18px 18px 6px 18px;
-      margin-left: auto;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      margin-left: auto; /* Dorong ke kanan */
+      align-self: flex-end;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
-
-    /* === TYPING INDICATOR === */
-    .typing-indicator {
-      display: flex;
-      gap: 6px;
-      padding: 12px;
-      width: 55px;
-    }
-
-    .typing-dot {
-      width: 8px;
-      height: 8px;
-      background: #7ca8ff;
-      border-radius: 50%;
-      animation: blink 1.4s infinite both;
-    }
-
-    .typing-dot:nth-child(2) {
-      animation-delay: .2s;
-    }
-    .typing-dot:nth-child(3) {
-      animation-delay: .4s;
-    }
-
-    @keyframes blink {
-      0% { opacity: .2; }
-      20% { opacity: 1; }
-      100% { opacity: .2; }
-    }
-
-
-    /* === SUGGESTED BUTTONS === */
+    /* 4. TOMBOL SARAN (Suggested Questions) */
     .suggested-questions {
       display: flex;
       gap: 10px;
       overflow-x: auto;
-      margin: 15px 0;
+      margin: 10px 0 15px;
       padding-bottom: 5px;
+      scrollbar-width: none; /* Hide scrollbar Firefox */
+    }
+    .suggested-questions::-webkit-scrollbar {
+      display: none; /* Hide scrollbar Chrome/Safari */
     }
 
     .suggest-btn {
-      background: #f1f5ff;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 16px;
-      white-space: nowrap;
-      font-size: 0.87em;
-      color: #2d79ff;
+      background: #f8faff;
       border: 1px solid #dbe8ff;
+      padding: 10px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-size: 0.85em;
+      color: #2d79ff;
       cursor: pointer;
-      transition: .2s;
+      transition: all .2s;
+      font-family: 'Poppins', sans-serif;
     }
-
     .suggest-btn:hover {
-      background: #e6eeff;
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
       transform: translateY(-2px);
     }
 
-
-    /* === CHAT INPUT === */
+    /* 5. INPUT AREA (Bagian Ketik) */
     .chat-form {
       display: flex;
       align-items: center;
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(12px);
-      border-radius: 18px;
-      padding: 10px 15px;
-      margin-top: 5px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      background: #fff;
+      border-radius: 30px;
+      padding: 8px 8px 8px 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      border: 1px solid #f0f0f0;
     }
 
     #chat-input {
       flex: 1;
       border: none;
-      font-size: 1em;
+      font-size: 0.95em;
       outline: none;
       background: transparent;
+      font-family: 'Poppins', sans-serif;
     }
 
     #send-btn {
-      width: 42px;
-      height: 42px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       border: none;
       background: #007bff;
@@ -189,16 +147,37 @@
       align-items: center;
       cursor: pointer;
       transition: .2s;
+      margin-left: 10px;
     }
-
     #send-btn:hover {
       background: #056be7;
       transform: scale(1.05);
     }
 
+    /* Animasi */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInChat {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Style Profile Icon di Header (Optional jika belum ada di style.css) */
+    .profile-icon img {
+        width: 32px; height: 32px; 
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        
+    }
   </style>
 </head>
 <body>
+  
   <div class="mobile-wrapper">
     
     <header class="app-header">
@@ -206,7 +185,6 @@
         <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
       </div>
       
-      <!-- FOTO PROFIL (UPDATED: Added ID "profile-btn") -->
       <div class="profile-icon" id="profile-btn" onclick="window.location.href='profil.html'">
         <span class="material-symbols-outlined" style="font-size: 32px;">person</span>
       </div>
@@ -214,31 +192,30 @@
 
     <main class="container">
 
-      <!-- AI HERO -->
       <div class="ai-hero">
         <div class="ai-avatar">
-          🤖
+          <span class="material-symbols-outlined" style="font-size: 48px;">smart_toy</span>
         </div>
-        <h2>CareRing AI Assistant</h2>
+        <h2>CareRing Assistant</h2>
       </div>
 
       <div class="chat-container">
         
         <div id="chat-window" class="chat-window">
           <div class="message ai-message">
-            <p>Halo! Saya adalah Bot CARERING. Tanyakan saya tentang data kesehatan Anda menggunakan tombol di bawah, atau ketik pertanyaan Anda.</p>
+            <p>Halo! Saya asisten kesehatan Anda. Silakan pilih topik di bawah atau ketik pertanyaan Anda.</p>
           </div>
         </div>
         
         <div id="suggested-questions" class="suggested-questions">
           <button class="suggest-btn">Bagaimana suhu tubuh saya?</button>
-          <button class="suggest-btn">Detak jantung saya normal?</button>
-          <button class="suggest-btn">Apa itu hipotermia?</button>
-          <button class="suggest-btn">Berapa suhu ruangan?</button>
+          <button class="suggest-btn">Apakah detak jantung saya normal?</button>
+          <button class="suggest-btn">Apa gejala hipotermia?</button>
+          <button class="suggest-btn">Saran kesehatan hari ini</button>
         </div>
         
         <form id="chat-form" class="chat-form">
-          <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." required>
+          <input type="text" id="chat-input" placeholder="Tanyakan sesuatu..." autocomplete="off" required>
           <button type="submit" id="send-btn">
             <span class="material-symbols-outlined">send</span>
           </button>
@@ -247,7 +224,6 @@
       </div>
     </main>
 
-    <!-- NAV BAR -->
     <div class="bottom-nav">
       <div class="nav-item" onclick="window.location.href='index.html'">
         <div class="nav-icon"><span class="material-symbols-outlined">home</span></div>
@@ -277,31 +253,5 @@
 
   </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-  <script src="/script.js"></script>
-  <script src="/auth-guard.js"></script>
-  <script src="/ble-handler.js"></script>
-  <script src="/ble-indicator.js"></script>
-
-  <!-- LOGIC FOTO PROFIL -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user && user.photoURL) {
-                const profileBtn = document.getElementById('profile-btn');
-                if(profileBtn) {
-                    profileBtn.innerHTML = `
-                        <img src="${user.photoURL}" alt="Profil">
-                    `;
-                }
-            }
-        });
-    });
-  </script>
-
-</body>
+  </body>
 </html>

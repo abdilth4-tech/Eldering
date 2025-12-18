@@ -326,6 +326,60 @@
       background: #e3f2fd;
       color: #1565c0;
     }
+      /* ═══════════════════════════════════════════════════════════════
+       AI CHAT STYLES (MODERN)
+       ═══════════════════════════════════════════════════════════════ */
+    .chat-window {
+      /* Hapus inline style di HTML agar ini bekerja */
+      background-color: #f5f7fb !important;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 0.95em;
+      line-height: 1.5;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      animation: popIn 0.3s ease;
+    }
+
+    .ai-message {
+      align-self: flex-start;
+      background-color: #ffffff !important;
+      color: #333 !important;
+      border-bottom-left-radius: 4px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    /* Label Nama Bot */
+    .ai-message::before {
+      content: "🤖 CareRing Bot";
+      display: block;
+      font-size: 0.75em;
+      color: #007bff;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #007BFF, #0056b3) !important;
+      color: white !important;
+      border: none !important;
+      border-bottom-right-radius: 4px;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
   </style>
 </head>
 <body>
@@ -652,7 +706,7 @@
         </div>
 
         <div class="chat-container">
-          <div id="chat-window" class="chat-window" style="background: #fff; border-radius: 20px; padding: 20px; height: 60vh; overflow-y: auto; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+          <div id="chat-window" class="chat-window">
             <div class="message ai-message" style="max-width: 85%; padding: 12px 15px; border-radius: 16px; margin-bottom: 12px; background: #e9f2ff; color: #084c9e;">
               <p>Halo! Saya adalah Bot CARERING. Tanyakan saya tentang data kesehatan Anda.</p>
             </div>
@@ -771,122 +825,58 @@
   <!-- ═══════════════════════════════════════════════════════════════
        FIREBASE & SCRIPTS - Load sekali, persist selamanya!
        ═══════════════════════════════════════════════════════════════ -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-  <script src="/script.js"></script>
-  <script src="/auth-guard.js"></script>
-  <script src="/ble-handler.js"></script>
-  <script src="/ble-indicator.js"></script>
+  <script src="script.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="ble-handler.js"></script>
+  <script src="ble-indicator.js"></script>
 
-  <!-- ═══════════════════════════════════════════════════════════════
-       SPA ROUTER - Handle navigation tanpa page reload!
-       ═══════════════════════════════════════════════════════════════ -->
   <script>
-    // ═══════════════════════════════════════════════════════════════
-    //                    SPA ROUTER SYSTEM
-    // ═══════════════════════════════════════════════════════════════
     (function() {
       'use strict';
-
       console.log('🚀 SPA Router initialized');
-      console.log('✅ BLE Connection will persist across navigation!');
 
-      // Current page tracking
       let currentPage = 'home';
 
-      /**
-       * Navigate to a page
-       */
+      // --- NAVIGASI HALAMAN ---
       function navigateToPage(pageName) {
-        console.log(`📄 Navigating to: ${pageName}`);
-
-        // Hide all pages
-        document.querySelectorAll('.page').forEach(page => {
-          page.classList.remove('active');
-        });
-
-        // Show target page
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
         const targetPage = document.getElementById(`page-${pageName}`);
         if (targetPage) {
           targetPage.classList.add('active');
           currentPage = pageName;
-
-          // Update navigation active state
           updateNavigation(pageName);
-
-          // Update URL hash (without reload!)
           window.location.hash = pageName;
-
-          // Scroll to top
           window.scrollTo(0, 0);
-
-          // Page-specific initialization
           initializePage(pageName);
-        } else {
-          console.error(`❌ Page not found: ${pageName}`);
         }
       }
 
-      /**
-       * Update navigation bar active state
-       */
       function updateNavigation(pageName) {
-        document.querySelectorAll('.nav-item').forEach(item => {
-          item.classList.remove('active');
-        });
-
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         const activeNav = document.querySelector(`.nav-item[data-navigate="${pageName}"]`);
-        if (activeNav) {
-          activeNav.classList.add('active');
-        }
+        if (activeNav) activeNav.classList.add('active');
       }
 
-      /**
-       * Initialize page-specific functionality
-       */
       function initializePage(pageName) {
-        console.log(`🔧 Initializing page: ${pageName}`);
-
         switch(pageName) {
-          case 'home':
-            // Home page already initialized by script.js
-            break;
-
-          case 'news':
-            // Trigger news loading if needed
-            if (typeof loadNews === 'function') {
-              loadNews();
-            }
-            break;
-
-          case 'perangkat':
-            // Perangkat page specific init
-            initPerangkatPage();
-            break;
-
+          case 'home': break;
+          case 'news': if (typeof loadNews === 'function') loadNews(); break;
+          case 'perangkat': initPerangkatPage(); break;
           case 'ai-chat':
-            // AI Chat init
+            // Panggil fungsi chat bot
+            if (typeof window.initAIChat === 'function') window.initAIChat();
             break;
-
-          case 'forum':
-            // Forum init
-            break;
-
-          case 'profil':
-            // Profile page init (handled by script.js)
-            break;
+          case 'forum': break;
+          case 'profil': break;
         }
       }
 
-      /**
-       * Initialize Perangkat page
-       */
+      // --- LOGIKA PERANGKAT (BLE) ---
       function initPerangkatPage() {
-        console.log('🔧 Initializing Perangkat page...');
-
-        // Get modal elements
         const modal = document.getElementById('ble-modal');
         const btnConnect = document.getElementById('btn-connect-device');
         const btnClose = document.getElementById('ble-close-btn');
@@ -895,212 +885,186 @@
         const bleMessage = document.getElementById('ble-message');
         const deviceNameInput = document.getElementById('ble-device-name');
 
-        // Open modal
-        if (btnConnect) {
-          btnConnect.addEventListener('click', () => {
-            modal.classList.add('show');
-            bleMessage.classList.remove('show');
-          });
-        }
+        if (btnConnect) btnConnect.onclick = () => { modal.classList.add('show'); bleMessage.classList.remove('show'); };
+        if (btnClose) btnClose.onclick = () => modal.classList.remove('show');
+        if (modal) modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('show'); };
 
-        // Close modal
-        if (btnClose) {
-          btnClose.addEventListener('click', () => {
-            modal.classList.remove('show');
-          });
-        }
-
-        // Close modal on outside click
-        if (modal) {
-          modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-              modal.classList.remove('show');
-            }
-          });
-        }
-
-        // Connect to device
         if (btnBLEConnect) {
-          btnBLEConnect.addEventListener('click', async () => {
+          btnBLEConnect.onclick = async () => {
             try {
-              // Show progress
               bleProgress.classList.add('show');
               bleMessage.classList.remove('show');
-              btnBLEConnect.disabled = true;
-              btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">hourglass_empty</span> Menghubungkan...';
-
-              // Update device name prefix if needed
-              const deviceName = deviceNameInput.value.trim();
-              if (deviceName) {
-                console.log('🔍 Mencari perangkat:', deviceName);
-              }
-
-              // Call BLE connect from ble-handler.js
+              btnBLEConnect.innerHTML = 'Menghubungkan...';
+              
               if (window.BLEHandler && window.BLEHandler.connect) {
                 await window.BLEHandler.connect();
-
-                // Success!
                 bleProgress.classList.remove('show');
                 bleMessage.className = 'ble-message show success';
-                bleMessage.textContent = '✅ Berhasil terhubung! Data akan mulai disinkronkan.';
-                btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Terhubung';
-
-                // Close modal after 2 seconds
-                setTimeout(() => {
-                  modal.classList.remove('show');
-                  updateDeviceUI();
-                }, 2000);
-
-              } else {
-                throw new Error('BLE Handler belum dimuat');
+                bleMessage.textContent = '✅ Terhubung!';
+                setTimeout(() => { modal.classList.remove('show'); updateDeviceUI(); }, 2000);
               }
-
             } catch (error) {
-              console.error('❌ Koneksi gagal:', error);
-
               bleProgress.classList.remove('show');
               bleMessage.className = 'ble-message show error';
-              bleMessage.textContent = error.message || 'Gagal menghubungkan. Pastikan Bluetooth aktif dan perangkat dalam mode pairing.';
-              btnBLEConnect.disabled = false;
-              btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">bluetooth_searching</span> Coba Lagi';
+              bleMessage.textContent = 'Gagal: ' + error.message;
+              btnBLEConnect.innerHTML = 'Coba Lagi';
             }
-          });
+          };
         }
-
-        // Update UI based on connection status
         updateDeviceUI();
-
-        // Listen for BLE events
-        window.addEventListener('bleConnected', updateDeviceUI);
-        window.addEventListener('bleDisconnected', updateDeviceUI);
       }
 
-      /**
-       * Update device UI based on connection status
-       */
       function updateDeviceUI() {
-        const connectedContainer = document.getElementById('connected-devices-container');
-        const noDevicesState = document.getElementById('no-devices-state');
+        const container = document.getElementById('connected-devices-container');
+        const noDev = document.getElementById('no-devices-state');
+        if (!container || !noDev) return;
 
-        if (!connectedContainer || !noDevicesState) return;
-
-        // Check if device is connected
         if (window.BLEHandler && window.BLEHandler.isConnected && window.BLEHandler.isConnected()) {
-          const deviceInfo = window.BLEHandler.getDeviceInfo();
-
-          // Hide no devices state
-          noDevicesState.style.display = 'none';
-
-          // Show connected device
-          connectedContainer.innerHTML = `
-            <div class="device-card">
-              <div class="device-name">${deviceInfo.name || 'CareRing Device'}</div>
-              <div style="font-size: 0.85em; color: #666; margin-top: 4px;">
-                <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; color: #27AE60;">check_circle</span>
-                Terhubung
-              </div>
-              <div style="font-size: 0.8em; color: #999; margin-top: 8px;">
-                ID: ${deviceInfo.id || '-'}
-              </div>
-
-              <div class="device-actions">
-                <div class="action-btn" onclick="console.log('Sync clicked')">
-                  <span class="material-symbols-outlined">sync</span>
-                  <div>
-                    <div style="font-weight: 600;">Sinkronisasi Manual</div>
-                    <div style="font-size: 0.85em; color: #666;">Update data sekarang</div>
-                  </div>
-                </div>
-
-                <div class="action-btn action-btn-disconnect" onclick="disconnectDevice()">
-                  <span class="material-symbols-outlined">link_off</span>
-                  <div>
-                    <div style="font-weight: 600; color: #E74C3C;">Putuskan Koneksi</div>
-                    <div style="font-size: 0.85em; color: #999;">Hentikan monitoring</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
+             const info = window.BLEHandler.getDeviceInfo();
+             noDev.style.display = 'none';
+             container.innerHTML = `<div class="device-card">Connected: ${info.name} <button onclick="window.disconnectDevice()" style="color:red">Putus</button></div>`;
         } else {
-          // Show no devices state
-          noDevicesState.style.display = 'block';
-          connectedContainer.innerHTML = '';
+             noDev.style.display = 'block';
+             container.innerHTML = '';
         }
       }
 
-      /**
-       * Disconnect device
-       */
-      function disconnectDevice() {
-        if (confirm('Apakah Anda yakin ingin memutuskan koneksi dengan perangkat?')) {
-          if (window.BLEHandler && window.BLEHandler.disconnect) {
-            window.BLEHandler.disconnect();
-            updateDeviceUI();
+      window.disconnectDevice = function() {
+          if (confirm('Putuskan koneksi?')) {
+              if (window.BLEHandler) window.BLEHandler.disconnect();
+              updateDeviceUI();
           }
-        }
-      }
+      };
 
-      // Make functions globally accessible
-      window.disconnectDevice = disconnectDevice;
-
-      /**
-       * Setup navigation listeners
-       */
-      function setupNavigation() {
-        // Bottom navigation clicks
-        document.querySelectorAll('[data-navigate]').forEach(element => {
-          element.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const pageName = element.getAttribute('data-navigate');
-            navigateToPage(pageName);
-          });
-        });
-
-        // Handle browser back/forward
-        window.addEventListener('hashchange', () => {
-          const hash = window.location.hash.slice(1);
-          if (hash && hash !== currentPage) {
-            navigateToPage(hash);
-          }
-        });
-
-        // Handle initial hash
-        const initialHash = window.location.hash.slice(1);
-        if (initialHash) {
-          navigateToPage(initialHash);
-        }
-      }
-
-      // Initialize router when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setupNavigation);
-      } else {
-        setupNavigation();
-      }
-
-      // Expose navigateToPage globally
+      document.querySelectorAll('[data-navigate]').forEach(el => {
+        el.addEventListener('click', (e) => { e.preventDefault(); navigateToPage(el.getAttribute('data-navigate')); });
+      });
+      window.addEventListener('hashchange', () => { const h = window.location.hash.slice(1); if(h) navigateToPage(h); });
+      document.addEventListener('DOMContentLoaded', () => { const h = window.location.hash.slice(1); navigateToPage(h || 'home'); });
       window.navigateToPage = navigateToPage;
-
-      console.log('✅ SPA Router ready!');
     })();
   </script>
 
-  <!-- Service Worker -->
+<script>
+    window.initAIChat = function() {
+        console.log("🤖 Smart Bot Loaded");
+        const chatInput = document.getElementById('chat-input');
+        const chatForm = document.getElementById('chat-form');
+        const suggestBtns = document.querySelectorAll('.suggest-btn');
+        
+        if (!chatInput) return;
+
+        // Reset Tombol Saran
+        suggestBtns.forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            newBtn.addEventListener('click', function() {
+                document.getElementById('chat-input').value = this.innerText;
+                window.handleChatSubmit();
+            });
+        });
+
+        // Reset Form Submit
+        if (chatForm) {
+            const newForm = chatForm.cloneNode(true);
+            chatForm.parentNode.replaceChild(newForm, chatForm);
+            newForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                window.handleChatSubmit();
+            });
+        }
+    };
+
+    // --- OTAK BOT PINTAR ---
+    window.handleChatSubmit = function() {
+        const chatInput = document.getElementById('chat-input');
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // 1. Tampilkan pesan User
+        appendMessage('user', message);
+        chatInput.value = '';
+
+        // 2. Tampilkan Loading
+        const loadingId = appendMessage('ai', 'Sedang memeriksa data kesehatan Anda...');
+
+        // 3. Proses Jawaban (Delay 0.8 detik agar terasa natural)
+        setTimeout(() => {
+            const loadingEl = document.getElementById(loadingId);
+            if (loadingEl) loadingEl.remove();
+
+            let jawaban = "";
+            const textLower = message.toLowerCase();
+
+            // === AMBIL DATA REAL DARI HOME (Sesuai ID di HTML kamu) ===
+            const elemenSuhu = document.getElementById('suhu-tubuh-value');
+            const elemenJantung = document.getElementById('home-heartrate');
+
+            // Ambil teksnya (misal "36.5" atau "--")
+            const dataSuhu = elemenSuhu ? elemenSuhu.innerText : "--";
+            const dataJantung = elemenJantung ? elemenJantung.innerText : "--";
+
+            // === LOGIKA JAWABAN ===
+            if (textLower.includes("suhu")) {
+                // Cek apakah data tersedia (bukan "--")
+                if(dataSuhu === "--") {
+                    jawaban = "Maaf, sensor suhu belum terhubung. Silakan hubungkan perangkat di menu 'Perangkat' terlebih dahulu.";
+                } else {
+                    jawaban = `Suhu tubuh Anda saat ini terdeteksi **${dataSuhu}°C**. `;
+                    const angka = parseFloat(dataSuhu);
+                    if(angka > 37.5) jawaban += "Suhu Anda agak tinggi. Pastikan istirahat cukup dan banyak minum air.";
+                    else if(angka < 35) jawaban += "Hati-hati, suhu tubuh terlalu rendah (Hipotermia). Segera hangatkan tubuh.";
+                    else jawaban += "Suhu tubuh Anda dalam batas **Normal**.";
+                }
+            } 
+            else if (textLower.includes("jantung") || textLower.includes("detak")) {
+                if(dataJantung === "--") {
+                    jawaban = "Maaf, sensor detak jantung belum aktif. Mohon cek koneksi perangkat Anda.";
+                } else {
+                    jawaban = `Detak jantung Anda saat ini adalah **${dataJantung} BPM**. `;
+                    const angka = parseFloat(dataJantung);
+                    if(angka > 100) jawaban += "Detak jantung cukup cepat. Jika Anda sedang istirahat, cobalah rileks sejenak.";
+                    else if(angka < 60) jawaban += "Detak jantung lambat (Bradikardia), ini normal jika Anda sering berolahraga.";
+                    else jawaban += "Detak jantung Anda **Normal**.";
+                }
+            } 
+            else if (textLower.includes("hipotermia")) {
+                jawaban = "Hipotermia adalah kondisi darurat medis ketika suhu tubuh turun drastis di bawah 35°C. Gejalanya meliputi menggigil hebat, bicara melantur, dan napas pendek.";
+            }
+            else if (textLower.includes("halo") || textLower.includes("hai")) {
+                jawaban = "Halo! Saya asisten CareRing. Saya bisa membacakan data sensor Anda langsung dari perangkat. Coba tanya: 'Berapa suhu saya?'";
+            }
+            else {
+                jawaban = "Maaf, saya belum mengerti. Coba tanyakan tentang **Suhu Tubuh**, **Detak Jantung**, atau **Hipotermia**.";
+            }
+
+            // Tampilkan Jawaban
+            appendMessage('ai', jawaban);
+            
+        }, 800); 
+    };
+
+    // Helper: Buat Bubble Chat Cantik
+    function appendMessage(sender, text) {
+        const cw = document.getElementById('chat-window');
+        if (!cw) return;
+        const div = document.createElement('div');
+        div.id = 'msg-' + Date.now();
+        
+        // Class CSS yang sudah diperbarui
+        div.className = sender === 'user' ? 'message user-message' : 'message ai-message';
+        
+        // Convert **text** jadi bold dan \n jadi enter
+        let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, "<br>");
+        div.innerHTML = formattedText;
+        
+        cw.appendChild(div);
+        cw.scrollTop = cw.scrollHeight;
+        return div.id;
+    }
+ </script>
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            console.log('ServiceWorker registration successful: ', registration.scope);
-          })
-          .catch(error => {
-            console.log('ServiceWorker registration failed: ', error);
-          });
-      });
+      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
     }
   </script>
-
-</body>
-</html>
