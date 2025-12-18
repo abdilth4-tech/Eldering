@@ -572,17 +572,9 @@ if (document.getElementById('google-login-btn')) {
   });
 
   // Handle suggested questions
-  suggestedButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const questionText = button.querySelector('span:last-child').innerText;
-      sendMessageToBot(questionText);
-      // Hide suggested questions after first interaction
-      const suggestedQuestionsEl = document.getElementById('suggested-questions');
-      if (suggestedQuestionsEl) {
-        suggestedQuestionsEl.classList.add('hidden');
-      }
-    });
-  });
+  // NOTE: Suggested buttons are now initialized by initAIChatPage() in app.html
+  // to handle SPA navigation properly. This code is kept for reference but not executed.
+  // The event listeners are attached when the page becomes active via navigateTo().
 
   // Add modern message with avatar and timestamp
   function addMessageToWindow(message, sender, isLoading = false) {
@@ -671,6 +663,9 @@ if (document.getElementById('google-login-btn')) {
       setChatLoading(false);
     }, 1000);
   }
+
+  // Expose sendMessageToBot to window scope for SPA navigation
+  window.sendMessageToBot = sendMessageToBot;
 
   // === OTAK BOT ===
   async function getBotResponse(userMessage) {

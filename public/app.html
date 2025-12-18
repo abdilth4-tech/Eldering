@@ -3665,6 +3665,7 @@
 
           case 'ai-chat':
             // AI Chat init
+            initAIChatPage();
             break;
 
           case 'forum':
@@ -3688,6 +3689,45 @@
             if (qFormActions) qFormActions.style.display = 'block';
             if (qSuccessMsg) qSuccessMsg.classList.remove('show');
             break;
+        }
+      }
+
+      /**
+       * Initialize AI Chat page
+       */
+      function initAIChatPage() {
+        console.log('🔧 Initializing AI Chat page...');
+
+        // Setup suggested questions buttons
+        const suggestedButtons = document.querySelectorAll('.suggest-btn-modern');
+        console.log(`   Found ${suggestedButtons.length} suggested buttons`);
+
+        if (suggestedButtons.length > 0) {
+          suggestedButtons.forEach((button, index) => {
+            // Remove existing listeners to prevent duplicates
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+
+            // Add click event listener
+            newButton.addEventListener('click', () => {
+              const questionText = newButton.querySelector('span:last-child');
+              if (questionText && typeof window.sendMessageToBot === 'function') {
+                console.log(`📤 Sending suggested question: ${questionText.innerText}`);
+                window.sendMessageToBot(questionText.innerText);
+
+                // Hide suggested questions after first interaction
+                const suggestedQuestionsEl = document.getElementById('suggested-questions');
+                if (suggestedQuestionsEl) {
+                  suggestedQuestionsEl.classList.add('hidden');
+                }
+              } else {
+                console.error('❌ sendMessageToBot function not found or question text missing');
+              }
+            });
+          });
+          console.log('✅ Suggested buttons initialized');
+        } else {
+          console.warn('⚠️ No suggested buttons found');
         }
       }
 
