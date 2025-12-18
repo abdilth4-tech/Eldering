@@ -232,8 +232,71 @@ if (document.getElementById('google-login-btn')) {
     }
   }
 
+  // Global variable to track BLE connection status
+  let isBLEConnected = false;
+  let lastBLEDataTimestamp = 0;
+
   // === Update Homepage Vitals Cards (BLE Bridge Data) ===
   function updateHomeVitalsCards(data) {
+    const now = Date.now();
+    const lastUpdate = data.timestamp || 0;
+    const timeDiff = (now - lastUpdate) / 1000; // seconds
+
+    // Check connection status based on timestamp
+    const wasConnected = isBLEConnected;
+    isBLEConnected = timeDiff < 5; // Consider connected if updated within 5 seconds
+
+    // Update Device Status
+    const statusEl = document.getElementById('home-device-status');
+    if (statusEl) {
+      if (timeDiff < 5) {
+        statusEl.innerHTML = '<span class="status-dot"></span><span class="status-text">Terhubung</span>';
+        statusEl.className = 'status-indicator status-online';
+      } else if (timeDiff < 60) {
+        statusEl.innerHTML = '<span class="status-dot"></span><span class="status-text">Idle</span>';
+        statusEl.className = 'status-indicator status-idle';
+      } else {
+        statusEl.innerHTML = '<span class="status-dot"></span><span class="status-text">Terputus</span>';
+        statusEl.className = 'status-indicator status-offline';
+      }
+    }
+
+    // If disconnected, stop updating data and add visual indicator
+    if (!isBLEConnected) {
+      // Add disconnected visual state to vital cards
+      const vitalCards = document.querySelectorAll('.vital-card');
+      vitalCards.forEach(card => {
+        card.style.transition = 'all 0.3s ease';
+        card.style.opacity = '0.5';
+        card.style.filter = 'grayscale(50%)';
+      });
+
+      // Show disconnection warning if just disconnected
+      if (wasConnected) {
+        console.warn('⚠️ Koneksi BLE terputus - Data update dihentikan');
+        showNotification("⚠️ Koneksi Terputus", "Koneksi dengan perangkat BLE terputus. Data tidak diperbarui.");
+      }
+
+      return; // Stop updating data
+    }
+
+    // Connection is active, remove visual indicators and update data
+    const vitalCards = document.querySelectorAll('.vital-card');
+    vitalCards.forEach(card => {
+      card.style.transition = 'all 0.3s ease';
+      card.style.opacity = '1';
+      card.style.filter = 'none';
+    });
+
+    // Show reconnection notification if just reconnected
+    if (!wasConnected) {
+      console.log('✅ Koneksi BLE kembali terhubung');
+      showNotification("✅ Koneksi Kembali", "Koneksi dengan perangkat BLE berhasil terhubung kembali.");
+    }
+
+    // Update last data timestamp
+    lastBLEDataTimestamp = now;
+
     // Update Heart Rate
     const heartRate = data.heartRate || 0;
     updateText('home-heartrate', heartRate);
@@ -264,25 +327,6 @@ if (document.getElementById('google-login-btn')) {
     const deviceID = data.deviceID || '-';
     updateText('home-device-name', deviceName);
     updateText('home-device-id', deviceID);
-
-    // Update Device Status
-    const statusEl = document.getElementById('home-device-status');
-    if (statusEl) {
-      const now = Date.now();
-      const lastUpdate = data.timestamp || 0;
-      const timeDiff = (now - lastUpdate) / 1000; // seconds
-
-      if (timeDiff < 5) {
-        statusEl.innerText = 'Terhubung';
-        statusEl.className = 'status-badge status-online';
-      } else if (timeDiff < 60) {
-        statusEl.innerText = 'Idle';
-        statusEl.className = 'status-badge status-idle';
-      } else {
-        statusEl.innerText = 'Offline';
-        statusEl.className = 'status-badge status-offline';
-      }
-    }
 
     // Update Last Update Time
     const vitalsLastUpdate = document.getElementById('vitals-last-update');
@@ -333,6 +377,9 @@ if (document.getElementById('google-login-btn')) {
         if (latestDevice) {
           console.log('📊 Updating homepage vitals with BLE data:', latestDevice.deviceName);
           updateHomeVitalsCards(latestDevice);
+
+          // TAMBAHAN: Handle notifikasi dan health report dari data BLE
+          handleBLEDataUpdates(latestDevice);
         }
       } else {
         console.log('No BLE devices found in Firebase');
@@ -340,112 +387,95 @@ if (document.getElementById('google-login-btn')) {
     });
   }
 
+  // === Handle BLE Data Updates (Notifications & Health Report) ===
+  function handleBLEDataUpdates(data) {
+    // Skip processing if BLE is disconnected
+    if (!isBLEConnected) {
+      return;
+    }
+
+    const now = Date.now();
+
+    // Map BLE data format to old format for compatibility
+    const mappedData = {
+      objTemp: data.temperature || 0,
+      bpm: data.heartRate || 0,
+      spO2: data.spo2 || 0,
+      ambTemp: data.ambient || 0
+    };
+
+    // 1. Temperature notifications
+    const suhuTubuh = mappedData.objTemp;
+    if (suhuTubuh > 37.5) {
+      if (now - lastTempAlertTime > alertCooldown) {
+        showNotification("⚠️ Peringatan Suhu Tubuh ⚠️", `Suhu tubuh terdeteksi DEMAM: ${suhuTubuh.toFixed(1)}°C`);
+        lastTempAlertTime = now;
+      }
+    } else if (suhuTubuh < 36.0 && suhuTubuh > 10) {
+      if (now - lastTempAlertTime > alertCooldown) {
+        showNotification("⚠️ Peringatan Suhu Tubuh ⚠️", `Suhu tubuh terdeteksi HIPOTERMIA: ${suhuTubuh.toFixed(1)}°C`);
+        lastTempAlertTime = now;
+      }
+    }
+
+    // 2. Heart rate notifications
+    const bpm = mappedData.bpm;
+    if (bpm > 100 && bpm > 0) {
+      if (now - lastBpmAlertTime > alertCooldown) {
+        showNotification("❤️ Peringatan Detak Jantung ❤️", `Detak jantung terdeteksi TINGGI: ${bpm} BPM`);
+        lastBpmAlertTime = now;
+      }
+    } else if (bpm < 60 && bpm > 0) {
+      if (now - lastBpmAlertTime > alertCooldown) {
+        showNotification("❤️ Peringatan Detak Jantung ❤️", `Detak jantung terdeteksi RENDAH: ${bpm} BPM`);
+        lastBpmAlertTime = now;
+      }
+    }
+
+    // 3. Health Report
+    const report = generateHealthReport(mappedData);
+
+    // Pop-up logic
+    if ((report.overallStatus === "SAKIT" || report.overallStatus === "KURANG SEHAT") && (now - lastReportPopupTime > reportCooldown)) {
+      if (bpm > 0 || (suhuTubuh < 36 && suhuTubuh > 10) || suhuTubuh > 37.5) {
+        showReportModal(report);
+      }
+    }
+
+    // Update summary card
+    if (summaryStatusEl && summaryDetailListEl) {
+      summaryStatusEl.innerText = report.overallStatus;
+      summaryStatusEl.className = report.overallStatusClass;
+      summaryDetailListEl.innerHTML = "";
+      report.detailReport.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${item.sensor}:</strong> <span class="status-text ${item.class}">${item.status}</span>`;
+        summaryDetailListEl.appendChild(li);
+      });
+    }
+  }
+
   // Setup BLE data listener for homepage
   setupBLEDataListener();
 
-  // === Ambil Data Realtime ===
+  // ═══════════════════════════════════════════════════════════════════
+  // OLD DATA LISTENER - REPLACED WITH BLE DATA
+  // ═══════════════════════════════════════════════════════════════════
+  // Data sekarang diambil dari BLE real-time via setupBLEDataListener()
+  // Path lama (/realtimeSensorData/ESP32C3-F0E1837D7850) sudah tidak dipakai
+  //
+  // Jika ingin test dengan dummy data, uncomment code di bawah:
+  /*
   dataRef.on("value", (snapshot) => {
     const data = snapshot.val();
     if (data) {
-      
-      const now = Date.now(); 
-
-      // 1. Update Kartu Suhu Tubuh
-      const suhuTubuh = data.objTemp || 0; 
-      updateText('suhu-tubuh-value', suhuTubuh, 1);
-      if (suhuTubuh > 37.5) {
-        updateStatus('suhu-tubuh-status', 'Demam', 'theme-red');
-        if (now - lastTempAlertTime > alertCooldown) {
-          showNotification("⚠️ Peringatan Suhu Tubuh ⚠️", `Suhu tubuh terdeteksi DEMAM: ${suhuTubuh.toFixed(1)}°C`);
-          lastTempAlertTime = now; 
-        }
-      } else if (suhuTubuh < 36.0 && suhuTubuh > 10) { 
-        updateStatus('suhu-tubuh-status', 'Hipotermia', 'theme-red');
-        if (now - lastTempAlertTime > alertCooldown) {
-          showNotification("⚠️ Peringatan Suhu Tubuh ⚠️", `Suhu tubuh terdeteksi HIPOTERMIA: ${suhuTubuh.toFixed(1)}°C`);
-          lastTempAlertTime = now; 
-        }
-      } else if (suhuTubuh < 10) {
-        updateStatus('suhu-tubuh-status', '---', 'theme-red');
-      } else {
-        updateStatus('suhu-tubuh-status', 'Normal', 'theme-red');
-      }
-
-      // 2. Update Kartu Detak Jantung
-      const bpm = data.bpm || 0;
-      updateText('bpm-value', bpm); 
-      if (bpm > 100) {
-        updateStatus('bpm-status', 'Tinggi', 'panas');
-        if (bpm > 0 && now - lastBpmAlertTime > alertCooldown) {
-          showNotification("❤️ Peringatan Detak Jantung ❤️", `Detak jantung terdeteksi TINGGI: ${bpm} BPM`);
-          lastBpmAlertTime = now;
-        }
-      } else if (bpm < 60 && bpm > 0) {
-        updateStatus('bpm-status', 'Rendah', 'panas');
-        if (now - lastBpmAlertTime > alertCooldown) {
-          showNotification("❤️ Peringatan Detak Jantung ❤️", `Detak jantung terdeteksi RENDAH: ${bpm} BPM`);
-          lastBpmAlertTime = now;
-        }
-      } else if (bpm == 0) {
-        updateStatus('bpm-status', '---', 'normal');
-      } else {
-        updateStatus('bpm-status', 'Normal', 'normal');
-      }
-      
-      // Update sisa kartu
-      const spO2 = data.spO2 || 0; 
-      updateText('spo2-value', spO2, 1);
-      updateText('spo2-percent', `${spO2.toFixed(1)}%`);
-      
-      const suhuRuangan = data.ambTemp || 0;
-      updateText('ruangan-value', suhuRuangan, 1);
-      updateStatus('ruangan-status', suhuRuangan > 28 ? 'Panas' : 'Sejuk', suhuRuangan > 28 ? 'panas' : 'normal');
-      
-      const altitude = data.altitude || 0;
-      updateText('ketinggian-value', altitude, 1);
-      updateStatus('ketinggian-status', altitude > 1000 ? 'Tinggi' : 'Dataran', altitude > 1000 ? 'panas' : 'normal');
-      
-      const irValue = data.irValue || 0;
-      updateText('ir-value', irValue);
-      updateStatus('ir-status', irValue > 20000 ? 'Normal' : 'Rendah', irValue > 20000 ? 'normal' : 'panas');
-      
-      // Data statis
-      const langkahCount = 1327;
-      const langkahGoal = 10000;
-      const langkahPercent = (langkahCount / langkahGoal) * 100;
-      updateText('langkah-value', '1,327');
-      updateText('langkah-percent', `${langkahPercent.toFixed(0)}%`);
-      updateText('tidur-value', '8.2');
-      updateText('tekanan-value', '1002.0'); 
-      updateStatus('tekanan-status', 'Normal', 'normal');
-      updateText('hidrasi-placeholder-value', '1.6');
-      updateStatus('hidrasi-status', 'OK', 'normal');
-      
-      
-      // === Cek Laporan Kesehatan ===
-      const report = generateHealthReport(data);
-      
-      // Pop-up logic
-      if ((report.overallStatus === "SAKIT" || report.overallStatus === "KURANG SEHAT") && (now - lastReportPopupTime > reportCooldown)) {
-        if (data.bpm > 0 || (data.objTemp < 36 && data.objTemp > 10) || data.objTemp > 37.5) { 
-          showReportModal(report);
-        }
-      }
-      
-      // Kartu Statis Logic
-      if (summaryStatusEl && summaryDetailListEl) {
-        summaryStatusEl.innerText = report.overallStatus;
-        summaryStatusEl.className = report.overallStatusClass;
-        summaryDetailListEl.innerHTML = "";
-        report.detailReport.forEach(item => {
-          const li = document.createElement('li');
-          li.innerHTML = `<strong>${item.sensor}:</strong> <span class="status-text ${item.class}">${item.status}</span>`;
-          summaryDetailListEl.appendChild(li);
-        });
-      }
-
+      const now = Date.now();
+      // ... (old code for dummy data testing)
     }
   });
+  */
+
+  console.log('✅ Homepage menggunakan data BLE real-time dari ESP32');
 
   // === GRAFIK ===
   const historyRef = database.ref("/sensorHistory");
