@@ -3549,14 +3549,27 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-  <script src="/script.js"></script>
-  <script src="/auth-guard.js"></script>
-  <script src="/ble-handler.js"></script>
-  <script src="/ble-indicator.js"></script>
+  <script src="./script.js"></script>
+  <script src="./auth-guard.js"></script>
+  <script src="./ble-handler.js"></script>
+  <script src="./ble-indicator.js"></script>
 
   <!-- ═══════════════════════════════════════════════════════════════
        SPA ROUTER - Handle navigation tanpa page reload!
        ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    // Wait for BLE Handler to be ready
+    window._bleHandlerReady = false;
+    window.addEventListener('load', () => {
+      // Check if BLE Handler loaded successfully
+      if (window.BLEHandler) {
+        window._bleHandlerReady = true;
+        console.log('✅ BLE Handler ready for use');
+      } else {
+        console.warn('⚠️ BLE Handler not loaded after page load');
+      }
+    });
+  </script>
   <script>
     // ═══════════════════════════════════════════════════════════════
     //                    SPA ROUTER SYSTEM
@@ -3684,6 +3697,21 @@
       function initPerangkatPage() {
         console.log('🔧 Initializing Perangkat page...');
 
+        // Check if BLE Handler is loaded
+        console.log('🔍 Checking BLE Handler status...');
+        console.log('   window.BLEHandler:', window.BLEHandler);
+
+        if (!window.BLEHandler) {
+          console.warn('⚠️ BLE Handler belum dimuat saat init page');
+          console.warn('   Ini mungkin normal jika script masih loading');
+          console.warn('   BLE Handler akan tetap berfungsi setelah script selesai load');
+        } else {
+          console.log('✅ BLE Handler tersedia');
+          console.log('   - connect:', typeof window.BLEHandler.connect);
+          console.log('   - disconnect:', typeof window.BLEHandler.disconnect);
+          console.log('   - isConnected:', typeof window.BLEHandler.isConnected);
+        }
+
         // Get modal elements
         const modal = document.getElementById('ble-modal');
         const btnConnect = document.getElementById('btn-connect-device');
@@ -3717,10 +3745,43 @@
           });
         }
 
+        // Helper function to wait for BLE Handler
+        async function waitForBLEHandler(maxRetries = 5, retryDelay = 500) {
+          for (let i = 0; i < maxRetries; i++) {
+            if (window.BLEHandler && window.BLEHandler.connect) {
+              return true;
+            }
+            console.log(`⏳ Waiting for BLE Handler... (${i + 1}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, retryDelay));
+          }
+          return false;
+        }
+
         // Connect to device
         if (btnBLEConnect) {
           btnBLEConnect.addEventListener('click', async () => {
             try {
+              console.log('🔘 Button scan diklik');
+              console.log('🔍 Checking BLE Handler availability...');
+              console.log('   window.BLEHandler:', window.BLEHandler);
+
+              // Show progress immediately
+              if (bleProgress) bleProgress.classList.add('show');
+              if (bleMessage) {
+                bleMessage.className = 'ble-message show info';
+                bleMessage.textContent = 'Memeriksa BLE Handler...';
+              }
+
+              // Wait for BLE Handler to be ready
+              const isReady = await waitForBLEHandler();
+
+              if (!isReady) {
+                console.error('❌ window.BLEHandler tidak tersedia setelah beberapa percobaan');
+                throw new Error('BLE Handler tidak dapat dimuat. Silakan refresh halaman (Ctrl+Shift+R) atau cek console untuk error.');
+              }
+
+              console.log('✅ BLE Handler tersedia, memulai koneksi...');
+
               // Show progress
               if (bleProgress) bleProgress.classList.add('show');
               if (bleMessage) bleMessage.classList.remove('show');
@@ -3740,33 +3801,32 @@
               }
 
               // Call BLE connect from ble-handler.js
-              if (window.BLEHandler && window.BLEHandler.connect) {
-                await window.BLEHandler.connect();
+              console.log('📞 Calling window.BLEHandler.connect()...');
+              await window.BLEHandler.connect();
 
-                // Success!
-                if (bleProgress) bleProgress.classList.remove('show');
+              // Success!
+              console.log('✅ Koneksi berhasil!');
+              if (bleProgress) bleProgress.classList.remove('show');
 
-                if (bleMessage) {
-                  bleMessage.className = 'ble-message show success';
-                  bleMessage.textContent = '✅ Berhasil terhubung! Data akan mulai disinkronkan.';
-                }
-
-                if (btnBLEConnect) {
-                  btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Terhubung';
-                }
-
-                // Close modal after 2 seconds
-                setTimeout(() => {
-                  if (modal) modal.classList.remove('show');
-                  updateDeviceUI();
-                }, 2000);
-
-              } else {
-                throw new Error('BLE Handler belum dimuat');
+              if (bleMessage) {
+                bleMessage.className = 'ble-message show success';
+                bleMessage.textContent = '✅ Berhasil terhubung! Data akan mulai disinkronkan.';
               }
+
+              if (btnBLEConnect) {
+                btnBLEConnect.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Terhubung';
+              }
+
+              // Close modal after 2 seconds
+              setTimeout(() => {
+                if (modal) modal.classList.remove('show');
+                updateDeviceUI();
+              }, 2000);
 
             } catch (error) {
               console.error('❌ Koneksi gagal:', error);
+              console.error('   Error name:', error.name);
+              console.error('   Error message:', error.message);
 
               // Hide progress and show error message
               if (bleProgress) bleProgress.classList.remove('show');
@@ -5419,7 +5479,7 @@
     // ═══════════════════════════════════════════════════════════════
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('./sw.js')
           .then(registration => {
             console.log('✅ ServiceWorker registered:', registration.scope);
 
