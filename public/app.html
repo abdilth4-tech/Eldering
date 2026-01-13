@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>CARERING Healthcare - SPA</title>
+  <title>Eldering - Smart Elderly Care</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -14,15 +14,15 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="images/ai-chat.png">
   <link rel="apple-touch-icon" href="images/icon-192.png">
-  <meta name="theme-color" content="#FF8400">
+  <meta name="theme-color" content="#7FB069">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="CareRing">
+  <meta name="apple-mobile-web-app-title" content="Eldering">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="CareRing">
-  <meta name="msapplication-TileColor" content="#FF8400">
+  <meta name="application-name" content="Eldering">
+  <meta name="msapplication-TileColor" content="#7FB069">
   <meta name="msapplication-TileImage" content="/images/icon-192.png">
-  <meta name="description" content="Aplikasi Monitoring Kesehatan Real-time dengan AI Assistant">
+  <meta name="description" content="Eldering - Smart Elderly Care & Health Monitoring System">
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -1373,9 +1373,9 @@
          ═══════════════════════════════════════════════════════════════ -->
     <div class="app-header">
         <div class="logo-container" style="cursor: pointer;" data-navigate="home">
-            <img src="images/ai-chat.png" alt="CareRing Logo" class="app-logo">
+            <img src="images/ai-chat.png" alt="Eldering Logo" class="app-logo">
             <div class="logo-text">
-                <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+                <span class="logo-care">Elder</span><span class="logo-ring">ing</span>
             </div>
         </div>
 
@@ -1401,7 +1401,7 @@
         <div class="hero-section">
             <div class="hero-content">
                 <h1 class="hero-greeting" id="user-greeting">Memuat...</h1>
-                <p class="hero-subtitle">Monitor kesehatan Anda secara real-time dengan teknologi modern</p>
+                <p class="hero-subtitle">Smart Elderly Care - Pemantauan kesehatan lansia dengan teknologi AI dan IoT</p>
             </div>
         </div>
 
@@ -1410,7 +1410,7 @@
              ═══════════════════════════════════════════════════════════════ -->
         <div class="search-bar">
             <span class="search-icon"><span class="material-symbols-outlined">search</span></span>
-            <input type="text" placeholder="Cari data kesehatan, artikel, atau diskusi...">
+            <input type="text" placeholder="Cari data kesehatan lansia, artikel, atau diskusi...">
         </div>
 
         <!-- ═══════════════════════════════════════════════════════════════
@@ -1477,12 +1477,9 @@
              VITAL SIGNS GRID - MODERN LAYOUT
              ═══════════════════════════════════════════════════════════════ -->
         <div class="vitals-section">
-            <div class="section-header-modern">
-                <h2 class="section-title-modern">Vital Signs</h2>
-                <span class="section-subtitle">Monitoring real-time</span>
-            </div>
+            <h2 class="section-title-modern">Vital Signs</h2>
 
-            <div class="vitals-grid-modern">
+            <div class="vitals-grid">
                 <!-- Heart Rate Card -->
                 <div class="vital-card vital-card-red">
                     <div class="vital-card-header">
@@ -1562,26 +1559,267 @@
             </div>
         </div>
 
-        <div class="section-header" style="margin-top: 20px;">
-            <h2 class="section-title">Grafik Kesehatan</h2>
+        <!-- ═══════════════════════════════════════════════════════════════
+             MENTAL HEALTH ANALYSIS - MODERN PROFESSIONAL DESIGN
+             ═══════════════════════════════════════════════════════════════ -->
+        <h2 class="section-title-modern">Mental Health Metrics</h2>
+
+        <!-- Mental Health Vital Cards Grid (Consistent with Physical Vitals) -->
+        <div class="vitals-grid">
+            <!-- Mood Stability Card -->
+            <div class="vital-card vital-card-purple" id="mood-stability-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">🧠</span>
+                    <div class="vital-badge vital-badge-mental">HRV</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value vital-value-text" id="mood-stability-value">--</span>
+                </div>
+                <p class="vital-label">Mood Stability</p>
+                <p class="vital-sublabel" id="mood-stability-desc">Analyzing...</p>
+            </div>
+
+            <!-- Anxiety Level Card -->
+            <div class="vital-card vital-card-cyan" id="anxiety-level-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">😌</span>
+                    <div class="vital-badge vital-badge-mental">Stress</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value vital-value-text" id="anxiety-level-value">--</span>
+                </div>
+                <p class="vital-label">Anxiety Level</p>
+                <p class="vital-sublabel" id="anxiety-level-desc">Analyzing...</p>
+            </div>
+
+            <!-- Stress Resilience Card -->
+            <div class="vital-card vital-card-indigo" id="stress-resilience-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">🛡️</span>
+                    <div class="vital-badge vital-badge-mental">Recovery</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value vital-value-text" id="stress-resilience-value">--</span>
+                </div>
+                <p class="vital-label">Stress Resilience</p>
+                <p class="vital-sublabel" id="stress-resilience-desc">Analyzing...</p>
+            </div>
+
+            <!-- HRV Metrics Card -->
+            <div class="vital-card vital-card-pink" id="hrv-metrics-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">💗</span>
+                    <div class="vital-badge vital-badge-mental">RMSSD</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value" id="hrv-rmssd-value">--</span>
+                    <span class="vital-unit">ms</span>
+                </div>
+                <p class="vital-label">HRV Score</p>
+                <p class="vital-sublabel" id="hrv-rmssd-desc">Calculating...</p>
+            </div>
         </div>
 
-        <section class="chart-card card">
+        <!-- Mental Health Insights Panel (Modern Card Design) -->
+        <div class="mental-insights-panel">
+            <div class="insights-header">
+                <div class="insights-icon">
+                    <span class="material-symbols-outlined">psychology</span>
+                </div>
+                <div class="insights-title-wrapper">
+                    <h3 class="insights-title">AI Health Insights</h3>
+                    <p class="insights-subtitle">Personalized recommendations based on your data</p>
+                </div>
+            </div>
+            <div class="insights-content">
+                <ul id="mental-health-recommendations-list" class="insights-list">
+                    <li class="insight-item insight-loading">
+                        <div class="insight-icon">
+                            <span class="material-symbols-outlined">hourglass_empty</span>
+                        </div>
+                        <div class="insight-text">
+                            <strong>Collecting data...</strong>
+                            <span>We need at least 30 readings to provide accurate mental health analysis</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             TEMPERATURE-BASED MENTAL HEALTH ANALYSIS
+             ═══════════════════════════════════════════════════════════════ -->
+        <h2 class="section-title-modern">Temperature Mental Analysis</h2>
+
+        <!-- Temperature Analysis Cards Grid -->
+        <div class="vitals-grid">
+            <!-- Circadian Rhythm Card -->
+            <div class="vital-card vital-card-teal" id="circadian-rhythm-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">☀️</span>
+                    <div class="vital-badge vital-badge-mental">Rhythm</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value vital-value-text" id="circadian-value">--</span>
+                </div>
+                <p class="vital-label">Circadian Rhythm</p>
+                <p class="vital-sublabel" id="circadian-desc">Analyzing...</p>
+            </div>
+
+            <!-- Sleep Quality Card -->
+            <div class="vital-card vital-card-navy" id="sleep-quality-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">😴</span>
+                    <div class="vital-badge vital-badge-mental">Sleep</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value vital-value-text" id="sleep-quality-value">--</span>
+                </div>
+                <p class="vital-label">Sleep Quality</p>
+                <p class="vital-sublabel" id="sleep-quality-desc">Analyzing...</p>
+            </div>
+
+            <!-- Stress Response Card -->
+            <div class="vital-card vital-card-amber" id="stress-response-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">⚡</span>
+                    <div class="vital-badge vital-badge-mental">ANS</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value vital-value-text" id="stress-response-value">--</span>
+                </div>
+                <p class="vital-label">Stress Response</p>
+                <p class="vital-sublabel" id="stress-response-desc">Analyzing...</p>
+            </div>
+
+            <!-- Thermoregulation Card -->
+            <div class="vital-card vital-card-emerald" id="thermoregulation-card">
+                <div class="vital-card-header">
+                    <span class="vital-icon">🌡️</span>
+                    <div class="vital-badge vital-badge-mental">Adapt</div>
+                </div>
+                <div class="vital-value-wrapper">
+                    <span class="vital-value vital-value-text" id="thermoregulation-value">--</span>
+                </div>
+                <p class="vital-label">Thermoregulation</p>
+                <p class="vital-sublabel" id="thermoregulation-desc">Analyzing...</p>
+            </div>
+        </div>
+
+        <!-- Temperature Analysis Details Panel -->
+        <div class="temp-analysis-panel">
+            <div class="temp-panel-header">
+                <div class="temp-panel-icon">
+                    <span class="material-symbols-outlined">thermostat</span>
+                </div>
+                <div class="temp-panel-title-wrapper">
+                    <h3 class="temp-panel-title">Temperature Analysis Details</h3>
+                    <p class="temp-panel-subtitle">Overall Score: <span id="temp-overall-score">--</span>/100 (<span id="temp-overall-level">--</span>)</p>
+                </div>
+            </div>
+            <div class="temp-panel-content">
+                <div class="temp-metrics-grid">
+                    <!-- Circadian Details -->
+                    <div class="temp-metric-card" id="temp-circadian-details">
+                        <h4 class="temp-metric-title">
+                            <span class="material-symbols-outlined">wb_twilight</span>
+                            Circadian Rhythm
+                        </h4>
+                        <div class="temp-metric-values">
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Evening (16-18h):</span>
+                                <span class="temp-metric-value" id="circadian-evening">--°C</span>
+                            </div>
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Early Morning (3-5h):</span>
+                                <span class="temp-metric-value" id="circadian-morning">--°C</span>
+                            </div>
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Difference:</span>
+                                <span class="temp-metric-value" id="circadian-diff">--°C</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sleep Quality Details -->
+                    <div class="temp-metric-card" id="temp-sleep-details">
+                        <h4 class="temp-metric-title">
+                            <span class="material-symbols-outlined">bedtime</span>
+                            Sleep Quality
+                        </h4>
+                        <div class="temp-metric-values">
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Daytime Avg:</span>
+                                <span class="temp-metric-value" id="sleep-daytime">--°C</span>
+                            </div>
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Sleep Avg:</span>
+                                <span class="temp-metric-value" id="sleep-nighttime">--°C</span>
+                            </div>
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Nocturnal Drop:</span>
+                                <span class="temp-metric-value" id="sleep-drop">--°C</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stress Response Details -->
+                    <div class="temp-metric-card" id="temp-stress-details">
+                        <h4 class="temp-metric-title">
+                            <span class="material-symbols-outlined">heart_broken</span>
+                            Stress Response
+                        </h4>
+                        <div class="temp-metric-values">
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Temperature Range:</span>
+                                <span class="temp-metric-value" id="stress-range">--°C</span>
+                            </div>
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Data Points:</span>
+                                <span class="temp-metric-value" id="stress-points">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thermoregulation Details -->
+                    <div class="temp-metric-card" id="temp-thermo-details">
+                        <h4 class="temp-metric-title">
+                            <span class="material-symbols-outlined">device_thermostat</span>
+                            Thermoregulation
+                        </h4>
+                        <div class="temp-metric-values">
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Body-Ambient Diff:</span>
+                                <span class="temp-metric-value" id="thermo-diff">--°C</span>
+                            </div>
+                            <div class="temp-metric-item">
+                                <span class="temp-metric-label">Ambient Change:</span>
+                                <span class="temp-metric-value" id="thermo-change">--°C</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title-modern">Health Charts</h2>
+
+        <section class="chart-card">
             <p class="chart-title">Riwayat Detak Jantung (10 data terakhir)</p>
             <canvas id="bpmChart"></canvas>
         </section>
 
-        <section class="chart-card card">
+        <section class="chart-card">
             <p class="chart-title">Riwayat Suhu Tubuh (10 data terakhir)</p>
             <canvas id="tempChart"></canvas>
         </section>
 
-        <section class="chart-card card">
+        <section class="chart-card">
             <p class="chart-title">Riwayat Suhu Ruangan (10 data terakhir)</p>
             <canvas id="ambientChart"></canvas>
         </section>
 
-        <section class="health-summary-card card">
+        <section class="health-summary-card">
             <h2 class="chart-title" style="text-align: center;">Rangkuman Kesehatan</h2>
 
             <div id="summary-status-container" class="report-status-container">
@@ -3005,11 +3243,11 @@
             </div>
             <div class="profile-modal-body">
               <div class="contact-options">
-                <a href="mailto:support@carering.com" class="contact-option">
+                <a href="mailto:support@eldering.care" class="contact-option">
                   <span class="material-symbols-outlined">email</span>
                   <div>
                     <span class="contact-option-title">Email Support</span>
-                    <span class="contact-option-desc">support@carering.com</span>
+                    <span class="contact-option-desc">support@eldering.care</span>
                   </div>
                 </a>
                 <a href="tel:+628123456789" class="contact-option">
@@ -3551,6 +3789,8 @@
 
   <script src="./script.js"></script>
   <script src="./auth-guard.js"></script>
+  <script src="./mental-health-analyzer.js"></script>
+  <script src="./temperature-mental-analyzer.js"></script>
   <script src="./ble-handler.js"></script>
   <script src="./ble-indicator.js"></script>
 
@@ -4625,8 +4865,8 @@
               }
             ]
           },
-          'sensor-carering': {
-            id: 'sensor-carering',
+          'sensor-eldering': {
+            id: 'sensor-eldering',
             author: 'Siti Rahayu',
             authorImg: 'https://ui-avatars.com/api/?name=Siti+Rahayu&background=E74C3C&color=fff&size=128',
             time: '5 jam lalu',
@@ -4835,7 +5075,7 @@
         if (detailBack) detailBack.addEventListener('click', closeDetailModal);
 
         // Thread card clicks
-        const threadKeys = ['hipotermia', 'sensor-carering', 'spo2'];
+        const threadKeys = ['hipotermia', 'sensor-eldering', 'spo2'];
         threadCards.forEach((card, index) => {
           card.addEventListener('click', () => {
             const threadKey = threadKeys[index] || 'hipotermia';

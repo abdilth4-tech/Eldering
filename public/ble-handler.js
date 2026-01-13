@@ -176,6 +176,15 @@ function validateSensorData(data) {
     return false;
   }
 
+  // Optional: R-R interval validation (untuk analisis HRV)
+  // R-R interval is optional, but if present, should be valid
+  if ('rrInterval' in data) {
+    if (typeof data.rrInterval !== 'number' || data.rrInterval < 0 || data.rrInterval > 2000) {
+      console.warn('⚠️ Invalid rrInterval value:', data.rrInterval);
+      // Tidak return false karena rrInterval optional
+    }
+  }
+
   return true;
 }
 
@@ -225,6 +234,7 @@ async function uploadToFirebase(data) {
       spO2: data.spo2 || 0,
       objTemp: data.temperature || 0,
       ambTemp: data.ambient || 0,
+      rrInterval: data.rrInterval || null, // R-R interval untuk analisis HRV
       timestamp: now,
       deviceName: data.deviceName || 'CareRing',
       source: 'BLE'
@@ -234,6 +244,27 @@ async function uploadToFirebase(data) {
     if (historyData.bpm > 0) {
       await firebase.database().ref('/sensorHistory').push(historyData);
       console.log('✅ Data saved to history for charts');
+
+      // Feed data to Mental Health Analyzer (HRV-based) jika analyzer tersedia
+      if (window.mentalHealthAnalyzer && typeof window.mentalHealthAnalyzer.addData === 'function') {
+        window.mentalHealthAnalyzer.addData({
+          bpm: historyData.bpm,
+          spO2: historyData.spO2,
+          rrInterval: historyData.rrInterval,
+          timestamp: historyData.timestamp
+        });
+        console.log('🧠 Data fed to Mental Health Analyzer (HRV)');
+      }
+
+      // Feed data to Temperature Mental Analyzer jika analyzer tersedia
+      if (window.temperatureMentalAnalyzer && typeof window.temperatureMentalAnalyzer.addTemperatureData === 'function') {
+        window.temperatureMentalAnalyzer.addTemperatureData({
+          objTemp: historyData.objTemp,
+          ambTemp: historyData.ambTemp,
+          timestamp: historyData.timestamp
+        });
+        console.log('🌡️ Data fed to Temperature Mental Analyzer');
+      }
     }
 
     lastUploadTime = now;

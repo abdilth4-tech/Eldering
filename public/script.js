@@ -453,10 +453,442 @@ if (document.getElementById('google-login-btn')) {
         summaryDetailListEl.appendChild(li);
       });
     }
+
+    // 4. Update Mental Health Analysis Display (HRV-based)
+    updateMentalHealthDisplay();
+
+    // 5. Update Temperature Mental Health Analysis Display
+    updateTemperatureMentalDisplay();
+  }
+
+  /**
+   * Update Mental Health Display dengan data terbaru dari analyzer
+   * Dipanggil setiap kali ada data baru dari BLE
+   */
+  function updateMentalHealthDisplay() {
+    // Cek apakah kita di halaman home
+    const pageHome = document.getElementById('page-home');
+    if (!pageHome || pageHome.style.display === 'none') {
+      return; // Tidak perlu update jika tidak di halaman home
+    }
+
+    // Cek apakah analyzer tersedia
+    if (!window.mentalHealthAnalyzer || typeof window.mentalHealthAnalyzer.getFullMentalHealthAnalysis !== 'function') {
+      console.warn('⚠️ Mental Health Analyzer tidak tersedia');
+      return;
+    }
+
+    // Wrap dalam try-catch untuk menangkap error
+    try {
+      // Ambil analisis lengkap
+      const analysis = window.mentalHealthAnalyzer.getFullMentalHealthAnalysis();
+
+      // Cek apakah analysis valid
+      if (!analysis) {
+        console.warn('⚠️ Analysis result is null or undefined');
+        return;
+      }
+
+    // Update Mood Stability Card (Vital Card Format)
+    const moodValueEl = document.getElementById('mood-stability-value');
+    const moodDescEl = document.getElementById('mood-stability-desc');
+    const moodCard = document.getElementById('mood-stability-card');
+    if (moodValueEl && moodDescEl && moodCard) {
+      moodValueEl.textContent = analysis.moodStability;
+      // Truncate long descriptions for sublabel
+      const moodDesc = analysis.hrv.interpretation || 'Heart rate variability analysis';
+      moodDescEl.textContent = moodDesc.length > 60 ? moodDesc.substring(0, 57) + '...' : moodDesc;
+
+      // Update card color based on status
+      moodCard.className = 'vital-card vital-card-purple';
+      if (analysis.moodStability === 'Sangat Stabil') {
+        moodCard.classList.add('status-good');
+      } else if (analysis.moodStability === 'Tidak Stabil') {
+        moodCard.classList.add('status-danger');
+      }
+    }
+
+    // Update Anxiety Level Card (Vital Card Format)
+    const anxietyValueEl = document.getElementById('anxiety-level-value');
+    const anxietyDescEl = document.getElementById('anxiety-level-desc');
+    const anxietyCard = document.getElementById('anxiety-level-card');
+    if (anxietyValueEl && anxietyDescEl && anxietyCard) {
+      anxietyValueEl.textContent = analysis.anxietyLevel;
+      const anxietyDesc = analysis.cardiacStress.interpretation || 'Anxiety evaluation';
+      anxietyDescEl.textContent = anxietyDesc.length > 60 ? anxietyDesc.substring(0, 57) + '...' : anxietyDesc;
+
+      anxietyCard.className = 'vital-card vital-card-cyan';
+      if (analysis.anxietyLevel === 'Rendah') {
+        anxietyCard.classList.add('status-good');
+      } else if (analysis.anxietyLevel === 'Tinggi') {
+        anxietyCard.classList.add('status-danger');
+      } else {
+        anxietyCard.classList.add('status-warning');
+      }
+    }
+
+    // Update Stress Resilience Card (Vital Card Format)
+    const resilienceValueEl = document.getElementById('stress-resilience-value');
+    const resilienceDescEl = document.getElementById('stress-resilience-desc');
+    const resilienceCard = document.getElementById('stress-resilience-card');
+    if (resilienceValueEl && resilienceDescEl && resilienceCard) {
+      resilienceValueEl.textContent = analysis.stressResilience;
+      const resilienceDesc = analysis.resilience.interpretation || 'Stress recovery capability';
+      resilienceDescEl.textContent = resilienceDesc.length > 60 ? resilienceDesc.substring(0, 57) + '...' : resilienceDesc;
+
+      resilienceCard.className = 'vital-card vital-card-indigo';
+      if (analysis.stressResilience === 'Tinggi') {
+        resilienceCard.classList.add('status-good');
+      } else if (analysis.stressResilience === 'Rendah') {
+        resilienceCard.classList.add('status-danger');
+      } else {
+        resilienceCard.classList.add('status-warning');
+      }
+    }
+
+    // Update HRV Metrics Card (Vital Card Format)
+    const hrvValueEl = document.getElementById('hrv-rmssd-value');
+    const hrvDescEl = document.getElementById('hrv-rmssd-desc');
+    const hrvCard = document.getElementById('hrv-metrics-card');
+    if (hrvValueEl && hrvDescEl && hrvCard) {
+      if (analysis.hrv.metrics && analysis.hrv.metrics.rmssd) {
+        hrvValueEl.textContent = analysis.hrv.metrics.rmssd;
+        hrvDescEl.textContent = `SDNN: ${analysis.hrv.metrics.sdnn}ms • ${analysis.hrv.level}`;
+      } else {
+        hrvValueEl.textContent = '--';
+        hrvDescEl.textContent = 'Collecting data points...';
+      }
+
+      hrvCard.className = 'vital-card vital-card-pink';
+      if (analysis.hrv.status === 'relaxed_good_resilience') {
+        hrvCard.classList.add('status-good');
+      } else if (analysis.hrv.status === 'anxiety_high_stress') {
+        hrvCard.classList.add('status-danger');
+      }
+    }
+
+    // Update Insights/Recommendations List (New Format)
+    const recommendationsListEl = document.getElementById('mental-health-recommendations-list');
+    if (recommendationsListEl && analysis.recommendations) {
+      recommendationsListEl.innerHTML = '';
+
+      analysis.recommendations.forEach(rec => {
+        const li = document.createElement('li');
+        li.className = `insight-item insight-${rec.type}`;
+
+        // Icon dan title berdasarkan tipe
+        let icon = 'info';
+        let title = 'Information';
+        if (rec.type === 'warning') {
+          icon = 'warning';
+          title = 'Attention Required';
+        } else if (rec.type === 'danger') {
+          icon = 'error';
+          title = 'Important Alert';
+        } else if (rec.type === 'success') {
+          icon = 'check_circle';
+          title = 'Great News';
+        }
+
+        li.innerHTML = `
+          <div class="insight-icon">
+            <span class="material-symbols-outlined">${icon}</span>
+          </div>
+          <div class="insight-text">
+            <strong>${title}</strong>
+            <span>${rec.text}</span>
+          </div>
+        `;
+        recommendationsListEl.appendChild(li);
+      });
+    }
+
+      // Log untuk debugging
+      console.log('🧠 Mental Health Display Updated:', {
+        mood: analysis.moodStability,
+        anxiety: analysis.anxietyLevel,
+        resilience: analysis.stressResilience,
+        dataPoints: analysis.dataQuality.totalDataPoints
+      });
+    } catch (error) {
+      console.error('❌ Error updating mental health display:', error);
+      // Tidak throw error agar tidak mengganggu fungsi lain
+    }
+  }
+
+  /**
+   * Load historical data untuk mental health analysis
+   * Dipanggil saat halaman pertama kali dimuat
+   */
+  function loadHistoricalDataForMentalHealth() {
+    try {
+      if (!window.mentalHealthAnalyzer) {
+        console.warn('⚠️ Mental Health Analyzer tidak tersedia');
+        return;
+      }
+
+      // Cek apakah Firebase database tersedia
+      if (!database || !database.ref) {
+        console.warn('⚠️ Firebase database tidak tersedia');
+        return;
+      }
+
+      // Ambil data dari Firebase sensorHistory (100 data terakhir)
+      database.ref('/sensorHistory').limitToLast(100).once('value', (snapshot) => {
+      const data = snapshot.val();
+      if (!data) {
+        console.log('ℹ️ Tidak ada historical data untuk mental health analysis');
+        return;
+      }
+
+      let loadedCount = 0;
+
+      // Feed data ke analyzer
+      Object.keys(data).forEach(key => {
+        const entry = data[key];
+        if (entry.bpm && entry.bpm > 0) {
+          window.mentalHealthAnalyzer.addData({
+            bpm: entry.bpm,
+            spO2: entry.spO2 || 0,
+            rrInterval: entry.rrInterval || null,
+            timestamp: entry.timestamp || Date.now()
+          });
+          loadedCount++;
+        }
+      });
+
+      console.log(`✅ Loaded ${loadedCount} historical data points untuk mental health analysis`);
+
+        // Update display setelah load data
+        if (loadedCount > 0) {
+          updateMentalHealthDisplay();
+        }
+      }).catch(error => {
+        console.error('❌ Error loading historical data from Firebase:', error);
+      });
+    } catch (error) {
+      console.error('❌ Error in loadHistoricalDataForMentalHealth:', error);
+    }
+  }
+
+  /**
+   * Update Temperature Mental Health Display
+   * Dipanggil setiap kali ada update data atau analisis baru
+   */
+  function updateTemperatureMentalDisplay() {
+    // Cek apakah kita di halaman home
+    const pageHome = document.getElementById('page-home');
+    if (!pageHome || pageHome.style.display === 'none') {
+      return;
+    }
+
+    // Cek apakah analyzer tersedia
+    if (!window.temperatureMentalAnalyzer || typeof window.temperatureMentalAnalyzer.getFullTemperatureAnalysis !== 'function') {
+      console.warn('⚠️ Temperature Mental Analyzer tidak tersedia');
+      return;
+    }
+
+    try {
+      // Ambil analisis lengkap
+      const analysis = window.temperatureMentalAnalyzer.getFullTemperatureAnalysis();
+
+      if (!analysis || !analysis.analyses) {
+        console.warn('⚠️ Temperature analysis result is null or invalid');
+        return;
+      }
+
+      const { circadian, sleep, stress, adaptation } = analysis.analyses;
+
+      // Update Circadian Rhythm Card
+      updateTemperatureCard('circadian', circadian, 'circadian-rhythm-card', 'vital-card-teal');
+
+      // Update Sleep Quality Card
+      updateTemperatureCard('sleep-quality', sleep, 'sleep-quality-card', 'vital-card-navy');
+
+      // Update Stress Response Card
+      updateTemperatureCard('stress-response', stress, 'stress-response-card', 'vital-card-amber');
+
+      // Update Thermoregulation Card
+      updateTemperatureCard('thermoregulation', adaptation, 'thermoregulation-card', 'vital-card-emerald');
+
+      // Update Overall Score
+      const scoreEl = document.getElementById('temp-overall-score');
+      const levelEl = document.getElementById('temp-overall-level');
+      if (scoreEl && levelEl) {
+        scoreEl.textContent = analysis.overallScore;
+        levelEl.textContent = analysis.overallLevel;
+      }
+
+      // Update Detailed Metrics
+      updateCircadianDetails(circadian);
+      updateSleepDetails(sleep);
+      updateStressDetails(stress);
+      updateThermoregulationDetails(adaptation);
+
+      console.log('🌡️ Temperature Mental Display Updated:', {
+        score: analysis.overallScore,
+        level: analysis.overallLevel,
+        dataPoints: analysis.dataQuality.totalDataPoints
+      });
+    } catch (error) {
+      console.error('❌ Error updating temperature mental display:', error);
+    }
+  }
+
+  /**
+   * Update individual temperature card
+   */
+  function updateTemperatureCard(prefix, analysisData, cardId, baseClass) {
+    const valueEl = document.getElementById(`${prefix}-value`);
+    const descEl = document.getElementById(`${prefix}-desc`);
+    const card = document.getElementById(cardId);
+
+    if (!valueEl || !descEl || !card) return;
+
+    if (analysisData.status === 'insufficient_data') {
+      valueEl.textContent = 'No Data';
+      descEl.textContent = 'Collecting data...';
+      card.className = baseClass;
+      return;
+    }
+
+    // Update value and description
+    valueEl.textContent = analysisData.level || '--';
+    const desc = analysisData.interpretation || 'Analyzing...';
+    descEl.textContent = desc.length > 60 ? desc.substring(0, 57) + '...' : desc;
+
+    // Update status color
+    card.className = baseClass;
+    if (analysisData.status === 'excellent' || analysisData.status === 'normal') {
+      card.classList.add('status-good');
+    } else if (analysisData.status === 'suboptimal' || analysisData.status === 'mild') {
+      card.classList.add('status-warning');
+    } else if (analysisData.status === 'impaired' || analysisData.status === 'poor' || analysisData.status === 'detected' || analysisData.status === 'disrupted') {
+      card.classList.add('status-danger');
+    }
+  }
+
+  /**
+   * Update Circadian Details Panel
+   */
+  function updateCircadianDetails(circadian) {
+    if (!circadian.metrics) return;
+
+    const eveningEl = document.getElementById('circadian-evening');
+    const morningEl = document.getElementById('circadian-morning');
+    const diffEl = document.getElementById('circadian-diff');
+
+    if (eveningEl) eveningEl.textContent = `${circadian.metrics.eveningTemp || '--'}°C`;
+    if (morningEl) morningEl.textContent = `${circadian.metrics.earlyMorningTemp || '--'}°C`;
+    if (diffEl) diffEl.textContent = `${circadian.metrics.difference || '--'}°C`;
+  }
+
+  /**
+   * Update Sleep Details Panel
+   */
+  function updateSleepDetails(sleep) {
+    if (!sleep.metrics) return;
+
+    const daytimeEl = document.getElementById('sleep-daytime');
+    const nighttimeEl = document.getElementById('sleep-nighttime');
+    const dropEl = document.getElementById('sleep-drop');
+
+    if (daytimeEl) daytimeEl.textContent = `${sleep.metrics.daytimeTemp || '--'}°C`;
+    if (nighttimeEl) nighttimeEl.textContent = `${sleep.metrics.sleepTemp || '--'}°C`;
+    if (dropEl) dropEl.textContent = `${sleep.metrics.nocturnalDrop || '--'}°C`;
+  }
+
+  /**
+   * Update Stress Details Panel
+   */
+  function updateStressDetails(stress) {
+    if (!stress.metrics) return;
+
+    const rangeEl = document.getElementById('stress-range');
+    const pointsEl = document.getElementById('stress-points');
+
+    if (rangeEl) rangeEl.textContent = `${stress.metrics.tempRange || '--'}°C`;
+    if (pointsEl) pointsEl.textContent = `${stress.metrics.dataPoints || '--'}`;
+  }
+
+  /**
+   * Update Thermoregulation Details Panel
+   */
+  function updateThermoregulationDetails(adaptation) {
+    if (!adaptation.metrics) return;
+
+    const diffEl = document.getElementById('thermo-diff');
+    const changeEl = document.getElementById('thermo-change');
+
+    if (diffEl) diffEl.textContent = `${adaptation.metrics.avgDifference || '--'}°C`;
+    if (changeEl) changeEl.textContent = `${adaptation.metrics.ambientChange || '--'}°C`;
+  }
+
+  /**
+   * Load historical temperature data untuk analisis
+   */
+  function loadHistoricalTemperatureData() {
+    try {
+      if (!window.temperatureMentalAnalyzer) {
+        console.warn('⚠️ Temperature Mental Analyzer tidak tersedia');
+        return;
+      }
+
+      if (!database || !database.ref) {
+        console.warn('⚠️ Firebase database tidak tersedia');
+        return;
+      }
+
+      // Ambil data dari Firebase sensorHistory (48 data terakhir = 24 jam dengan interval 30 menit)
+      database.ref('/sensorHistory').limitToLast(48).once('value', (snapshot) => {
+        const data = snapshot.val();
+        if (!data) {
+          console.log('ℹ️ Tidak ada historical temperature data');
+          return;
+        }
+
+        let loadedCount = 0;
+
+        // Feed data ke temperature analyzer
+        Object.keys(data).forEach(key => {
+          const entry = data[key];
+          if (entry.objTemp && entry.ambTemp) {
+            window.temperatureMentalAnalyzer.addTemperatureData({
+              objTemp: entry.objTemp,
+              ambTemp: entry.ambTemp,
+              timestamp: entry.timestamp || Date.now()
+            });
+            loadedCount++;
+          }
+        });
+
+        console.log(`✅ Loaded ${loadedCount} temperature data points for analysis`);
+
+        // Update display setelah load data
+        if (loadedCount > 0) {
+          updateTemperatureMentalDisplay();
+        }
+      }).catch(error => {
+        console.error('❌ Error loading historical temperature data:', error);
+      });
+    } catch (error) {
+      console.error('❌ Error in loadHistoricalTemperatureData:', error);
+    }
   }
 
   // Setup BLE data listener for homepage
   setupBLEDataListener();
+
+  // Load historical data for mental health analysis
+  loadHistoricalDataForMentalHealth();
+
+  // Load historical temperature data for temperature mental analysis
+  loadHistoricalTemperatureData();
+
+  // Set interval untuk update temperature display setiap 5 menit
+  setInterval(() => {
+    updateTemperatureMentalDisplay();
+  }, 5 * 60 * 1000); // 5 menit
 
   // ═══════════════════════════════════════════════════════════════════
   // OLD DATA LISTENER - REPLACED WITH BLE DATA
