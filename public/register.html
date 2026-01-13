@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daftar - CARERING</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Daftar - ELDERING</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -13,229 +13,251 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --primary-teal: #2C5F7A;
+      --primary-teal-light: #3A7A9E;
+      --primary-teal-dark: #1E4A5F;
+      --accent-gold: #D4AF37;
+      --accent-gold-light: #E5C158;
+      --accent-gold-dark: #B8941F;
+      --dark-bg: #0F1419;
+      --dark-surface: #1A1F26;
+      --dark-card: #232830;
+      --text-primary: #ffffff;
+      --text-secondary: #9CA3AF;
+      --border-subtle: rgba(44, 95, 122, 0.2);
+    }
+
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Outfit', sans-serif;
       min-height: 100vh;
-      background: linear-gradient(135deg, #FF8400 0%, #007BFF 100%);
+      background: var(--dark-bg);
       position: relative;
       overflow-y: auto;
       overflow-x: hidden;
-      padding: 40px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px;
+      padding-top: 40px;
+      padding-bottom: 40px;
     }
 
-    /* Animated Background */
-    .bg-animation {
+    /* Geometric Background */
+    .geometric-bg {
       position: fixed;
       width: 100%;
       height: 100%;
-      overflow: hidden;
-      z-index: 0;
       top: 0;
       left: 0;
-      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.4;
     }
 
-    .bg-animation span {
+    .geometric-bg::before,
+    .geometric-bg::after {
+      content: '';
       position: absolute;
-      display: block;
-      width: 20px;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      animation: float 25s infinite;
       border-radius: 50%;
+      filter: blur(80px);
+      animation: floatGeometric 20s ease-in-out infinite;
     }
 
-    .bg-animation span:nth-child(1) {
-      left: 10%;
+    .geometric-bg::before {
+      width: 500px;
+      height: 500px;
+      background: var(--primary-teal);
+      opacity: 0.15;
+      top: -200px;
+      left: -200px;
       animation-delay: 0s;
-      animation-duration: 20s;
     }
 
-    .bg-animation span:nth-child(2) {
-      left: 20%;
-      animation-delay: 2s;
-      animation-duration: 18s;
-      width: 40px;
-      height: 40px;
-    }
-
-    .bg-animation span:nth-child(3) {
-      left: 30%;
-      animation-delay: 4s;
-      animation-duration: 22s;
-    }
-
-    .bg-animation span:nth-child(4) {
-      left: 40%;
-      animation-delay: 0s;
-      animation-duration: 25s;
-      width: 60px;
-      height: 60px;
-    }
-
-    .bg-animation span:nth-child(5) {
-      left: 50%;
-      animation-delay: 3s;
-      animation-duration: 19s;
-    }
-
-    .bg-animation span:nth-child(6) {
-      left: 60%;
+    .geometric-bg::after {
+      width: 600px;
+      height: 600px;
+      background: var(--accent-gold);
+      opacity: 0.12;
+      bottom: -300px;
+      right: -300px;
       animation-delay: 5s;
-      animation-duration: 21s;
-      width: 50px;
-      height: 50px;
     }
 
-    .bg-animation span:nth-child(7) {
-      left: 70%;
-      animation-delay: 1s;
-      animation-duration: 23s;
-    }
-
-    .bg-animation span:nth-child(8) {
-      left: 80%;
-      animation-delay: 6s;
-      animation-duration: 20s;
-      width: 35px;
-      height: 35px;
-    }
-
-    .bg-animation span:nth-child(9) {
-      left: 90%;
-      animation-delay: 2s;
-      animation-duration: 24s;
-    }
-
-    .bg-animation span:nth-child(10) {
-      left: 15%;
-      animation-delay: 4s;
-      animation-duration: 26s;
-      width: 45px;
-      height: 45px;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
+    @keyframes floatGeometric {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
       }
-      10% {
-        opacity: 1;
+      50% {
+        transform: translate(100px, 100px) scale(1.2);
       }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) rotate(720deg);
-        opacity: 0;
-      }
+    }
+
+    /* Grid Pattern */
+    .grid-pattern {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background-image: 
+        linear-gradient(rgba(44, 95, 122, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(44, 95, 122, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
     }
 
     /* Main Container */
     .auth-wrapper {
       position: relative;
-      z-index: 1;
+      z-index: 10;
       width: 100%;
-      max-width: 450px;
-      padding: 20px;
-      margin: 0 auto;
-      animation: slideUp 0.8s ease-out;
+      max-width: 500px;
+      margin: auto;
+      animation: slideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    @keyframes slideUp {
+    @keyframes slideIn {
       from {
         opacity: 0;
-        transform: translateY(50px);
+        transform: translateX(-50px) scale(0.9);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0) scale(1);
       }
     }
 
     .auth-container {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(26, 32, 40, 0.85);
       backdrop-filter: blur(20px);
-      border-radius: 30px;
-      padding: 50px 40px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 32px;
+      padding: 56px 48px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 60px rgba(44, 95, 122, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        var(--primary-teal), 
+        var(--accent-gold), 
+        transparent);
+      opacity: 0.6;
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% {
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 1;
+      }
     }
 
     /* Logo */
     .auth-logo-container {
       text-align: center;
-      margin-bottom: 30px;
-      animation: fadeIn 1s ease-out 0.3s both;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      margin-bottom: 40px;
+      position: relative;
     }
 
     .auth-logo-image {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 15px;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
+      display: none;
     }
 
     .logo {
-      font-size: 32px;
-      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -1px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1;
     }
 
-    .logo-care {
-      color: #FF8400;
+    .logo-elde {
+      color: #2C5F7A;
+      font-weight: 600;
     }
 
     .logo-ring {
-      color: #007BFF;
+      color: #D4AF37;
+      font-weight: 600;
+    }
+
+    .logo-wave {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 60px;
+      height: 40px;
+      margin: 0 -4px;
+    }
+
+    .wave-svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .wave-top {
+      stroke: #D4AF37;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .wave-bottom {
+      stroke: #2C5F7A;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     /* Title */
     .auth-title {
       text-align: center;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
-      color: #2d3748;
-      margin-bottom: 10px;
-      animation: fadeIn 1s ease-out 0.5s both;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
     }
 
     .auth-subtitle {
       text-align: center;
-      color: #718096;
-      margin-bottom: 35px;
-      font-size: 15px;
-      animation: fadeIn 1s ease-out 0.7s both;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      font-size: 16px;
+      font-weight: 400;
     }
 
     /* Form */
     .auth-form {
-      animation: fadeIn 1s ease-out 0.9s both;
+      margin-top: 32px;
     }
 
     .input-group {
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .input-icon {
@@ -243,33 +265,44 @@
       left: 20px;
       top: 50%;
       transform: translateY(-50%);
-      color: #a0aec0;
+      color: var(--text-secondary);
       font-size: 18px;
       transition: all 0.3s ease;
       pointer-events: none;
+      z-index: 2;
     }
 
     .auth-input {
       width: 100%;
-      padding: 16px 20px 16px 55px;
-      border: 2px solid #e2e8f0;
-      border-radius: 15px;
+      padding: 18px 20px 18px 56px;
+      border: 2px solid var(--border-subtle);
+      border-radius: 16px;
       font-size: 15px;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
       transition: all 0.3s ease;
-      background: #f7fafc;
+      background: rgba(26, 32, 40, 0.6);
+      color: var(--text-primary);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-input::placeholder {
+      color: rgba(160, 174, 192, 0.5);
     }
 
     .auth-input:focus {
       outline: none;
-      border-color: #FF8400;
-      background: white;
-      box-shadow: 0 0 0 4px rgba(255, 132, 0, 0.1);
+      border-color: var(--primary-teal);
+      background: rgba(26, 32, 40, 0.9);
+      box-shadow: 
+        0 0 0 4px rgba(44, 95, 122, 0.15),
+        0 4px 12px rgba(44, 95, 122, 0.2),
+        inset 0 0 20px rgba(44, 95, 122, 0.05);
       transform: translateY(-2px);
     }
 
     .auth-input:focus + .input-icon {
-      color: #FF8400;
+      color: var(--primary-teal-light);
     }
 
     .password-toggle {
@@ -279,22 +312,26 @@
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: #a0aec0;
+      color: var(--text-secondary);
       cursor: pointer;
       font-size: 18px;
       transition: all 0.3s ease;
-      padding: 5px;
+      padding: 8px;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .password-toggle:hover {
-      color: #FF8400;
+      color: var(--primary-teal-light);
+      transform: translateY(-50%) scale(1.1);
     }
 
     /* Password Strength Indicator */
     .password-strength {
-      margin-top: 8px;
-      margin-bottom: 10px;
+      margin-top: 10px;
+      margin-bottom: 16px;
       display: none;
     }
 
@@ -304,88 +341,97 @@
 
     .strength-bars {
       display: flex;
-      gap: 5px;
-      margin-bottom: 5px;
+      gap: 6px;
+      margin-bottom: 8px;
     }
 
     .strength-bar {
-      height: 4px;
+      height: 5px;
       flex: 1;
-      background: #e2e8f0;
-      border-radius: 2px;
+      background: var(--border-subtle);
+      border-radius: 3px;
       transition: all 0.3s ease;
-    }
-
-    .strength-bar.active {
-      background: #48bb78;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
     .strength-bar.active.weak {
-      background: #f56565;
+      background: #ff6b6b;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
     }
 
     .strength-bar.active.medium {
-      background: #FF8400;
+      background: #ffd93d;
+      box-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
     }
 
     .strength-bar.active.strong {
-      background: #48bb78;
+      background: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
     }
 
     .strength-text {
       font-size: 12px;
-      color: #718096;
-      margin-top: 2px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 500;
     }
 
     /* Checkbox */
     .checkbox-group {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      margin: 20px 0;
+      gap: 14px;
+      margin: 24px 0;
     }
 
     .checkbox-group input[type="checkbox"] {
-      margin-top: 3px;
-      width: 18px;
-      height: 18px;
+      margin-top: 4px;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
-      accent-color: #FF8400;
+      accent-color: var(--primary-teal);
+      flex-shrink: 0;
     }
 
     .checkbox-group label {
       font-size: 13px;
-      color: #4a5568;
-      line-height: 1.5;
+      color: var(--text-secondary);
+      line-height: 1.7;
       cursor: pointer;
+      font-weight: 400;
     }
 
     .checkbox-group label a {
-      color: #FF8400;
+      color: var(--primary-teal-light);
       text-decoration: none;
       font-weight: 600;
+      transition: all 0.3s ease;
     }
 
     .checkbox-group label a:hover {
-      color: #007BFF;
+      color: var(--accent-gold);
       text-decoration: underline;
     }
 
     .auth-button {
       width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #FF8400 0%, #007BFF 100%);
-      color: white;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-teal-dark) 100%);
+      color: var(--text-primary);
       border: none;
-      border-radius: 15px;
+      border-radius: 16px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 
+        0 8px 24px rgba(44, 95, 122, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .auth-button::before {
@@ -396,19 +442,22 @@
       width: 0;
       height: 0;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.2);
       transform: translate(-50%, -50%);
       transition: width 0.6s, height 0.6s;
     }
 
     .auth-button:hover::before {
-      width: 300px;
-      height: 300px;
+      width: 500px;
+      height: 500px;
     }
 
     .auth-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(255, 132, 0, 0.4);
+      background: linear-gradient(135deg, var(--primary-teal-light) 0%, var(--primary-teal) 100%);
+      box-shadow: 
+        0 12px 32px rgba(44, 95, 122, 0.4),
+        0 6px 16px rgba(0, 0, 0, 0.3);
     }
 
     .auth-button:active {
@@ -423,7 +472,7 @@
 
     .auth-button.loading {
       pointer-events: none;
-      opacity: 0.7;
+      opacity: 0.8;
     }
 
     .auth-button .button-text {
@@ -440,6 +489,8 @@
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .auth-button.loading .button-text {
@@ -459,32 +510,34 @@
     /* Auth Link */
     .auth-link {
       text-align: center;
-      margin-top: 25px;
-      color: #718096;
+      margin-top: 32px;
+      color: var(--text-secondary);
       font-size: 14px;
-      animation: fadeIn 1s ease-out 1.1s both;
     }
 
     .auth-link a {
-      color: #FF8400;
+      color: var(--primary-teal-light);
       text-decoration: none;
       font-weight: 600;
       transition: all 0.3s ease;
     }
 
     .auth-link a:hover {
-      color: #007BFF;
+      color: var(--accent-gold);
       text-decoration: underline;
     }
 
     /* Alert Messages */
     .alert {
-      padding: 14px 18px;
+      padding: 16px 20px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       display: none;
       animation: slideDown 0.3s ease-out;
       font-size: 14px;
+      font-weight: 500;
+      border-left: 4px solid;
+      backdrop-filter: blur(10px);
     }
 
     @keyframes slideDown {
@@ -503,79 +556,75 @@
     }
 
     .alert-error {
-      background: #fee;
-      color: #c33;
-      border: 1px solid #fcc;
+      background: rgba(239, 68, 68, 0.1);
+      color: #ff6b6b;
+      border-color: #ff6b6b;
     }
 
     .alert-success {
-      background: #efe;
-      color: #3c3;
-      border: 1px solid #cfc;
+      background: rgba(16, 185, 129, 0.1);
+      color: #4ade80;
+      border-color: #4ade80;
     }
 
     /* Responsive */
     @media (max-width: 768px) {
       body {
-        padding: 20px 0;
-      }
-
-      .auth-wrapper {
-        max-width: 100%;
         padding: 15px;
       }
 
       .auth-container {
-        padding: 40px 30px;
-        border-radius: 20px;
+        padding: 40px 32px;
+        border-radius: 24px;
       }
 
       .auth-title {
-        font-size: 24px;
+        font-size: 28px;
       }
 
       .logo {
-        font-size: 28px;
+        font-size: 36px;
+      }
+
+      .logo-wave {
+        width: 45px;
+        height: 30px;
       }
     }
 
     /* Accessibility */
     .auth-input:focus-visible,
     .auth-button:focus-visible {
-      outline: 3px solid #FF8400;
+      outline: 3px solid var(--primary-teal);
       outline-offset: 2px;
     }
   </style>
 </head>
 <body>
-  <!-- Animated Background -->
-  <div class="bg-animation">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+  <!-- Geometric Background -->
+  <div class="geometric-bg"></div>
+  <div class="grid-pattern"></div>
 
   <!-- Main Container -->
   <div class="auth-wrapper">
     <div class="auth-container">
       <!-- Logo -->
       <div class="auth-logo-container">
-        <img src="images/ai-chat.png" alt="CareRing Logo" class="auth-logo-image">
         <div class="logo">
-          <span class="logo-care">Care</span><span class="logo-ring">Ring</span>
+          <span class="logo-elde">Elde</span>
+          <span class="logo-wave">
+            <svg viewBox="0 0 120 40" class="wave-svg">
+              <path d="M 0 20 Q 30 0, 60 20 T 120 20" stroke-width="6" fill="none" class="wave-top"/>
+              <path d="M 0 20 Q 30 40, 60 20 T 120 20" stroke-width="6" fill="none" class="wave-bottom"/>
+            </svg>
+          </span>
+          <span class="logo-ring">ring</span>
         </div>
       </div>
 
       <!-- Title -->
       <h2 class="auth-title">Buat Akun Baru</h2>
-      <p class="auth-subtitle">Bergabunglah dengan CareRing hari ini</p>
+      <p class="auth-subtitle">Bergabunglah dengan Eldering hari ini</p>
 
       <!-- Alert -->
       <div id="alert" class="alert"></div>
@@ -726,7 +775,7 @@
       ];
 
       strengthText.textContent = strengthTexts[strength];
-      strengthText.style.color = strength <= 1 ? '#f56565' : strength <= 2 ? '#FF8400' : '#48bb78';
+      strengthText.style.color = strength <= 1 ? '#ff6b6b' : strength <= 2 ? '#ffd93d' : '#4ade80';
     });
 
     // Form Validation and Submission
@@ -841,11 +890,11 @@
       const confirmPassword = this.value;
 
       if (confirmPassword && password !== confirmPassword) {
-        this.style.borderColor = '#f56565';
+        this.style.borderColor = '#ff6b6b';
       } else if (confirmPassword && password === confirmPassword) {
-        this.style.borderColor = '#48bb78';
+        this.style.borderColor = '#4ade80';
       } else {
-        this.style.borderColor = '#e2e8f0';
+        this.style.borderColor = 'rgba(44, 95, 122, 0.2)';
       }
     });
   </script>
